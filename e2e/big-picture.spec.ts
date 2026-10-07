@@ -188,7 +188,7 @@ test.describe('Cycle overview (E27, entry picture)', () => {
 
   test('shows six phases as a ring and Fund selected by default, with levels named in the card', async ({ page }) => {
     await expect(page.getByTestId('cycle')).toBeVisible()
-    await expect(page.getByRole('button', { name: /2\s*Fund/ })).toHaveAttribute('aria-pressed', 'true')
+    await expect(page.locator('[data-select="fund"]')).toHaveAttribute('aria-pressed', 'true')
     const card = page.getByTestId('cycle-card')
     await expect(card.getByRole('heading', { level: 3 })).toContainText('Fund')
     for (const level of ['Enterprise level', 'Portfolio level', 'Delivery & operations level'])
@@ -198,11 +198,11 @@ test.describe('Cycle overview (E27, entry picture)', () => {
   })
 
   test('selecting another phase updates the card; levels without a step say so', async ({ page }) => {
-    await page.getByRole('button', { name: /1\s*Direct/ }).click()
+    await page.locator('[data-select="direct"]').click()
     const card = page.getByTestId('cycle-card')
     await expect(card.getByRole('heading', { level: 3 })).toContainText('Direct')
     await expect(card.locator('[data-level="delivery"]')).toContainText('No dedicated step on this level')
-    await page.getByRole('button', { name: /6\s*Realise value/ }).click()
+    await page.locator('[data-select="realise"]').click()
     await expect(card).toContainText('the evidence starts the next cycle')
     await expect(card).toContainText('reported up to Enterprise')
   })
@@ -241,5 +241,57 @@ test.describe('Influence lines in the detailed view (E27)', () => {
     await open(page, '/big-picture/')
     await page.waitForTimeout(500)
     expect(errors).toEqual([])
+  })
+})
+
+test.describe('Cycle overview interaction: click and hover', () => {
+  test.beforeEach(async ({ page }) => open(page, '/big-picture/'))
+  const card = (page: Page) => page.getByTestId('cycle-card')
+  const segment = (page: Page, id: string) => page.locator(`[data-testid="cycle"] [data-phase="${id}"]`)
+
+  test('clicking a segment in the ring selects the phase, updates the card and the pills', async ({ page }) => {
+    await segment(page, 'operate').click()
+    await expect(card(page).getByRole('heading', { level: 3 })).toContainText('Operate')
+    await expect(segment(page, 'operate')).toHaveAttribute('aria-pressed', 'true')
+    await expect(page.locator('[data-select="operate"]')).toHaveAttribute('aria-pressed', 'true')
+    await expect(card(page)).not.toHaveAttribute('data-preview', /.*/)
+  })
+
+  test('hovering previews another phase and returns to the selected one on leave', async ({ page, browserName }) => {
+    test.skip(browserName === 'webkit' && !!process.env.CI, 'hover is covered in Chromium and Firefox')
+    await segment(page, 'deliver').hover()
+    await expect(card(page)).toHaveAttribute('data-preview', 'true')
+    await expect(card(page).getByRole('heading', { level: 3 })).toContainText('Deliver')
+    await expect(card(page)).toContainText('Preview – click to select')
+    // selection is unchanged – ring and pills both keep showing Fund as selected
+    await expect(segment(page, 'fund')).toHaveAttribute('aria-pressed', 'true')
+    await expect(page.locator('[data-select="fund"]')).toHaveAttribute('aria-pressed', 'true')
+    await expect(page.locator('[data-select="deliver"]')).toHaveAttribute('aria-pressed', 'false')
+    await page.mouse.move(5, 5)
+    await expect(card(page).getByRole('heading', { level: 3 })).toContainText('Fund')
+    await expect(card(page)).not.toHaveAttribute('data-preview', /.*/)
+  })
+
+  test('segments are keyboard operable: Tab to a segment, Enter selects it', async ({ page }) => {
+    await segment(page, 'prioritise').focus()
+    await page.keyboard.press('Enter')
+    await expect(card(page).getByRole('heading', { level: 3 })).toContainText('Prioritise')
+    await segment(page, 'realise').focus()
+    await page.keyboard.press(' ')
+    await expect(card(page).getByRole('heading', { level: 3 })).toContainText('Realise value')
+  })
+
+  test('the selected segment is highlighted and the arrows follow the selection', async ({ page }) => {
+    const before = await page.locator('[data-testid="cycle"] path[marker-end]').evaluateAll((p) => p.map((x) => x.getAttribute('d')))
+    await segment(page, 'deliver').click()
+    const after = await page.locator('[data-testid="cycle"] path[marker-end]').evaluateAll((p) => p.map((x) => x.getAttribute('d')))
+    expect(after).toHaveLength(2)
+    expect(after).not.toEqual(before)
+  })
+
+  test('no serious or critical axe violations with the interactive ring', async ({ page }) => {
+    await segment(page, 'operate').click()
+    const r = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).include('[data-testid="cycle"]').analyze()
+    expect(r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([])
   })
 })

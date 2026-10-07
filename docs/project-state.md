@@ -35,6 +35,7 @@
 Zurückgestellt bis I7 (bestätigt): E5a–c (Hex-Werte, Webfont-Lizenz, Logo-SVG), E15 (Skill `eraneos-ci`), E4 (Hosting), E9 (Lizenzprüfung vor externer Nutzung).
 
 ## Letzte Evidenz
+- 07.10.2026: Kreis interaktiv (Klick + Mouse-over-Vorschau); `npm run check` Exit 0 – 65/65 Unit, 129/129 E2E
 - 07.10.2026: CHG-005 – `npm run check` Exit 0: 65/65 Unit, 114/114 E2E (3 Browser) inkl. axe und Hydration-Prüfung
 - 07.10.2026: CHG-004 – `npm run check` Exit 0: 65/65 Unit, 96/96 E2E (3 Browser), axe 0 serious/critical
 - 07.10.2026: Gesamtbild als PoC abgenommen (E25), I3 freigegeben (E26)

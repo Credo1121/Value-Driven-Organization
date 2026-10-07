@@ -7,6 +7,8 @@ import { ORBIT, polar, ringSegmentPath, segmentAngles, wrapLabel } from './geome
 import { formatLeads } from './leads'
 import styles from './cycle.module.css'
 
+const cx = (...c: (string | false | null | undefined)[]) => c.filter(Boolean).join(' ')
+
 // Entry and overview picture (concept C): the steering cycle as a ring. Phases are segments,
 // levels are concentric rings (enterprise outside, teams inside). Selecting a phase shows,
 // in the card beside it, what happens on each level, what is handed down and what comes next.
@@ -15,8 +17,13 @@ const LEVELS = ['enterprise', 'portfolio', 'delivery'] as const
 
 export function CycleOverview({ data, initialPhase = 'fund' }: { data: BigPicture; initialPhase?: string }) {
   const [phaseId, setPhaseId] = useState(initialPhase)
+  // Hover preview (mouse only); the clicked phase stays selected and returns on mouse leave.
+  const [previewId, setPreviewId] = useState<string | null>(null)
   const n = data.phases.length
-  const index = Math.max(0, data.phases.findIndex((p) => p.id === phaseId))
+  const selectedIndex = Math.max(0, data.phases.findIndex((p) => p.id === phaseId))
+  const previewIndex = previewId ? data.phases.findIndex((p) => p.id === previewId) : -1
+  const isPreview = previewIndex >= 0 && previewIndex !== selectedIndex
+  const index = isPreview ? previewIndex : selectedIndex
   const phase = data.phases[index]!
   const next = data.phases[(index + 1) % n]!
   const cap = data.capabilities.find((c) => c.id === phase.capabilityId)!
@@ -28,6 +35,7 @@ export function CycleOverview({ data, initialPhase = 'fund' }: { data: BigPictur
 
   function select(i: number) {
     setPhaseId(data.phases[(i + n) % n]!.id)
+    setPreviewId(null)
   }
 
   const levelSteps = LEVELS.map((lane) => ({ lane, cell: cellAt(lane, phase.id) }))
@@ -40,12 +48,13 @@ export function CycleOverview({ data, initialPhase = 'fund' }: { data: BigPictur
         <svg
           viewBox={`0 0 ${ORBIT.size} ${ORBIT.size}`}
           className={styles.svg}
-          role="img"
+          role="group"
           aria-labelledby="cycle-title"
           data-testid="cycle"
+          onMouseLeave={() => setPreviewId(null)}
         >
           {/* One string: mixed text children in <title> hydrate differently on server and client. */}
-          <title id="cycle-title">{`Steering cycle with six phases. Selected: ${phase.label}. Enterprise is the outer ring, portfolio the middle ring, delivery and operations the inner ring.`}</title>
+          <title id="cycle-title">{`Steering cycle with six phases. Selected: ${data.phases[selectedIndex]!.label}. Enterprise is the outer ring, portfolio the middle ring, delivery and operations the inner ring. Select a phase to see its path.`}</title>
           <defs>
             <linearGradient id="seg-hot" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" className={styles.stopSoft} />
@@ -66,7 +75,23 @@ export function CycleOverview({ data, initialPhase = 'fund' }: { data: BigPictur
             const { a1, a2, mid } = segmentAngles(i, n)
             const on = i === index
             return (
-              <g key={p.id} data-phase={p.id} className={styles.segment}>
+              <g
+                key={p.id}
+                data-phase={p.id}
+                className={cx(styles.segment, styles.hit, i === selectedIndex && styles.selected)}
+                role="button"
+                tabIndex={0}
+                aria-pressed={i === selectedIndex}
+                aria-label={`${i + 1} ${p.label}`}
+                onClick={() => select(i)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    select(i)
+                  }
+                }}
+                onMouseEnter={() => setPreviewId(p.id)}
+              >
                 {LEVELS.map((lane, li) => {
                   const has = Boolean(cellAt(lane, p.id))
                   const cls = on ? styles[`on${li}`] : has ? styles.filled : styles.empty
@@ -112,7 +137,10 @@ export function CycleOverview({ data, initialPhase = 'fund' }: { data: BigPictur
           {(() => {
             // Along the right edge of the segment, ending at the delivery ring so no label is crossed.
             const a = sel.a2 - 0.07
-            const [x1, y1] = polar(rings[0] - 12, a)
+            // Start at the outer edge of the highest level that acts in this phase.
+            const top = LEVELS.findIndex((lane) => cellAt(lane, phase.id))
+            if (top < 0 || top === LEVELS.length - 1) return null
+            const [x1, y1] = polar(bounds[top]! - 12, a)
             const [x2, y2] = polar(rings[2] + 4, a)
             return <path d={`M${x1},${y1} L${x2},${y2}`} className={styles.down} markerEnd="url(#arrow-down)" />
           })()}
@@ -136,7 +164,7 @@ export function CycleOverview({ data, initialPhase = 'fund' }: { data: BigPictur
         <ul className={styles.phaseButtons} aria-label="Select a phase">
           {data.phases.map((p, i) => (
             <li key={p.id}>
-              <button type="button" aria-pressed={i === index} onClick={() => select(i)} data-select={p.id}>
+              <button type="button" aria-pressed={i === selectedIndex} onClick={() => select(i)} data-select={p.id}>
                 <span className={styles.btnNum}>{i + 1}</span> {p.label}
               </button>
             </li>
@@ -156,7 +184,17 @@ export function CycleOverview({ data, initialPhase = 'fund' }: { data: BigPictur
           everything.
         </p>
 
-        <article className={styles.card} aria-live="polite" data-testid="cycle-card">
+        <article
+          className={cx(styles.card, isPreview && styles.cardPreview)}
+          aria-live={isPreview ? 'off' : 'polite'}
+          data-testid="cycle-card"
+          data-preview={isPreview || undefined}
+        >
+          {isPreview && (
+            <p className={styles.previewNote} aria-hidden="true">
+              Preview – click to select
+            </p>
+          )}
           <div className={styles.cardHead}>
             <h3>
               <span className={styles.cardNum}>{index + 1}</span> {phase.label}

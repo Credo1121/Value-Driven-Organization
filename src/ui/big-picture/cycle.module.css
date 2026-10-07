@@ -339,3 +339,42 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Interaction: click to select, hover to preview ---------- */
+.hit {
+  cursor: pointer;
+  outline: none;
+}
+
+.hit path {
+  transition: fill 0.18s ease, opacity 0.18s ease;
+}
+
+/* Hovering a phase that is not shown: a light lift so the target is clear before clicking. */
+.hit:hover:not(.selected) .filled,
+.hit:hover:not(.selected) .empty {
+  fill: var(--c-accent-tint);
+}
+
+/* Keyboard focus: an accent outline around the whole segment. */
+.hit:focus-visible path {
+  stroke: var(--c-accent-strong);
+  stroke-width: 3;
+}
+
+.cardPreview {
+  box-shadow: 0 0 0 2px var(--c-accent-soft), var(--shadow-float);
+}
+
+.previewNote {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-min);
+  font-weight: 500;
+  color: var(--c-grey-700);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hit path {
+    transition: none;
+  }
+}

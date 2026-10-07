@@ -29,3 +29,9 @@ Hochwertigere, intuitivere Website im cleanen, Apple-nahen Light-Look: Konzept C
 
 ## Abweichung von der CI-Dokumentation
 Die warmen Eraneos-Grautöne und Aptos werden durch Apple-Neutraltöne und die Systemschrift ersetzt (E27). `docs/design/tokens.md` beschreibt weiterhin die CI-Herkunft; für das Projekt gilt `src/ui/tokens.css`.
+
+## Nachtrag 07.10.2026 – Interaktiver Kreis (Schritte 1 und 2) [BEST]
+- **Klick im Kreis:** Jedes Phasen-Segment ist ein Button (Klick, Enter, Leertaste); Auswahl aktualisiert Hervorhebung, Pfeile, Karte und Pillen.
+- **Mouse-over als Vorschau:** Überfahren zeigt die Phase in der Karte mit Hinweis „Preview – click to select“; beim Verlassen springt die Ansicht zur gewählten Phase zurück. Auf Touch-Geräten wirkt nur der Klick (kein Mouse-over nötig).
+- **Korrekturen nach Sichtprüfung:** Pillen zeigen während der Vorschau weiter die gewählte Phase; der Abwärtspfeil beginnt an der obersten Ebene, die in der Phase tätig ist (z. B. Operate ab Portfolio).
+- **Prüfung:** `npm run check` Exit 0 – 65/65 Unit, 129/129 E2E (5 neue Interaktionstests × 3 Browser, inkl. Tastatur und axe).
