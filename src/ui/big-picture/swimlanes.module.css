@@ -182,14 +182,38 @@
 
 .cell {
   padding: 0;
-  vertical-align: stretch;
-  height: 1px; /* lets the card fill the row height */
+  vertical-align: top;
   border-radius: var(--radius);
-  transition: opacity 0.2s ease;
 }
 
-.activeCol {
-  box-shadow: inset 0 0 0 2px var(--c-accent-strong);
+/* The table cell itself is the visible box: table cells grow with their content in every
+   browser, so text can never spill into the next row (Firefox does not stretch children
+   with height: 100% inside table cells). */
+.filled {
+  position: relative;
+  background: var(--c-surface);
+  border: 1px solid var(--c-grey-500);
+}
+
+.filled:hover {
+  background: var(--c-grey-100);
+}
+
+.filled:has(.card[aria-pressed='true']) {
+  background: var(--c-accent-tint);
+  border-color: var(--c-accent-strong);
+  box-shadow: inset 0 0 0 1px var(--c-accent-strong);
+}
+
+.filled:has(.card:focus-visible) {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Cards in the current phase get a stronger frame. */
+.activeCol.filled {
+  border-color: var(--c-ink);
+  box-shadow: inset 0 0 0 1px var(--c-ink);
 }
 
 .hidden {
@@ -199,39 +223,41 @@
 .card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 0.3rem;
   width: 100%;
-  height: 100%;
-  min-height: 3.6rem;
-  padding: 0.4rem 0.6rem;
+  min-height: 3.4rem;
+  padding: 0.45rem 0.6rem;
   font: inherit;
   text-align: left;
   color: var(--c-ink);
-  background: var(--c-surface);
-  border: 1px solid var(--c-grey-500);
-  border-radius: var(--radius);
+  background: transparent;
+  border: none;
   cursor: pointer;
 }
 
-.card:hover {
-  background: var(--c-grey-100);
+/* Makes the whole box clickable, also the empty space below short content. */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
 }
 
-.card[aria-pressed='true'] {
-  border: 2px solid var(--c-accent-strong);
-  background: var(--c-accent-tint);
+.card:focus-visible {
+  outline: none;
 }
 
-.parallel .card {
+.parallel .filled {
   background: var(--c-surface-warm);
-  border-style: solid;
+}
+
+.parallel .card,
+.adjacent .card {
   min-height: 2.6rem;
 }
 
-.adjacent .card {
+.adjacent .filled {
   border-style: dashed;
   background: transparent;
-  min-height: 2.6rem;
 }
 
 .cardTitle {
@@ -257,8 +283,7 @@
 }
 
 .handoff {
-  margin-top: auto;
-  padding-top: 0.2rem;
+  padding-top: 0.25rem;
   line-height: 1.25;
   font-size: var(--fs-min);
   font-weight: 600;

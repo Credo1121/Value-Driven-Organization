@@ -1,17 +1,24 @@
 import AxeBuilder from '@axe-core/playwright'
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 
 // REQ-003 Rev. 2 (swimlane matrix) in a real browser against the static export.
 
-const axe = (page: import('@playwright/test').Page) =>
+// Next.js calls history.replaceState on start-up; Firefox reports that as a second navigation to the
+// same URL, which interrupts page.goto(…, { waitUntil: 'load' }). Wait for commit, then for load.
+async function open(page: Page, path: string) {
+  await page.goto(path, { waitUntil: 'commit' })
+  await page.waitForLoadState('load')
+  await page.waitForLoadState('networkidle')
+}
+
+const axe = (page: Page) =>
   new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()
 const serious = (r: Awaited<ReturnType<typeof axe>>) =>
   r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => `${v.id}: ${v.nodes.length}`)
 
 test.describe('Big picture swimlanes (REQ-003)', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/big-picture/')
-    await page.waitForLoadState('networkidle')
+    await open(page, '/big-picture/')
   })
 
   test('AC-003-1: phases left to right, levels top to bottom, parallel and adjacent lanes', async ({ page }) => {
@@ -82,14 +89,43 @@ test.describe('Big picture swimlanes (REQ-003)', () => {
     await expect(box).toHaveAttribute('aria-pressed', 'false')
   })
 
-  test('E22: the Fund phase shows the lead sequence EPM → LPM', async ({ page }) => {
-    await expect(page.locator('th[scope="col"]').nth(1)).toContainText('EPM → LPM')
+  test('E22/E24: Fund, Prioritise and Realise value show the lead sequence EPM → LPM', async ({ page }) => {
+    const heads = page.locator('th[scope="col"]')
+    for (const i of [1, 2, 5]) await expect(heads.nth(i)).toContainText('EPM → LPM')
+  })
+
+  test('layout integrity: box content never spills out and boxes never overlap (all widths)', async ({ page }) => {
+    await page.getByRole('button', { name: 'Show complete picture' }).click()
+    for (const width of [1280, 1480, 1920]) {
+      await page.setViewportSize({ width, height: 900 })
+      const result = await page.evaluate(() => {
+        const boxes = [...document.querySelectorAll<HTMLElement>('[data-box]')]
+        const spill = boxes
+          .filter((td) => {
+            const c = td.querySelector('button')!.getBoundingClientRect()
+            const b = td.getBoundingClientRect()
+            return c.bottom > b.bottom + 1 || c.right > b.right + 1
+          })
+          .map((td) => td.dataset.box)
+        const rects = boxes.map((td) => td.getBoundingClientRect())
+        let overlaps = 0
+        for (let i = 0; i < rects.length; i++)
+          for (let j = i + 1; j < rects.length; j++) {
+            const a = rects[i]!, b = rects[j]!
+            if (a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1) overlaps++
+          }
+        return { count: boxes.length, spill, overlaps }
+      })
+      expect(result.count, `${width}px`).toBe(32)
+      expect(result.spill, `${width}px spill`).toEqual([])
+      expect(result.overlaps, `${width}px overlaps`).toBe(0)
+    }
   })
 
   test('AC-003-5: phase and parallel-lane heads open the capability page', async ({ page }) => {
     await page.getByRole('link', { name: 'Operate' }).click()
     await expect(page).toHaveURL(/\/capabilities\/c7\/$/)
-    await page.goBack()
+    await open(page, '/big-picture/')
     await page.getByRole('link', { name: 'Cost transparency' }).click()
     await expect(page).toHaveURL(/\/capabilities\/c4\/$/)
   })
@@ -121,7 +157,7 @@ test.describe('Viewports (AC-009-4)', () => {
   for (const width of [1280, 1440, 1920]) {
     test(`no horizontal scrolling at ${width}px; matrix fits the screen width`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 })
-      await page.goto('/big-picture/')
+      await open(page, '/big-picture/')
       expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0)
       await expect(page.getByTestId('swimlane-matrix')).toBeVisible()
     })
@@ -129,7 +165,7 @@ test.describe('Viewports (AC-009-4)', () => {
 
   test('at 768px usable; below that the text view replaces the matrix', async ({ page }) => {
     await page.setViewportSize({ width: 768, height: 1000 })
-    await page.goto('/big-picture/')
+    await open(page, '/big-picture/')
     await expect(page.getByTestId('swimlane-matrix')).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0)
     await page.setViewportSize({ width: 600, height: 1000 })
@@ -141,7 +177,7 @@ test.describe('Viewports (AC-009-4)', () => {
 test.describe('Other routes (AC-009-7 smoke)', () => {
   for (const path of ['/', '/glossary/', '/capabilities/', '/capabilities/c2/']) {
     test(`no serious or critical axe violations on ${path}`, async ({ page }) => {
-      await page.goto(path)
+      await open(page, path)
       expect(serious(await axe(page))).toEqual([])
     })
   }

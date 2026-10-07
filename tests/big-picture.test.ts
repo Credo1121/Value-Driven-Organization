@@ -55,6 +55,25 @@ describe('swimlane content (REQ-003)', () => {
     expect(formatLeads(bp.capabilities.find((c) => c.id === 'c2')!, short)).toBe('EPM → LPM')
   })
 
+  it('E24: wherever enterprise and portfolio both steer (C2, C3, C8), the lead is the sequence EPM → LPM', () => {
+    const short = new Map(bp.disciplines.map((d) => [d.id, d.short]))
+    for (const c of bp.capabilities) {
+      const both = c.primary.includes('epm') && c.primary.includes('lpm')
+      if (both) {
+        expect(formatLeads(c, short), c.code).toBe('EPM → LPM')
+        expect(c.leadNote, c.code).toMatch(/compact/i)
+      }
+    }
+    expect(bp.capabilities.filter((c) => c.leadSequence).map((c) => c.code)).toEqual(['C2', 'C3', 'C8'])
+  })
+
+  it('E24: the matrix content follows the sequence – enterprise acts above portfolio in C3 and C8', () => {
+    for (const phase of ['prioritise', 'realise']) {
+      expect(bp.cells.some((c) => c.lane === 'enterprise' && c.phase === phase), phase).toBe(true)
+      expect(bp.cells.some((c) => c.lane === 'portfolio' && c.phase === phase), phase).toBe(true)
+    }
+  })
+
   it('E22: C7 operations is led by IT Ops', () => {
     expect(bp.capabilities.find((c) => c.id === 'c7')?.primary).toEqual(['ops'])
   })

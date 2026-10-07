@@ -69,13 +69,15 @@
       "name": "Prioritisation & dependencies",
       "question": "What do we do first, what not at all, and what depends on what?",
       "primary": [
-        "lpm",
-        "epm"
+        "epm",
+        "lpm"
       ],
       "supporting": [
         "ea"
       ],
-      "role": "loop"
+      "role": "loop",
+      "leadSequence": true,
+      "leadNote": "EPM sets the order of shared and cross-portfolio investments; LPM then prioritises within each portfolio using its portfolio Kanban. In the compact variant LPM or an integrated portfolio governance does both."
     },
     {
       "id": "c4",
@@ -143,7 +145,9 @@
       "supporting": [
         "tbm"
       ],
-      "role": "loop"
+      "role": "loop",
+      "leadSequence": true,
+      "leadNote": "EPM reallocates funding between portfolios based on results; LPM then reallocates between value streams within its portfolio. In the compact variant LPM or an integrated portfolio governance does both."
     }
   ],
   "phases": [

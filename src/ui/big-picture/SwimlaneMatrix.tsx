@@ -79,8 +79,9 @@ export function SwimlaneMatrix({ data }: { data: BigPicture }) {
           return (
             <td
               key={p.id}
-              className={cx(styles.cell, active && styles.activeCol, !revealed && styles.hidden)}
+              className={cx(styles.cell, cell && styles.filled, active && styles.activeCol, !revealed && styles.hidden)}
               data-phase={p.id}
+              data-box={cell ? cellKey(cell) : undefined}
               aria-hidden={revealed ? undefined : true}
             >
               {cell && (
