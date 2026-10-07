@@ -142,3 +142,94 @@ export type Capability = z.infer<typeof CapabilitySchema>
 export type Lane = z.infer<typeof LaneSchema>
 export type Phase = z.infer<typeof PhaseSchema>
 export type Cell = z.infer<typeof CellSchema>
+
+// Capability deep dives (REQ-004). Each template section is either filled or explicitly "open"
+// (AC-004-1); a missing section fails schema validation (AC-004-7).
+const open = z.literal('open')
+const section = <T extends z.ZodTypeAny>(s: T) => z.union([open, s])
+const st = { statementType: StatementTypeSchema }
+
+export const BreakSchema = z.object({ id: z.string().regex(/^b\d$/), text: z.string().min(1) })
+export const BreaksFileSchema = z.object({ breaks: z.array(BreakSchema).length(7) })
+export type Break = z.infer<typeof BreakSchema>
+
+const endpoint = id // capability id or "finance"
+const valueTypeEnum = z.enum(valueTypes)
+
+export const DeepDiveSchema = z.object({
+  capabilityId: id,
+  status: z.enum(['open', 'draft', 'reviewed']),
+  purpose: section(z.object({ text: z.string().min(1), ...st })),
+  roles: section(
+    z.object({
+      ...st,
+      items: z.array(z.object({ role: z.string().min(1), level: z.string().min(1), responsibility: z.string().min(1) })).min(1),
+    }),
+  ),
+  inputsOutputs: section(
+    z.object({
+      ...st,
+      inputs: z.array(z.object({ item: z.string().min(1), from: endpoint, valueType: valueTypeEnum.optional() })).min(1),
+      outputs: z.array(z.object({ item: z.string().min(1), to: endpoint, valueType: valueTypeEnum.optional() })).min(1),
+    }),
+  ),
+  dataObjects: section(z.object({ ...st, items: z.array(id).min(1) })),
+  decisionRights: section(
+    z.object({
+      ...st,
+      items: z.array(z.object({ decision: z.string().min(1), enterprise: z.string().min(1), compact: z.string().min(1) })).min(1),
+    }),
+  ),
+  interfaces: section(
+    z.object({
+      ...st,
+      items: z
+        .array(z.object({ with: endpoint, direction: z.enum(['in', 'out']), type: LinkTypeSchema, what: z.string().min(1) }))
+        .min(1),
+    }),
+  ),
+  breaks: section(z.object({ ...st, items: z.array(z.object({ breakId: z.string(), text: z.string().min(1) })).min(1) })),
+  sources: section(
+    z.object({
+      statements: z
+        .array(z.object({ text: z.string().min(1), statementType: StatementTypeSchema, sourceIds: z.array(z.string()).default([]) }))
+        .min(1),
+      fitsWhen: z.array(z.string().min(1)).min(1),
+      adaptWhen: z.array(z.string().min(1)).min(1),
+    }),
+  ),
+  // Required for C2 and C4 once they are no longer open (AC-004-8).
+  valueTypes: z
+    .object({
+      ...st,
+      note: z.string().min(1),
+      items: z.array(z.object({ valueType: valueTypeEnum, origin: z.string().min(1), use: z.string().min(1) })).min(1),
+    })
+    .optional(),
+  example: z.object({ station: z.string().regex(/^S\d$/), label: z.string().min(1) }).optional(),
+})
+export const DeepDivesFileSchema = z.object({ deepDives: z.array(DeepDiveSchema).length(8) })
+export type DeepDive = z.infer<typeof DeepDiveSchema>
+
+export const templateSections = [
+  'purpose',
+  'roles',
+  'inputsOutputs',
+  'dataObjects',
+  'decisionRights',
+  'interfaces',
+  'breaks',
+  'sources',
+] as const
+export type TemplateSection = (typeof templateSections)[number]
+
+export const templateSectionLabels: Record<TemplateSection, string> = {
+  purpose: 'Purpose & key decision question',
+  roles: 'Roles involved',
+  inputsOutputs: 'Inputs & outputs',
+  dataObjects: 'Data objects',
+  decisionRights: 'Decision rights',
+  interfaces: 'Interfaces',
+  breaks: 'Typical breaks',
+  sources: 'Sources & conditions of use',
+}

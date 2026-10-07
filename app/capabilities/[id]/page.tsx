@@ -1,11 +1,9 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getContent } from '@/content/load'
-import { formatLeads } from '@/ui/big-picture/leads'
-import styles from '@/ui/page.module.css'
+import { DeepDiveView } from '@/ui/capability/DeepDiveView'
 
-// Static capability pages. The full deep-dive template (REQ-004) follows in I3.
+// Capability deep dives (REQ-004), statically generated for C1–C8.
 export const dynamicParams = false
 
 export function generateStaticParams() {
@@ -22,34 +20,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CapabilityPage({ params }: Props) {
   const { id } = await params
-  const { bigPicture } = getContent()
-  const c = bigPicture.capabilities.find((x) => x.id === id)
-  if (!c) notFound()
-  const short = new Map(bigPicture.disciplines.map((d) => [d.id, d.short]))
-  const names = (ids: string[]) => ids.map((i) => short.get(i) ?? i).join(', ')
+  const { bigPicture, deepDives, terms, sources, breaks } = getContent()
+  const capability = bigPicture.capabilities.find((x) => x.id === id)
+  const dive = deepDives.find((d) => d.capabilityId === id)
+  if (!capability || !dive) notFound()
 
   return (
-    <>
-      <p className={styles.eyebrow}>Area B · {c.code}</p>
-      <h1>{c.name}</h1>
-      <p className={styles.preamble}>{c.question}</p>
-      <p>
-        <strong>Leads:</strong> {formatLeads(c, short)}
-        {c.supporting.length > 0 && (
-          <>
-            {' · '}
-            <strong>Supports:</strong> {names(c.supporting)}
-          </>
-        )}
-      </p>
-      {c.leadNote && <p>{c.leadNote}</p>}
-      <p className={styles.notice}>
-        The full deep dive (roles, inputs and outputs, decision rights, interfaces, typical breaks)
-        follows in increment I3.
-      </p>
-      <p>
-        <Link href="/big-picture/">Back to the big picture</Link>
-      </p>
-    </>
+    <DeepDiveView
+      capability={capability}
+      dive={dive}
+      capabilities={bigPicture.capabilities}
+      disciplines={new Map(bigPicture.disciplines.map((d) => [d.id, d.short]))}
+      terms={new Map(terms.map((t) => [t.id, t]))}
+      sources={new Map(sources.map((s) => [s.id, s]))}
+      breaks={new Map(breaks.map((b) => [b.id, b]))}
+    />
   )
 }

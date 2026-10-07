@@ -1,0 +1,394 @@
+{
+  "deepDives": [
+    {
+      "capabilityId": "c1",
+      "status": "open",
+      "purpose": "open",
+      "roles": "open",
+      "inputsOutputs": "open",
+      "dataObjects": "open",
+      "decisionRights": "open",
+      "interfaces": "open",
+      "breaks": "open",
+      "sources": "open"
+    },
+    {
+      "capabilityId": "c2",
+      "status": "draft",
+      "purpose": {
+        "text": "Turns objectives into approved money: how much goes to which portfolio, value stream, shared platform or cross-portfolio investment, and within which [[guardrail|guardrails]]. It keeps [[target]], [[budget]], [[forecast]] and [[actual-cost|actuals]] apart, so that funding decisions can be traced to what was spent and achieved.",
+        "statementType": "synthesis"
+      },
+      "roles": {
+        "statementType": "synthesis",
+        "items": [
+          {
+            "role": "Executive board with corporate finance",
+            "level": "Enterprise",
+            "responsibility": "Sets the overall technology budget and the IT cost target; owns budgeting rules and capitalisation."
+          },
+          {
+            "role": "Enterprise portfolio board (EPM)",
+            "level": "Enterprise",
+            "responsibility": "Allocates budgets to portfolios, sets guardrails, approves cross-portfolio investments and their funding split."
+          },
+          {
+            "role": "CIO / CTO / CDO",
+            "level": "Enterprise",
+            "responsibility": "Represents the technology view, including mandatory investments for security, resilience and lifecycle."
+          },
+          {
+            "role": "Portfolio leadership (LPM)",
+            "level": "Portfolio",
+            "responsibility": "Funds value streams within the portfolio budget and adjusts within guardrails."
+          },
+          {
+            "role": "TBM office / IT finance",
+            "level": "Cross-cutting",
+            "responsibility": "Provides run cost, unit cost and cost forecasts as input; does not decide on funding."
+          },
+          {
+            "role": "Value stream leads",
+            "level": "Delivery",
+            "responsibility": "Receive a stable budget and report capacity needs and constraints."
+          }
+        ]
+      },
+      "inputsOutputs": {
+        "statementType": "synthesis",
+        "inputs": [
+          {
+            "item": "Strategic objectives and investment themes",
+            "from": "c1"
+          },
+          {
+            "item": "IT cost target",
+            "from": "finance",
+            "valueType": "target"
+          },
+          {
+            "item": "Run cost, unit cost and cost forecast by solution",
+            "from": "c4",
+            "valueType": "forecast"
+          },
+          {
+            "item": "Lifecycle risks and mandatory investments",
+            "from": "c5"
+          },
+          {
+            "item": "Results and variances of the previous cycle",
+            "from": "c8",
+            "valueType": "variance"
+          }
+        ],
+        "outputs": [
+          {
+            "item": "Portfolio budgets and guardrails",
+            "to": "c3",
+            "valueType": "budget"
+          },
+          {
+            "item": "Funding split of cross-portfolio investments",
+            "to": "c3",
+            "valueType": "budget"
+          },
+          {
+            "item": "Value stream budgets",
+            "to": "c6",
+            "valueType": "budget"
+          },
+          {
+            "item": "Approved budget per period",
+            "to": "finance",
+            "valueType": "budget"
+          }
+        ]
+      },
+      "dataObjects": {
+        "statementType": "synthesis",
+        "items": [
+          "target",
+          "budget",
+          "forecast",
+          "actual-cost",
+          "variance",
+          "funding-allocation",
+          "guardrail",
+          "portfolio",
+          "value-stream",
+          "investment",
+          "portfolio-participation",
+          "platform"
+        ]
+      },
+      "decisionRights": {
+        "statementType": "synthesis",
+        "items": [
+          {
+            "decision": "Overall technology budget and IT cost target",
+            "enterprise": "Executive board with corporate finance; EPM prepares the proposal.",
+            "compact": "Executive board with corporate finance; integrated portfolio governance prepares the proposal."
+          },
+          {
+            "decision": "Budget per portfolio and guardrails",
+            "enterprise": "EPM.",
+            "compact": "No separate level: the overall budget is the portfolio budget; guardrails set by integrated portfolio governance."
+          },
+          {
+            "decision": "Funding split of cross-portfolio investments",
+            "enterprise": "EPM sets the split; each participating portfolio prioritises its share in its own Kanban.",
+            "compact": "Not needed with one portfolio. With several portfolios but no EPM level, the decision has no natural owner – a typical tension."
+          },
+          {
+            "decision": "Funding of shared platforms",
+            "enterprise": "Depends on the funding structure: a central share decided by EPM, contributions from portfolios, or both.",
+            "compact": "Integrated portfolio governance, as part of the portfolio budget."
+          },
+          {
+            "decision": "Value stream funding",
+            "enterprise": "LPM within the portfolio budget and guardrails.",
+            "compact": "LPM or integrated portfolio governance."
+          },
+          {
+            "decision": "Reallocation during the period",
+            "enterprise": "EPM between portfolios; LPM within its portfolio and guardrails.",
+            "compact": "LPM or integrated portfolio governance, between value streams."
+          }
+        ]
+      },
+      "valueTypes": {
+        "statementType": "synthesis",
+        "note": "Budgeting, forecasting and accounting remain finance processes. TBM provides cost transparency and drivers as input; it does not replace them.",
+        "items": [
+          {
+            "valueType": "target",
+            "origin": "Set top-down by the executive board and corporate finance, prepared with EPM.",
+            "use": "Orientation for planning: does the planned budget fit the target (budget vs. target)?"
+          },
+          {
+            "valueType": "budget",
+            "origin": "Approved in budgeting; EPM allocates it to portfolios, LPM to value streams.",
+            "use": "The frame for spending and the reference for all variances."
+          },
+          {
+            "valueType": "forecast",
+            "origin": "Updated on a rolling basis by finance, with input from portfolios (planned change) and TBM (run cost).",
+            "use": "Forecast vs. budget is the early signal for reallocation – before the money is spent."
+          },
+          {
+            "valueType": "actual",
+            "origin": "Booked by accounting and allocated to consumers by TBM.",
+            "use": "Actual vs. budget shows the variance after the fact and feeds value realisation."
+          },
+          {
+            "valueType": "variance",
+            "origin": "Always calculated from two value types.",
+            "use": "Discussed in reviews; never added to other values."
+          }
+        ]
+      },
+      "interfaces": {
+        "statementType": "synthesis",
+        "items": [
+          {
+            "with": "c1",
+            "direction": "in",
+            "type": "strategic-contribution",
+            "what": "Objectives and investment themes set funding priorities."
+          },
+          {
+            "with": "c4",
+            "direction": "in",
+            "type": "cost-allocation",
+            "what": "Run cost, unit cost and cost forecast inform realistic budgets."
+          },
+          {
+            "with": "c5",
+            "direction": "in",
+            "type": "architecture-dependency",
+            "what": "End-of-life technologies and risks require mandatory investment."
+          },
+          {
+            "with": "c8",
+            "direction": "in",
+            "type": "outcome-feedback",
+            "what": "Results and variances trigger continued funding, reallocation or stop."
+          },
+          {
+            "with": "finance",
+            "direction": "in",
+            "type": "funding",
+            "what": "IT cost target and the approved budget frame."
+          },
+          {
+            "with": "c3",
+            "direction": "out",
+            "type": "funding",
+            "what": "Portfolio budgets, guardrails and funding splits define what can be prioritised."
+          },
+          {
+            "with": "c6",
+            "direction": "out",
+            "type": "funding",
+            "what": "Value stream budgets give stable delivery capacity."
+          }
+        ]
+      },
+      "breaks": {
+        "statementType": "synthesis",
+        "items": [
+          {
+            "breakId": "b1",
+            "text": "Investment themes exist, but budgets are rolled forward from last year instead of following the themes."
+          },
+          {
+            "breakId": "b2",
+            "text": "Budgets are planned by portfolio, actuals are reported by cost centre – nobody can say whether a portfolio is on budget."
+          },
+          {
+            "breakId": "b3",
+            "text": "Budgets are approved per project while delivery runs in long-lived teams – money and capacity do not match."
+          },
+          {
+            "breakId": "b4",
+            "text": "A cross-portfolio investment is funded by the lead portfolio only; contributing portfolios do not plan capacity for their share."
+          },
+          {
+            "breakId": "b5",
+            "text": "Mandatory lifecycle and security investments compete with growth initiatives without their own guardrail and keep being postponed."
+          },
+          {
+            "breakId": "b7",
+            "text": "Forecast deviations are discussed in finance reviews but do not lead to reallocation decisions."
+          }
+        ]
+      },
+      "sources": {
+        "statements": [
+          {
+            "text": "Lean budgets fund value streams instead of projects, and each portfolio operates within an approved budget.",
+            "statementType": "framework",
+            "sourceIds": [
+              "S-SAFE-3"
+            ]
+          },
+          {
+            "text": "Larger enterprises may manage multiple portfolios.",
+            "statementType": "framework",
+            "sourceIds": [
+              "S-SAFE-2"
+            ]
+          },
+          {
+            "text": "Lean budgets can contain both CapEx and OpEx; finance should be involved early.",
+            "statementType": "framework",
+            "sourceIds": [
+              "S-SAFE-4"
+            ]
+          },
+          {
+            "text": "Strategic portfolio management is listed by the TBM Council as a standard connected to TBM.",
+            "statementType": "framework",
+            "sourceIds": [
+              "S-TBM-1"
+            ]
+          },
+          {
+            "text": "An enterprise level above several portfolios that sets portfolio budgets, guardrails and funding splits is our synthesis, not a framework requirement.",
+            "statementType": "synthesis",
+            "sourceIds": []
+          },
+          {
+            "text": "SAFe's specific guardrails have not been verified against the source; the guardrails here are described generically.",
+            "statementType": "assumption",
+            "sourceIds": []
+          }
+        ],
+        "fitsWhen": [
+          "Several portfolios share platforms or run cross-portfolio investments.",
+          "Delivery is organised in long-lived value streams or teams."
+        ],
+        "adaptWhen": [
+          "Only one portfolio exists (compact variant): enterprise and portfolio funding merge into one decision.",
+          "Delivery is project-based: funding per project remains; value stream funding is a target picture, not a given."
+        ]
+      },
+      "example": {
+        "station": "S4",
+        "label": "Funding the customer service platform"
+      }
+    },
+    {
+      "capabilityId": "c3",
+      "status": "open",
+      "purpose": "open",
+      "roles": "open",
+      "inputsOutputs": "open",
+      "dataObjects": "open",
+      "decisionRights": "open",
+      "interfaces": "open",
+      "breaks": "open",
+      "sources": "open"
+    },
+    {
+      "capabilityId": "c4",
+      "status": "open",
+      "purpose": "open",
+      "roles": "open",
+      "inputsOutputs": "open",
+      "dataObjects": "open",
+      "decisionRights": "open",
+      "interfaces": "open",
+      "breaks": "open",
+      "sources": "open"
+    },
+    {
+      "capabilityId": "c5",
+      "status": "open",
+      "purpose": "open",
+      "roles": "open",
+      "inputsOutputs": "open",
+      "dataObjects": "open",
+      "decisionRights": "open",
+      "interfaces": "open",
+      "breaks": "open",
+      "sources": "open"
+    },
+    {
+      "capabilityId": "c6",
+      "status": "open",
+      "purpose": "open",
+      "roles": "open",
+      "inputsOutputs": "open",
+      "dataObjects": "open",
+      "decisionRights": "open",
+      "interfaces": "open",
+      "breaks": "open",
+      "sources": "open"
+    },
+    {
+      "capabilityId": "c7",
+      "status": "open",
+      "purpose": "open",
+      "roles": "open",
+      "inputsOutputs": "open",
+      "dataObjects": "open",
+      "decisionRights": "open",
+      "interfaces": "open",
+      "breaks": "open",
+      "sources": "open"
+    },
+    {
+      "capabilityId": "c8",
+      "status": "open",
+      "purpose": "open",
+      "roles": "open",
+      "inputsOutputs": "open",
+      "dataObjects": "open",
+      "decisionRights": "open",
+      "interfaces": "open",
+      "breaks": "open",
+      "sources": "open"
+    }
+  ]
+}

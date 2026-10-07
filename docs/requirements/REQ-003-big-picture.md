@@ -1,6 +1,6 @@
 # REQ-003 – Big picture
 
-- **Status:** Draft · **Revision:** 2 (07.10.2026) · **Prio:** Must · **Inkrement:** I2
+- **Status:** Accepted (PoC, 07.10.2026, E25) · **Revision:** 2 (07.10.2026) · **Prio:** Must · **Inkrement:** I2
 - **Quelle:** Auftrag Abschn. 8A, 10, 13 [BEST]; Fähigkeiten-Synthese `model.md` Abschn. 1 [SYN]
 - **Änderung Rev. 2 [BEST, 07.10.2026]:** Der Auftraggeber bewertete das Netzdiagramm (Rev. 1) nach Sichtprüfung als „sehr diffus, schwer zu verstehen und zu vermitteln“. Er entschied sich für eine **Swimlane-Matrix** aus Phasen (Sequenz) × Ebenen (Hierarchie) mit parallelen Lanes; das Netzdiagramm wird **ersetzt** (E23). Die ACs wurden entsprechend neu gefasst und sind zur Bestätigung durch den Auftraggeber offen.
 

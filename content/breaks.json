@@ -1,0 +1,11 @@
+{
+  "breaks": [
+    { "id": "b1", "text": "Strategic objectives are poorly linked to investment decisions." },
+    { "id": "b2", "text": "IT cost and portfolio management use different terms and data structures." },
+    { "id": "b3", "text": "Funding, cost recovery and prioritisation are not traceably connected." },
+    { "id": "b4", "text": "Enterprise-wide initiatives are hard to steer across portfolios and delivery organisations." },
+    { "id": "b5", "text": "Architecture dependencies and technology lifecycles are considered too late." },
+    { "id": "b6", "text": "Delivery is measured, but value realisation remains unclear." },
+    { "id": "b7", "text": "Insights from cost, operations and results do not flow back into new decisions." }
+  ]
+}

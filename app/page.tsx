@@ -1,20 +1,11 @@
 import Link from 'next/link'
+import { getContent } from '@/content/load'
 import { navItems } from '@/ui/navigation'
 import styles from '@/ui/page.module.css'
 
-// The seven breaks from docs/project-context.md (confirmed requirement).
-const breaks = [
-  'Strategic objectives are poorly linked to investment decisions.',
-  'IT cost and portfolio management use different terms and data structures.',
-  'Funding, cost recovery and prioritisation are not traceably connected.',
-  'Enterprise-wide initiatives are hard to steer across portfolios and delivery organisations.',
-  'Architecture dependencies and technology lifecycles are considered too late.',
-  'Delivery is measured, but value realisation remains unclear.',
-  'Insights from cost, operations and results do not flow back into new decisions.',
-]
-
 export default function HomePage() {
   const areas = navItems.filter((n) => n.area)
+  const { breaks } = getContent()
 
   return (
     <>
@@ -30,7 +21,7 @@ export default function HomePage() {
         <h2 id="breaks-heading">Seven typical breaks</h2>
         <ol className={styles.breakList}>
           {breaks.map((b) => (
-            <li key={b}>{b}</li>
+            <li key={b.id}>{b.text}</li>
           ))}
         </ol>
       </section>

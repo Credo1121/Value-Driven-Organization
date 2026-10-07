@@ -7,8 +7,8 @@ Alle REQs stehen derzeit auf **Draft**.
 |---|---|---|---|---|---|---|---|
 | [REQ-001](REQ-001-glossary-model.md) | Glossary & domain model | Must | I1 | – | Draft (Teil umgesetzt) | `app/glossary/page.tsx`, `content/glossary.json`, `src/domain/validation.ts` | `tests/content.test.ts`, `docs/qa/CHG-001-walking-skeleton.md` |
 | [REQ-002](REQ-002-sources-statement-types.md) | Sources & statement types | Must | I1 | REQ-001 | Draft (Teil umgesetzt) | `content/sources.json`, `src/content/schema.ts`, `src/ui/StatementBadge.tsx` | `tests/content.test.ts` |
-| [REQ-003](REQ-003-big-picture.md) | Big picture | Must | I2 | REQ-001, 002 | Implemented Rev. 2 (ACs + Zellinhalte zur Bestätigung) | `app/big-picture/page.tsx`, `src/ui/big-picture/SwimlaneMatrix.tsx`, `content/big-picture.json` | `tests/big-picture.test.ts`, `e2e/big-picture.spec.ts`, `docs/qa/CHG-003-big-picture-swimlanes.md` |
-| [REQ-004](REQ-004-capability-deep-dive.md) | Capability deep dive | Must | I3 | REQ-003 | Draft | – | – |
+| [REQ-003](REQ-003-big-picture.md) | Big picture | Must | I2 | REQ-001, 002 | Accepted als PoC (E25) | `app/big-picture/page.tsx`, `src/ui/big-picture/SwimlaneMatrix.tsx`, `content/big-picture.json` | `tests/big-picture.test.ts`, `e2e/big-picture.spec.ts`, `docs/qa/CHG-003-big-picture-swimlanes.md` |
+| [REQ-004](REQ-004-capability-deep-dive.md) | Capability deep dive | Must | I3 | REQ-003 | Implemented (C2 Entwurf, 7 Vorlagen) | `app/capabilities/[id]/page.tsx`, `src/ui/capability/`, `content/capabilities.json` | `tests/deep-dives.test.ts`, `e2e/deep-dive.spec.ts`, `docs/qa/CHG-004-capability-deep-dive.md` |
 | [REQ-005](REQ-005-end-to-end-example.md) | End-to-end example | Must | I4 | REQ-001, 007 | Draft | – | – |
 | [REQ-006](REQ-006-scenario-configurator.md) | Scenario configurator | Must | I5 | REQ-001, 007 | Draft | – | – |
 | [REQ-007](REQ-007-operating-variant.md) | Operating variant enterprise/compact | Must | I4/I5 | REQ-001 | Draft | – | – |

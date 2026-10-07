@@ -33,6 +33,8 @@ Stand: 07.10.2026. Jede ID ist stabil und wird nicht wiederverwendet.
 | E22 | Leitdisziplinen C2 und C7 | ✅ entschieden [BEST] | C2: EPM führt übergreifend, danach übernimmt LPM (Abfolge EPM → LPM). C7: IT Ops führt. C3 und C8 (EPM/LPM) noch nicht bestätigt | 07.10.2026 |
 | E23 | Darstellung Gesamtbild | ✅ entschieden [BEST] | Swimlane-Matrix: Spalten = 6 Phasen (Sequenz), Lanes = Enterprise/Portfolio/Delivery & operations (Hierarchie), parallel TBM und EA, angrenzend Finance; Netzdiagramm ersetzt. REQ-003 Rev. 2 | 07.10.2026 |
 | E24 | Führungsabfolge C3–C8 | ✅ entschieden [BEST] | Wo Enterprise- und Portfolio-Ebene beide steuern, gilt durchgängig EPM → LPM (übergreifend zuerst, dann im Portfolio): C2, C3, C8. C4 (TBM), C5 (EA), C6 (LPM), C7 (IT Ops) haben eine einzelne Leitdisziplin | 07.10.2026 |
+| E25 | Abnahme Gesamtbild | ✅ entschieden [BEST] | Swimlane-Matrix inkl. Zellinhalte und ACs REQ-003 Rev. 2 als PoC abgenommen; Feinschliff später möglich | 07.10.2026 |
+| E26 | Vorgehen I3 | ✅ entschieden [BEST] | I3 freigegeben. C2 zuerst vollständig, die übrigen sieben mit Vorlage und offenen Abschnitten; Inhalte C1, C3–C8 erst nach Review von C2 | 07.10.2026 |
 
 ## Annahmen
 

@@ -1,6 +1,6 @@
 # Projektstand
 
-**Stand:** 07.10.2026 · **Phase:** I2 Big picture – **umgesetzt, lokal getestet und committet; Review durch Auftraggeber ausstehend**
+**Stand:** 07.10.2026 · **Phase:** I3 Capability deep dive – **C2 als Musterseite fertig, Review durch Auftraggeber ausstehend**
 
 ## Gates
 | Gate | Status |
@@ -8,8 +8,8 @@
 | P0 Dokumentation, fachlich abgenommen | ✅ 07.10.2026 |
 | I1 Walking Skeleton | ✅ PASS, Sichtprüfung Auftraggeber „passend“, Commit `66f39f2` |
 | GitHub-Remote `origin` | ✅ gepusht 07.10.2026 (`main` → `origin/main`, Stand `add5f96`), Zugang per Fine-grained Token im macOS-Schlüsselbund |
-| I2 Big picture | ✅ Swimlane-Matrix (E23); Leserichtung vom Auftraggeber bestätigt; BUG-001 behoben; Zellinhalte und ACs Rev. 2 zur Bestätigung |
-| Freigabe I3 (Capability deep dive) | ⏳ nicht erteilt |
+| I2 Big picture | ✅ als PoC abgenommen (E25) |
+| I3 Capability deep dive | C2 Entwurf + 7 Vorlagen umgesetzt, QA PASS (CHG-004); fachliches Review C2 ausstehend |
 
 ## Tatsächlicher Dateistand
 - Git: Branch `main` verfolgt `origin/main` (github.com/Credo1121/Value-Driven-Organization, privat).
@@ -21,18 +21,20 @@
 - REQ-001…010: Draft
 - CHG-001 Walking Skeleton: abgeschlossen
 - CHG-002 Big picture (Netzdiagramm): durch CHG-003 ersetzt
-- CHG-003 Swimlane-Matrix: umgesetzt, QA PASS mit Einschränkungen
+- CHG-003 Swimlane-Matrix: abgenommen (PoC)
+- CHG-004 Capability deep dive: C2 Entwurf, QA PASS mit Einschränkungen
 - ADR-001/002 Accepted, ADR-003 Accepted
 - Kein BUG
 
 ## Offene Fragen an den Auftraggeber (priorisiert)
-1. **Sichtprüfung nach BUG-001-Fix** (im eigenen Browser neu laden)
-2. Zellinhalte (32 Tätigkeiten) und ACs REQ-003 Rev. 2 bestätigen
-3. **Gate:** Freigabe I3 (Capability deep dive, Start mit C2)
+1. **Review C2** (http://localhost:4180/capabilities/c2/): Rollen, Entscheidungsrechte je Ausprägung, Wertarten, typische Brüche – passt Tiefe und Ton für Workshops?
+2. Danach: Inhalte C1, C3–C8 nach demselben Muster schreiben (Reihenfolge-Vorschlag: C4, C8, C3, C1, C5, C6, C7)
 
 Zurückgestellt bis I7 (bestätigt): E5a–c (Hex-Werte, Webfont-Lizenz, Logo-SVG), E15 (Skill `eraneos-ci`), E4 (Hosting), E9 (Lizenzprüfung vor externer Nutzung).
 
 ## Letzte Evidenz
+- 07.10.2026: CHG-004 – `npm run check` Exit 0: 65/65 Unit, 96/96 E2E (3 Browser), axe 0 serious/critical
+- 07.10.2026: Gesamtbild als PoC abgenommen (E25), I3 freigegeben (E26)
 - 07.10.2026: BUG-001 behoben, E24 umgesetzt (`d5b0f4d`); `npm run check` Exit 0 – 46/46 Unit, 54/54 E2E (Chromium, Firefox, WebKit)
 - 07.10.2026: CHG-003 Swimlane-Matrix – `npm run check` Exit 0: 44/44 Unit, 17/17 E2E inkl. axe, Viewports 768–1920 px
 - 07.10.2026: Push nach GitHub verifiziert (`git ls-remote origin` → `refs/heads/main` = `add5f96`)
@@ -55,4 +57,4 @@ Zurückgestellt bis I7 (bestätigt): E5a–c (Hex-Werte, Webfont-Lizenz, Logo-SV
 - CHG-001: 2 Testfehler im ersten Lauf, Ursache jeweils im Test (Fixture-Kontext, fehlender `public/`-Ordner), je 1 Fix, danach PASS
 
 ## Nächster Schritt
-Auftraggeber prüft die Swimlane-Matrix (http://localhost:4180/big-picture/) → Feedback zu Zellinhalten und ACs Rev. 2 → Freigabe I3 (`1-requirements-engineering` für Inhalte C2, dann `3-frontend`, `5-qa`).
+Auftraggeber prüft C2 → Korrekturen einarbeiten → übrige Fähigkeiten nach demselben Muster (`1-requirements-engineering` für Inhalte, `5-qa`).
