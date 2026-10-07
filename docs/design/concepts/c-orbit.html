@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Concept C – Orbit</title>
+<script src="data.js"></script>
+<style>
+  :root { --bg: #fcf8f7; --ink: #202020; --ink-2: #584f4a; --ink-3: #93867d; --ring: #e7ded7; --orange: #ff6529; --orange-d: #dd3d01; --font: "Avenir Next", "Segoe UI", sans-serif; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font); }
+  .page { width: 1440px; height: 900px; display: grid; grid-template-columns: 860px 1fr; gap: 40px; padding: 40px 64px; }
+  svg { width: 860px; height: 830px; }
+  .side { padding-top: 40px; }
+  h1 { font-size: 46px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; }
+  .lede { margin-top: 14px; color: var(--ink-2); font-size: 18px; line-height: 1.5; max-width: 34ch; }
+  .card { margin-top: 36px; padding: 26px 28px; background: #fff; border-radius: 28px; box-shadow: 0 20px 50px -28px rgba(88,79,74,.45); }
+  .card h2 { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
+  .card .who { color: var(--orange-d); font-size: 14px; font-weight: 600; margin-top: 4px; }
+  .steps { margin-top: 18px; display: grid; gap: 14px; }
+  .step { display: grid; grid-template-columns: 22px 1fr; gap: 12px; }
+  .step .b { width: 22px; height: 22px; border-radius: 99px; border: 2px solid var(--orange); margin-top: 2px; }
+  .step:nth-child(2) .b { border-color: #ff9a74; } .step:nth-child(3) .b { border-color: #ffcbb6; }
+  .step strong { display: block; font-size: 15px; }
+  .step span { font-size: 14px; color: var(--ink-2); line-height: 1.4; }
+  .next { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--ring); font-size: 14px; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<div class="page">
+  <svg id="svg" viewBox="0 0 890 860"></svg>
+  <div class="side">
+    <h1>The steering cycle, as a cycle.</h1>
+    <p class="lede">Six phases around the ring. Enterprise on the outside, teams at the core. Cost and architecture surround everything.</p>
+    <div class="card">
+      <h2>Fund</h2>
+      <div class="who">C2 · EPM → LPM</div>
+      <div class="steps" id="steps"></div>
+      <div class="next">Shapes the next phase: Prioritise works within these budgets and guardrails.</div>
+    </div>
+  </div>
+</div>
+<script>
+const bp = window.BP, focus = 'fund'
+const C = 440, R = { enterprise: 330, portfolio: 250, delivery: 170 }, inner = 92, halo = 372
+const n = bp.phases.length, seg = 2 * Math.PI / n, start = -Math.PI / 2 - seg / 2
+const polar = (r, a) => [C + r * Math.cos(a), C + r * Math.sin(a)]
+const arc = (r1, r2, a1, a2) => {
+  const [x1, y1] = polar(r2, a1), [x2, y2] = polar(r2, a2), [x3, y3] = polar(r1, a2), [x4, y4] = polar(r1, a1)
+  return `M${x1},${y1} A${r2},${r2} 0 0 1 ${x2},${y2} L${x3},${y3} A${r1},${r1} 0 0 0 ${x4},${y4} Z`
+}
+let s = `<defs><filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#ff6529" flood-opacity=".28"/></filter>
+<linearGradient id="og" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a5c"/><stop offset="1" stop-color="#ff6529"/></linearGradient></defs>`
+// halo: TBM & EA around everything
+s += `<circle cx="${C}" cy="${C}" r="${halo}" fill="none" stroke="#cfc2b9" stroke-width="10" stroke-dasharray="2 10" stroke-linecap="round"/>`
+s += `<path id="haloPath" d="M${C - halo - 12},${C} A${halo + 12},${halo + 12} 0 0 0 ${C + halo + 12},${C}" fill="none"/>`
+s += `<text font-size="13" fill="#93867d" font-family="Avenir Next" dominant-baseline="hanging"><textPath href="#haloPath" startOffset="50%" text-anchor="middle">Cost transparency (TBM) and architecture (EA) run through every phase</textPath></text>`
+const rings = [['enterprise', R.enterprise, R.portfolio + 4], ['portfolio', R.portfolio, R.delivery + 4], ['delivery', R.delivery, inner + 4]]
+bp.phases.forEach((p, i) => {
+  const a1 = start + i * seg + 0.012, a2 = start + (i + 1) * seg - 0.012, on = p.id === focus
+  for (const [lane, ro, ri] of rings) {
+    const has = bp.cells.some(c => c.lane === lane && c.phase === p.id)
+    const fill = on ? (lane === 'enterprise' ? 'url(#og)' : lane === 'portfolio' ? '#ff9a74' : '#ffcbb6') : has ? '#ffffff' : '#f3ece6'
+    s += `<path d="${arc(ri, ro, a1, a2)}" fill="${fill}" stroke="${on ? '#fff' : '#e7ded7'}" stroke-width="2" ${on ? 'filter="url(#sh)"' : ''}/>`
+  }
+  // phase label outside
+  const [lx, ly] = polar(R.enterprise + 22, (a1 + a2) / 2)
+  const anchor = Math.abs(lx - C) < 30 ? 'middle' : lx > C ? 'start' : 'end'
+  s += `<text x="${lx}" y="${ly + 6}" text-anchor="${anchor}" font-size="${on ? 21 : 17}" font-weight="600" fill="${on ? '#dd3d01' : '#202020'}" font-family="Avenir Next">${i + 1} ${p.label}</text>`
+  // titles inside ring segments (short)
+  for (const [lane, ro, ri] of rings) {
+    const c = bp.cells.find(c => c.lane === lane && c.phase === p.id); if (!c) continue
+    const [tx, ty] = polar((ro + ri) / 2, (a1 + a2) / 2)
+    const n = lane === 'delivery' ? 12 : 15, out = []; let l = ''
+    for (const w of c.title.split(' ')) { if ((l + ' ' + w).trim().length > n) { out.push(l.trim()); l = w } else l += ' ' + w }
+    out.push(l.trim())
+    const col = on && lane === 'enterprise' ? '#fff' : on ? '#202020' : '#584f4a'
+    out.slice(0, 3).forEach((ln, j) => {
+      s += `<text x="${tx}" y="${ty + 4 + (j - (out.length - 1) / 2) * 13}" text-anchor="middle" font-size="11" fill="${col}" font-family="Avenir Next" font-weight="${on ? 600 : 500}">${ln}</text>`
+    })
+  }
+})
+// radial influence arrows in focus segment
+const fi = bp.phases.findIndex(p => p.id === focus), fa = start + (fi + .5) * seg
+const [ax1, ay1] = polar(R.enterprise - 6, fa + .26), [ax2, ay2] = polar(R.delivery - 26, fa + .26)
+s += `<path d="M${ax1},${ay1} L${ax2},${ay2}" stroke="#202020" stroke-width="2" marker-end="url(#ah)"/><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#202020"/></marker></defs>`
+// influence to next phase (curved, along ring)
+const [nx1, ny1] = polar(R.portfolio - 40, start + (fi + 1) * seg - .05), [nx2, ny2] = polar(R.portfolio - 40, start + (fi + 1) * seg + .3)
+s += `<path d="M${nx1},${ny1} A${R.portfolio - 40},${R.portfolio - 40} 0 0 1 ${nx2},${ny2}" fill="none" stroke="#ff6529" stroke-width="2.5" stroke-dasharray="3 6" marker-end="url(#ah2)"/><defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#ff6529"/></marker></defs>`
+// core: feedback
+s += `<circle cx="${C}" cy="${C}" r="${inner - 6}" fill="#202020"/><text x="${C}" y="${C - 6}" text-anchor="middle" font-size="14" fill="#fff" font-weight="600" font-family="Avenir Next">Outcomes</text><text x="${C}" y="${C + 14}" text-anchor="middle" font-size="12" fill="#b1a39a" font-family="Avenir Next">feed the next cycle</text>`
+// ring labels
+s += `<g font-family="Avenir Next" font-size="11" fill="#93867d" font-weight="600">
+<text x="${C}" y="${C - R.enterprise + 16}" text-anchor="middle"></text></g>`
+document.getElementById('svg').innerHTML = s
+// side steps
+const steps = bp.cells.filter(c => c.phase === focus && ['enterprise', 'portfolio', 'delivery'].includes(c.lane))
+document.getElementById('steps').innerHTML = steps.map(c => `<div class="step"><div class="b"></div><div><strong>${bp.lanes.find(l => l.id === c.lane).label}: ${c.title}</strong><span>${c.handoff ? '↓ ' + c.handoff.label : 'Stable budget and team capacity for the period'}</span></div></div>`).join('')
+</script>
+</body>
+</html>

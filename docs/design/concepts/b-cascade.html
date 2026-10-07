@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Concept B – Cascade</title>
+<script src="data.js"></script>
+<style>
+  :root {
+    --bg: #1c1917; --bg-2: #26211e; --ink: #f3ece6; --ink-2: #b1a39a; --ink-3: #6e625b;
+    --orange: #ff6529; --amber: #ffad95; --violet: #bfa6e7; --teal: #8fd3c7;
+    --font: "Avenir Next", "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font); }
+  .page { width: 1440px; padding: 52px 64px 56px; background: radial-gradient(900px 600px at 18% -10%, #3a2a22 0%, transparent 60%), radial-gradient(800px 500px at 100% 100%, #2a2236 0%, transparent 55%), var(--bg); }
+  header { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: end; margin-bottom: 34px; }
+  h1 { font-size: 50px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.04; }
+  .lede { color: var(--ink-2); font-size: 18px; line-height: 1.5; max-width: 46ch; }
+  .legend { display: flex; gap: 22px; margin-top: 16px; font-size: 13px; color: var(--ink-2); }
+  .legend i { display: inline-block; width: 26px; height: 0; border-top: 3px solid; vertical-align: middle; margin-right: 8px; border-radius: 3px; }
+
+  .canvas { position: relative; height: 740px; border-radius: 28px; background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0)); border: 1px solid rgba(255,255,255,.06); overflow: hidden; }
+  svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .levels text { font-size: 15px; fill: var(--ink-2); font-family: var(--font); }
+  .levels .name { font-size: 18px; fill: var(--ink); font-weight: 600; }
+  .phaseh { font-family: var(--font); }
+  .node rect { fill: rgba(255,255,255,.05); stroke: rgba(255,255,255,.10); }
+  .node.on rect { fill: rgba(255,101,41,.14); stroke: var(--orange); }
+  .node text { font-size: 13.5px; fill: var(--ink); font-family: var(--font); }
+  .node.off text { fill: var(--ink-3); }
+  .base text { font-size: 12.5px; fill: var(--ink-2); font-family: var(--font); }
+  .below { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; color: var(--ink-3); font-size: 13.5px; }
+  .focus { display: flex; flex-direction: column; gap: 4px; padding: 14px 20px; border: 1px solid var(--orange); border-radius: 18px; background: rgba(255,101,41,.12); }
+  .focus b { color: var(--ink); font-size: 16px; font-weight: 600; } .focus span { color: var(--ink-2); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Decisions cascade.<br>Evidence rises.</h1>
+    <div>
+      <p class="lede">Each phase is a stream: what is decided at enterprise level flows down into portfolios and teams. Cost and architecture run underneath every stream. Results flow back up.</p>
+      <div class="legend"><span><i style="border-color:#ff6529"></i>Funding</span><span><i style="border-color:#ffad95"></i>Priority &amp; delivery</span><span><i style="border-color:#bfa6e7"></i>Outcome feedback</span><span><i style="border-color:#8fd3c7;border-top-style:dotted"></i>Cost &amp; architecture input</span></div>
+    </div>
+  </header>
+  <div class="canvas"><svg id="svg" viewBox="0 0 1312 740"></svg></div>
+  <div class="below"><span>Alongside: corporate finance – target, budget, forecast, actual</span><div class="focus"><b>Fund · EPM → LPM</b><span>Budgets and guardrails flow down; teams receive stable capacity.</span></div></div>
+</div>
+<script>
+const bp = window.BP, focus = 'fund'
+const W = 1312, X0 = 190, colW = (W - X0 - 30) / 6
+const Y = { enterprise: 120, portfolio: 268, delivery: 416 }
+const cellAt = (l, p) => bp.cells.find(c => c.lane === l && c.phase === p)
+const cx = i => X0 + colW * i + colW / 2
+let s = `<defs>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6529"/><stop offset="1" stop-color="#ffad95"/></linearGradient>
+</defs>`
+// level guides
+s += '<g class="levels">'
+for (const [k, y] of Object.entries(Y)) {
+  const lane = bp.lanes.find(l => l.id === k)
+  s += `<line x1="${X0 - 10}" x2="${W - 20}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,.06)"/>`
+  s += `<text x="34" y="${y - 4}" class="name">${lane.label}</text><text x="34" y="${y + 16}">${lane.sublabel}</text>`
+}
+s += '</g>'
+// phase heads
+bp.phases.forEach((p, i) => {
+  const on = p.id === focus
+  s += `<g class="phaseh"><text x="${cx(i)}" y="44" text-anchor="middle" font-size="12" fill="${on ? '#ff6529' : '#6e625b'}" letter-spacing="1.5">${String(i + 1).padStart(2, '0')}</text><text x="${cx(i)}" y="68" text-anchor="middle" font-size="19" font-weight="600" fill="${on ? '#f3ece6' : '#b1a39a'}">${p.label}</text></g>`
+})
+// streams: vertical flows per phase between cells
+const curve = (x1, y1, x2, y2) => `M${x1},${y1} C${x1},${(y1 + y2) / 2} ${x2},${(y1 + y2) / 2} ${x2},${y2}`
+bp.phases.forEach((p, i) => {
+  for (const c of bp.cells.filter(c => c.phase === p.id && c.handoff)) {
+    const from = Y[c.lane], to = Y[c.handoff.to]
+    if (from == null || to == null) continue
+    const on = p.id === focus
+    const col = c.handoff.type === 'funding' ? '#ff6529' : c.handoff.type === 'outcome-feedback' ? '#bfa6e7' : '#ffad95'
+    const down = to > from
+    const y1 = down ? from + 26 : from - 26, y2 = down ? to - 26 : to + 26
+    s += `<path d="${curve(cx(i) + (down ? -14 : 14), y1, cx(i) + (down ? -14 : 14), y2)}" fill="none" stroke="${col}" stroke-width="${on ? 4 : 2}" opacity="${on ? 1 : .45}" ${on ? 'filter="url(#glow)"' : ''} stroke-linecap="round"/>`
+    if (on) s += `<circle r="5" fill="#fff"><animateMotion dur="2.4s" repeatCount="indefinite" path="${curve(cx(i) - 14, from + 26, cx(i) - 14, to - 26)}"/></circle>`
+  }
+})
+// influence into next phase from focus (soft)
+const fi = bp.phases.findIndex(p => p.id === focus)
+for (const k of ['portfolio', 'delivery']) {
+  s += `<path d="M${cx(fi) + colW / 2 - 6},${Y[k]} C${cx(fi) + colW / 2 + 30},${Y[k]} ${cx(fi + 1) - colW / 2 - 30},${Y[k]} ${cx(fi + 1) - colW / 2 + 6},${Y[k]}" fill="none" stroke="#ffad95" stroke-width="2" stroke-dasharray="3 7" opacity=".9"/>`
+}
+// nodes
+for (const [k, y] of Object.entries(Y)) bp.phases.forEach((p, i) => {
+  const c = cellAt(k, p.id); if (!c) return
+  const on = p.id === focus, w = colW - 26
+  const words = c.title.split(' '), lines = []; let line = ''
+  for (const wd of words) { if ((line + ' ' + wd).trim().length > 19) { lines.push(line.trim()); line = wd } else line += ' ' + wd }
+  lines.push(line.trim())
+  s += `<g class="node ${on ? 'on' : 'off'}"><rect x="${cx(i) - w / 2}" y="${y - 26}" width="${w}" height="52" rx="26"/>` + lines.slice(0, 2).map((l, j) => `<text x="${cx(i)}" y="${y + (lines.length > 1 ? -4 + j * 16 : 5)}" text-anchor="middle">${l}</text>`).join('') + '</g>'
+})
+// underground: TBM + EA as flowing ribbons feeding every phase
+const ribbon = (y, col, label) => {
+  let d = `M${X0 - 10},${y}`
+  for (let i = 0; i < 6; i++) d += ` Q${cx(i) - colW / 4},${y - 10} ${cx(i)},${y} T${cx(i) + colW / 2},${y}`
+  let r = `<path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-dasharray="1 6" stroke-linecap="round"/>`
+  if (y === 520) bp.phases.forEach((p, i) => r += `<line x1="${cx(i)}" x2="${cx(i)}" y1="${y - 6}" y2="${Y.delivery + 30}" stroke="${col}" stroke-width="1" opacity=".25"/>`)
+  return r + `<text x="34" y="${y + 5}" font-size="15" fill="#f3ece6" font-weight="600" font-family="Avenir Next">${label}</text>`
+}
+const wrap = (t, n) => { const out = []; let l = ''; for (const w of t.split(' ')) { if ((l + ' ' + w).trim().length > n) { out.push(l.trim()); l = w } else l += ' ' + w } out.push(l.trim()); return out }
+const label = (t, x, y) => wrap(t, 22).map((l, j) => `<text x="${x}" y="${y + j * 15}" text-anchor="middle">${l}</text>`).join('')
+s += '<g class="base">' + ribbon(520, '#8fd3c7', 'Cost · TBM') + ribbon(590, '#8fd3c7', 'Architecture · EA')
+bp.phases.forEach((p, i) => {
+  s += label(cellAt('cost', p.id).title, cx(i), 545) + label(cellAt('architecture', p.id).title, cx(i), 615)
+})
+s += '</g>'
+// feedback arc
+const ri = 5
+s += `<path d="M${cx(ri)},650 C${cx(ri)},700 ${cx(0)},700 ${cx(0)},650" fill="none" stroke="#bfa6e7" stroke-width="2.5" stroke-dasharray="6 6" marker-end="url(#fb)"/><defs><marker id="fb" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#bfa6e7"/></marker></defs>`
+s += `<text x="${(cx(0) + cx(ri)) / 2}" y="726" text-anchor="middle" font-size="13" fill="#bfa6e7" font-family="Avenir Next">Outcomes, cost and risk evidence feed the next cycle</text>`
+document.getElementById('svg').innerHTML = s
+</script>
+</body>
+</html>
