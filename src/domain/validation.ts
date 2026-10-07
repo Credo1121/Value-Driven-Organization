@@ -67,18 +67,23 @@ export function validateContent({ sources, terms, texts = [] }: ContentSet): Fin
   return findings
 }
 
-// Big picture (REQ-003, AC-003-7): every link connects known nodes with exactly one type and a label;
-// every capability is reachable by at least one link; discipline references resolve.
+// Big picture (REQ-003 Rev. 2, AC-003-7): swimlane matrix of phases × lanes.
 export function validateBigPicture(bp: BigPicture, terms: GlossaryTerm[]): Finding[] {
   const findings: Finding[] = []
   const termIds = new Set(terms.map((t) => t.id))
   const disciplineIds = new Set(bp.disciplines.map((d) => d.id))
-  const nodeIds = new Set([...bp.capabilities.map((c) => c.id), 'env'])
+  const capabilityIds = new Set(bp.capabilities.map((c) => c.id))
+  const phaseIds = new Set(bp.phases.map((p) => p.id))
+  const laneById = new Map(bp.lanes.map((l) => [l.id, l]))
 
-  for (const d of duplicates(bp.capabilities.map((c) => c.id)))
-    findings.push({ rule: 'UNIQUE', id: d, message: `duplicate capability id ${d}` })
-  for (const d of duplicates(bp.links.map((l) => l.id)))
-    findings.push({ rule: 'UNIQUE', id: d, message: `duplicate link id ${d}` })
+  for (const [what, ids] of [
+    ['capability', bp.capabilities.map((c) => c.id)],
+    ['phase', bp.phases.map((p) => p.id)],
+    ['lane', bp.lanes.map((l) => l.id)],
+    ['cell', bp.cells.map((c) => `${c.lane}/${c.phase}`)],
+  ] as const)
+    for (const d of duplicates([...ids]))
+      findings.push({ rule: 'UNIQUE', id: d, message: `duplicate ${what} ${d}` })
 
   for (const d of bp.disciplines)
     if (d.glossaryId && !termIds.has(d.glossaryId))
@@ -89,16 +94,42 @@ export function validateBigPicture(bp: BigPicture, terms: GlossaryTerm[]): Findi
       if (!disciplineIds.has(ref))
         findings.push({ rule: 'R1', id: c.id, message: `unknown discipline ${ref}` })
 
-  for (const l of bp.links) {
-    for (const end of [l.from, l.to])
-      if (!nodeIds.has(end)) findings.push({ rule: 'R1', id: l.id, message: `unknown node ${end}` })
-    if (l.from === l.to) findings.push({ rule: 'BP', id: l.id, message: 'link points to itself' })
+  for (const l of bp.lanes) {
+    for (const d of l.disciplineIds)
+      if (!disciplineIds.has(d)) findings.push({ rule: 'R1', id: l.id, message: `unknown discipline ${d}` })
+    if (l.capabilityId && !capabilityIds.has(l.capabilityId))
+      findings.push({ rule: 'R1', id: l.id, message: `unknown capability ${l.capabilityId}` })
+  }
+  for (const p of bp.phases)
+    if (!capabilityIds.has(p.capabilityId))
+      findings.push({ rule: 'R1', id: p.id, message: `unknown capability ${p.capabilityId}` })
+
+  // Every capability belongs to exactly one phase or parallel lane.
+  const placements = [...bp.phases.map((p) => p.capabilityId), ...bp.lanes.flatMap((l) => (l.capabilityId ? [l.capabilityId] : []))]
+  for (const c of bp.capabilities) {
+    const n = placements.filter((x) => x === c.id).length
+    if (n !== 1) findings.push({ rule: 'BP', id: c.id, message: `capability placed ${n} times (expected exactly once)` })
   }
 
-  const linked = new Set(bp.links.flatMap((l) => [l.from, l.to]))
-  for (const c of bp.capabilities)
-    if (!linked.has(c.id))
-      findings.push({ rule: 'BP', id: c.id, message: 'capability has no link (isolated tile)' })
+  for (const cell of bp.cells) {
+    const cid = `${cell.lane}/${cell.phase}`
+    if (!laneById.has(cell.lane)) findings.push({ rule: 'R1', id: cid, message: `unknown lane ${cell.lane}` })
+    if (!phaseIds.has(cell.phase)) findings.push({ rule: 'R1', id: cid, message: `unknown phase ${cell.phase}` })
+    for (const ref of extractTermRefs(cell.detail))
+      if (!termIds.has(ref)) findings.push({ rule: 'R3', id: cid, message: `unknown glossary term [[${ref}]]` })
+    if (cell.handoff) {
+      const target = laneById.get(cell.handoff.to)
+      if (!target) findings.push({ rule: 'R1', id: cid, message: `handoff to unknown lane ${cell.handoff.to}` })
+      else if (target.kind !== 'hierarchy' || laneById.get(cell.lane)?.kind !== 'hierarchy')
+        findings.push({ rule: 'BP', id: cid, message: 'handoffs connect hierarchy lanes only' })
+      else if (!bp.cells.some((c) => c.lane === cell.handoff!.to && c.phase === cell.phase))
+        findings.push({ rule: 'BP', id: cid, message: 'handoff target has no cell in the same phase' })
+      if (cell.handoff.to === cell.lane) findings.push({ rule: 'BP', id: cid, message: 'handoff points to its own lane' })
+    }
+  }
+
+  for (const p of [bp.feedback.from, ...bp.feedback.to])
+    if (!phaseIds.has(p)) findings.push({ rule: 'R1', id: 'feedback', message: `unknown phase ${p}` })
 
   return findings
 }

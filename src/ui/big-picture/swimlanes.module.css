@@ -1,0 +1,368 @@
+.wrap {
+  /* Use more width than normal text pages: the matrix is the main presentation object. */
+  width: min(100vw - 2 * var(--space-4), 92rem);
+  margin-left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ---------- Moderation controls ---------- */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.controls button {
+  font: inherit;
+  font-size: var(--fs-small);
+  color: var(--c-ink);
+  background: var(--c-surface);
+  border: 1px solid var(--c-grey-900);
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+}
+
+.controls button:hover:not(:disabled) {
+  background: var(--c-grey-100);
+}
+
+.controls button:disabled {
+  color: var(--c-grey-900);
+  border-color: var(--c-grey-300);
+  cursor: default;
+}
+
+.controls .secondary {
+  margin-left: auto;
+}
+
+.stepStatus {
+  margin: 0;
+  min-width: 20rem;
+}
+
+.stepCount {
+  margin-right: var(--space-2);
+  color: var(--c-grey-900);
+  font-size: var(--fs-small);
+}
+
+.stepDescription {
+  margin: 0;
+  max-width: 56rem;
+  min-height: 3em;
+  font-size: var(--fs-preamble);
+  color: var(--c-grey-900);
+}
+
+/* ---------- Matrix ---------- */
+.stage {
+  background: var(--c-surface-warm);
+  border: var(--line);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+}
+
+.matrix {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 5px;
+}
+
+.headCol {
+  width: 10rem;
+}
+
+.corner {
+  vertical-align: bottom;
+}
+
+.axis {
+  font-size: var(--fs-min);
+  color: var(--c-grey-900);
+}
+
+/* Sequence: phase heads read as one connected chevron band. */
+.phaseHead {
+  position: relative;
+  padding: 0.45rem 1.2rem 0.45rem 1.4rem;
+  text-align: left;
+  vertical-align: top;
+  background: var(--c-grey-200);
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%, 14px 50%);
+}
+
+.phaseHead:first-of-type {
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+}
+
+.activeHead {
+  background: var(--c-accent);
+}
+
+.activeHead .phaseCap,
+.activeHead .phaseNum {
+  color: var(--c-on-accent);
+}
+
+.phaseNum {
+  display: block;
+  font-family: var(--f-display);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--c-grey-900);
+}
+
+.phaseLink {
+  display: block;
+  font-family: var(--f-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--c-ink);
+  text-decoration: none;
+}
+
+.phaseLink:hover {
+  text-decoration: underline;
+}
+
+.phaseCap {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--fs-min);
+  color: var(--c-grey-900);
+}
+
+.laneHead {
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  vertical-align: middle;
+  background: var(--c-surface);
+  border-left: 4px solid var(--c-ink);
+}
+
+.parallel .laneHead {
+  border-left-style: double;
+  border-left-width: 6px;
+}
+
+.adjacent .laneHead {
+  border-left-style: dashed;
+  border-left-color: var(--c-grey-900);
+}
+
+.laneLabel,
+.laneLink {
+  display: block;
+  font-weight: 700;
+  color: var(--c-ink);
+  line-height: 1.15;
+}
+
+.laneLink {
+  text-decoration: none;
+}
+
+.laneLink:hover {
+  text-decoration: underline;
+}
+
+.laneSub {
+  display: block;
+  font-size: var(--fs-min);
+  color: var(--c-grey-900);
+}
+
+.cell {
+  padding: 0;
+  vertical-align: stretch;
+  height: 1px; /* lets the card fill the row height */
+  border-radius: var(--radius);
+  transition: opacity 0.2s ease;
+}
+
+.activeCol {
+  box-shadow: inset 0 0 0 2px var(--c-accent-strong);
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+  height: 100%;
+  min-height: 3.6rem;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  text-align: left;
+  color: var(--c-ink);
+  background: var(--c-surface);
+  border: 1px solid var(--c-grey-500);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.card:hover {
+  background: var(--c-grey-100);
+}
+
+.card[aria-pressed='true'] {
+  border: 2px solid var(--c-accent-strong);
+  background: var(--c-accent-tint);
+}
+
+.parallel .card {
+  background: var(--c-surface-warm);
+  border-style: solid;
+  min-height: 2.6rem;
+}
+
+.adjacent .card {
+  border-style: dashed;
+  background: transparent;
+  min-height: 2.6rem;
+}
+
+.cardTitle {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.chip {
+  white-space: nowrap;
+  line-height: 1.35;
+  padding: 0 var(--space-1);
+  font-size: var(--fs-min);
+  border: 1px solid var(--c-grey-900);
+  border-radius: 999px;
+  color: var(--c-grey-900);
+}
+
+.handoff {
+  margin-top: auto;
+  padding-top: 0.2rem;
+  line-height: 1.25;
+  font-size: var(--fs-min);
+  font-weight: 600;
+  color: var(--c-grey-900);
+  border-top: 1px dashed var(--c-grey-300);
+}
+
+.down,
+.up {
+  display: block;
+}
+
+.groupLabel {
+  padding: var(--space-2) 0 0;
+  text-align: left;
+  font-size: var(--fs-min);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-grey-900);
+}
+
+/* Before the parallel step only the lane heads are shown (structure); cells stay hidden via .hidden. */
+.groupMuted .laneHead {
+  border-left-color: var(--c-grey-300);
+  background: transparent;
+}
+
+/* ---------- Feedback loop ---------- */
+.feedback {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-2) 6px 0;
+  padding: var(--space-2) var(--space-3);
+  border: 2px dashed var(--c-accent-strong);
+  border-radius: var(--radius);
+  background: var(--c-surface);
+}
+
+.feedbackArrow {
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--c-accent-strong);
+}
+
+.feedbackRoute {
+  color: var(--c-grey-900);
+}
+
+/* ---------- Detail panel ---------- */
+.detail {
+  padding: var(--space-3) var(--space-4);
+  border-left: 4px solid var(--c-accent-strong);
+  background: var(--c-surface-warm);
+  min-height: 7.5rem;
+}
+
+.detailHeading {
+  margin-bottom: var(--space-1);
+  font-size: var(--fs-h3);
+}
+
+.detailMeta,
+.detailHint {
+  color: var(--c-grey-900);
+  font-size: var(--fs-small);
+}
+
+.detailActions {
+  display: flex;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.linkButton {
+  font: inherit;
+  color: var(--c-accent-text);
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.narrowNote {
+  display: none;
+  padding: var(--space-3);
+  background: var(--c-surface-warm);
+  border-left: 4px solid var(--c-accent-strong);
+}
+
+@media (max-width: 47.99rem) {
+  .wrap {
+    width: auto;
+    margin-left: 0;
+    transform: none;
+  }
+
+  .stage {
+    display: none;
+  }
+
+  .narrowNote {
+    display: block;
+  }
+}

@@ -1,75 +1,92 @@
 import Link from 'next/link'
-import { linkTypeLabels, type BigPicture } from '@/content/schema'
+import { linkTypeLabels, valueTypeLabels, type BigPicture } from '@/content/schema'
+import { TermText } from '@/ui/TermText'
+import type { GlossaryTerm } from '@/content/schema'
 import { formatLeads } from './leads'
-import { typeOrder } from './steps'
 import styles from './text.module.css'
 
-// Text alternative with the same information as the diagram (AC-003-6). Server-rendered.
-export function BigPictureText({ data }: { data: BigPicture }) {
+// Text alternative with the same information as the matrix (AC-003-6). Server-rendered.
+export function BigPictureText({ data, terms }: { data: BigPicture; terms: Map<string, GlossaryTerm> }) {
+  const capById = new Map(data.capabilities.map((c) => [c.id, c]))
+  const laneById = new Map(data.lanes.map((l) => [l.id, l]))
   const shortName = new Map(data.disciplines.map((d) => [d.id, d.short]))
-  const names = (ids: string[]) => ids.map((i) => shortName.get(i) ?? i).join(', ')
-  const nodeName = new Map<string, string>([
-    ...data.capabilities.map((c) => [c.id, `${c.code} ${c.name}`] as [string, string]),
-    ['env', data.environment.name],
-  ])
+  const phaseLabel = (id: string) => data.phases.find((p) => p.id === id)?.label ?? id
 
   return (
     <details className={styles.text} id="text-view">
-      <summary>Text view: all capabilities and links</summary>
+      <summary>Text view: all phases, levels and hand-offs</summary>
 
-      <h3>Steering capabilities</h3>
-      <table>
-        <caption className="visually-hidden">Steering capabilities with lead and supporting disciplines</caption>
-        <thead>
-          <tr>
-            <th scope="col">Capability</th>
-            <th scope="col">Key decision question</th>
-            <th scope="col">Leads</th>
-            <th scope="col">Supports</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.capabilities.map((c) => (
-            <tr key={c.id}>
-              <th scope="row">
-                <Link href={`/capabilities/${c.id}/`}>
-                  {c.code} {c.name}
-                </Link>
-                {c.role === 'cross' && <span className={styles.tag}> (cross-cutting)</span>}
-              </th>
-              <td>{c.question}</td>
-              <td>
-                {formatLeads(c, shortName)}
-                {c.leadNote && <span className={styles.note}>{c.leadNote}</span>}
-              </td>
-              <td>{names(c.supporting) || '–'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <ol className={styles.phases}>
+        {data.phases.map((p) => {
+          const cap = capById.get(p.capabilityId)!
+          const cells = data.lanes
+            .filter((l) => l.kind === 'hierarchy')
+            .flatMap((l) => data.cells.filter((c) => c.lane === l.id && c.phase === p.id))
+          return (
+            <li key={p.id}>
+              <h3>
+                {p.label} – <Link href={`/capabilities/${cap.id}/`}>{`${cap.code} ${cap.name}`}</Link>
+              </h3>
+              <p className={styles.meta}>
+                Leads: {formatLeads(cap, shortName)}
+                {cap.leadNote && <> – {cap.leadNote}</>}
+              </p>
+              <ul>
+                {cells.map((c) => (
+                  <li key={`${c.lane}/${c.phase}`}>
+                    <strong>
+                      {laneById.get(c.lane)?.label}: {c.title}.
+                    </strong>{' '}
+                    <TermText text={c.detail} terms={terms} />
+                    {c.handoff && (
+                      <>
+                        {' '}
+                        <em>
+                          {linkTypeLabels[c.handoff.type]} to {laneById.get(c.handoff.to)?.label}: {c.handoff.label}.
+                        </em>
+                      </>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          )
+        })}
+      </ol>
+
+      {data.lanes
+        .filter((l) => l.kind !== 'hierarchy')
+        .map((l) => {
+          const cap = l.capabilityId ? capById.get(l.capabilityId) : undefined
+          return (
+            <section key={l.id} aria-label={l.label}>
+              <h3>
+                {l.kind === 'parallel' ? 'In parallel' : 'Adjacent'}:{' '}
+                {cap ? <Link href={`/capabilities/${cap.id}/`}>{`${cap.code} ${l.label}`}</Link> : l.label} ({l.sublabel})
+              </h3>
+              <ul>
+                {data.cells
+                  .filter((c) => c.lane === l.id)
+                  .map((c) => (
+                    <li key={`${c.lane}/${c.phase}`}>
+                      <strong>
+                        {phaseLabel(c.phase)}: {c.title}.
+                      </strong>{' '}
+                      <TermText text={c.detail} terms={terms} />
+                      {c.valueTypes.length > 0 && (
+                        <span className={styles.meta}> Value types: {c.valueTypes.map((v) => valueTypeLabels[v]).join(', ')}.</span>
+                      )}
+                    </li>
+                  ))}
+              </ul>
+            </section>
+          )
+        })}
+
+      <h3>{linkTypeLabels[data.feedback.type]}</h3>
       <p>
-        Adjacent: <strong>{data.environment.name}</strong> – {data.environment.description}
+        From {phaseLabel(data.feedback.from)} to {data.feedback.to.map(phaseLabel).join(' and ')}: {data.feedback.label}
       </p>
-
-      <h3>Links by type</h3>
-      {typeOrder.map((t) => {
-        const links = data.links.filter((l) => l.type === t)
-        return (
-          <section key={t} aria-label={linkTypeLabels[t]}>
-            <h4>{linkTypeLabels[t]}</h4>
-            <ul>
-              {links.map((l) => (
-                <li key={l.id}>
-                  <strong>
-                    {nodeName.get(l.from)} → {nodeName.get(l.to)}:
-                  </strong>{' '}
-                  {l.label}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )
-      })}
     </details>
   )
 }

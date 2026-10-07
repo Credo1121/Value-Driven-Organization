@@ -1,83 +1,64 @@
-import { linkTypeLabels, type LinkType } from '@/content/schema'
-import { linkTypeDescriptions } from './linkStyles'
+import type { BigPicture } from '@/content/schema'
 
-// Guided moderation order (AC-003-4): capabilities → discipline contributions →
-// link types one by one → outcome feedback last → complete picture.
-export const typeOrder: LinkType[] = [
-  'strategic-contribution',
-  'funding',
-  'delivery',
-  'architecture-dependency',
-  'cost-allocation',
-  'outcome-feedback',
-]
+// Guided moderation order (AC-003-4): structure → each phase in sequence →
+// parallel lanes → outcome feedback. Pure functions, independent of React.
 
 export type Step = {
   id: string
   title: string
   description: string
-  showDisciplines: boolean
-  types: LinkType[]
-  focus: LinkType | null
+  // Phases revealed so far (in sequence order); unrevealed phases are hidden in place.
+  revealedPhases: number
+  activePhase: string | null
+  showParallel: boolean
+  showFeedback: boolean
 }
 
-export const steps: Step[] = [
-  {
-    id: 'capabilities',
-    title: 'Eight shared steering capabilities',
-    description:
-      'Steering is organised around shared capabilities – not around four separate frameworks.',
-    showDisciplines: false,
-    types: [],
-    focus: null,
-  },
-  {
-    id: 'disciplines',
-    title: 'What each discipline contributes',
-    description:
-      'EPM, LPM, TBM and EA each contribute to several capabilities. Bold names lead, the others support.',
-    showDisciplines: true,
-    types: [],
-    focus: null,
-  },
-  ...typeOrder.map((t, i) => ({
-    id: t,
-    title: t === 'outcome-feedback' ? 'Outcome feedback – closing the loop' : linkTypeLabels[t],
-    description: linkTypeDescriptions[t],
-    showDisciplines: true,
-    types: typeOrder.slice(0, i + 1),
-    focus: t,
-  })),
-  {
-    id: 'complete',
-    title: 'The complete steering system',
-    description: 'All six link types together. Select a link type in the legend to focus on it.',
-    showDisciplines: true,
-    types: typeOrder,
-    focus: null,
-  },
-]
-
-export const lastStep = steps.length - 1
-
-export type ViewState = {
-  step: Step
-  visibleTypes: Set<LinkType>
-  highlight: LinkType | null
-  showDisciplines: boolean
+export function buildSteps(bp: BigPicture): Step[] {
+  const n = bp.phases.length
+  const capName = new Map(bp.capabilities.map((c) => [c.id, `${c.code} ${c.name}`]))
+  return [
+    {
+      id: 'structure',
+      title: 'Phases and levels',
+      description:
+        'Steering runs left to right through six phases. Top to bottom are the levels: enterprise, portfolio, delivery and operations. Two capabilities run in parallel below.',
+      revealedPhases: 0,
+      activePhase: null,
+      showParallel: false,
+      showFeedback: false,
+    },
+    ...bp.phases.map((p, i) => ({
+      id: p.id,
+      title: `${i + 1}. ${p.label}`,
+      description: `${capName.get(p.capabilityId)} – read the column top to bottom: who does what, and what is handed down.`,
+      revealedPhases: i + 1,
+      activePhase: p.id,
+      showParallel: false,
+      showFeedback: false,
+    })),
+    {
+      id: 'parallel',
+      title: 'Running in parallel: cost and architecture',
+      description:
+        'Cost transparency (TBM) and architecture (EA) inform every phase. Corporate finance provides target, budget, forecast and actuals alongside.',
+      revealedPhases: n,
+      activePhase: null,
+      showParallel: true,
+      showFeedback: false,
+    },
+    {
+      id: 'feedback',
+      title: 'Closing the loop',
+      description: bp.feedback.label,
+      revealedPhases: n,
+      activePhase: null,
+      showParallel: true,
+      showFeedback: true,
+    },
+  ]
 }
 
-// Pure view logic: a legend filter always works on the complete picture (AC-003-3).
-export function viewState(stepIndex: number, filter: LinkType | null): ViewState {
-  const index = Math.min(Math.max(stepIndex, 0), lastStep)
-  const step = steps[index] as Step
-  if (filter) {
-    return { step, visibleTypes: new Set(typeOrder), highlight: filter, showDisciplines: true }
-  }
-  return {
-    step,
-    visibleTypes: new Set(step.types),
-    highlight: step.focus,
-    showDisciplines: step.showDisciplines,
-  }
+export function clampStep(index: number, steps: Step[]): number {
+  return Math.min(Math.max(index, 0), steps.length - 1)
 }

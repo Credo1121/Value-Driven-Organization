@@ -88,20 +88,57 @@ export const CapabilitySchema = z.object({
   leadNote: z.string().min(1).optional(),
 })
 
-export const LinkSchema = z.object({
+// Financial value types (docs/domain/model.md 2.1); "variance" is always derived.
+export const valueTypes = ['target', 'budget', 'forecast', 'actual', 'variance'] as const
+export const valueTypeLabels: Record<(typeof valueTypes)[number], string> = {
+  target: 'Target',
+  budget: 'Budget',
+  forecast: 'Forecast',
+  actual: 'Actual',
+  variance: 'Variance',
+}
+
+export const PhaseSchema = z.object({ id, label: z.string().min(1), capabilityId: id })
+
+export const LaneSchema = z.object({
   id,
-  from: id,
+  label: z.string().min(1),
+  sublabel: z.string().min(1),
+  kind: z.enum(['hierarchy', 'parallel', 'adjacent']),
+  disciplineIds: z.array(id).min(1),
+  capabilityId: id.optional(),
+})
+
+export const HandoffSchema = z.object({
   to: id,
   type: LinkTypeSchema,
   label: z.string().min(1),
 })
 
+export const CellSchema = z.object({
+  lane: id,
+  phase: id,
+  title: z.string().min(1),
+  detail: z.string().min(1),
+  valueTypes: z.array(z.enum(valueTypes)).default([]),
+  handoff: HandoffSchema.optional(),
+})
+
 export const BigPictureFileSchema = z.object({
   disciplines: z.array(DisciplineSchema).min(1),
   capabilities: z.array(CapabilitySchema).length(8),
-  environment: z.object({ id, name: z.string().min(1), description: z.string().min(1) }),
-  links: z.array(LinkSchema).min(1),
+  phases: z.array(PhaseSchema).min(1),
+  lanes: z.array(LaneSchema).min(1),
+  cells: z.array(CellSchema).min(1),
+  feedback: z.object({
+    from: id,
+    to: z.array(id).min(1),
+    type: LinkTypeSchema,
+    label: z.string().min(1),
+  }),
 })
 export type BigPicture = z.infer<typeof BigPictureFileSchema>
 export type Capability = z.infer<typeof CapabilitySchema>
-export type Link = z.infer<typeof LinkSchema>
+export type Lane = z.infer<typeof LaneSchema>
+export type Phase = z.infer<typeof PhaseSchema>
+export type Cell = z.infer<typeof CellSchema>

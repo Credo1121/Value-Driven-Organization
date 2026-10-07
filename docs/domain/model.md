@@ -21,6 +21,7 @@ Das Gesamtbild zeigt **gemeinsame Steuerungsfähigkeiten**, keine vier Framework
 | C8 | Value realisation & reallocation | Wertrealisierung & Reallokation | Wirkt es? Was finanzieren wir weiter, um, oder nicht mehr? | EPM / LPM | TBM |
 
 **Kreislauf:** C1 → C2 → C3 → C6 → C7 → C8 → C1. C4 und C5 sind querliegende Informationsfähigkeiten, die C2, C3, C6, C7 und C8 speisen.
+**Darstellung (E23):** Der Kreislauf wird als Sequenz von sechs Phasen gezeigt (Direct, Fund, Prioritise, Deliver, Operate, Realise value). Die Ebenen Enterprise (EPM), Portfolio (LPM) und Delivery & operations bilden die Hierarchie-Lanes, C4 (TBM) und C5 (EA) laufen als parallele Lanes, Finance als angrenzende Lane. Die Beziehungsarten aus Abschn. 4 erscheinen nur noch als Übergaben zwischen Ebenen und als Rückkopplung.
 **Umwelt:** Finance-Prozesse (Budgetierung, Forecast, Rechnungswesen, Kapitalisierung) mit Schnittstellen zu C2 und C4.
 
 ### 1.1 Aufgabenteilung EPM ↔ LPM [SYN]

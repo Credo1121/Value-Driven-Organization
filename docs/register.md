@@ -31,6 +31,7 @@ Stand: 07.10.2026. Jede ID ist stabil und wird nicht wiederverwendet.
 | E20 | Glossar-Gliederung | ✅ entschieden [BEST] | Gruppiert nach Kategorien, alphabetisch je Gruppe; AC-001-1 Rev. 3 (QA-I1-1) | 07.10.2026 |
 | E21 | GitHub-Repository | ✅ umgesetzt [BEST] | `https://github.com/Credo1121/Value-Driven-Organization.git` als `origin`; erster Push 07.10.2026 durch den Auftraggeber; Token nur im macOS-Schlüsselbund, nie im Repo/Chat | 07.10.2026 |
 | E22 | Leitdisziplinen C2 und C7 | ✅ entschieden [BEST] | C2: EPM führt übergreifend, danach übernimmt LPM (Abfolge EPM → LPM). C7: IT Ops führt. C3 und C8 (EPM/LPM) noch nicht bestätigt | 07.10.2026 |
+| E23 | Darstellung Gesamtbild | ✅ entschieden [BEST] | Swimlane-Matrix: Spalten = 6 Phasen (Sequenz), Lanes = Enterprise/Portfolio/Delivery & operations (Hierarchie), parallel TBM und EA, angrenzend Finance; Netzdiagramm ersetzt. REQ-003 Rev. 2 | 07.10.2026 |
 
 ## Annahmen
 

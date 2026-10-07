@@ -8,7 +8,7 @@
 | P0 Dokumentation, fachlich abgenommen | ✅ 07.10.2026 |
 | I1 Walking Skeleton | ✅ PASS, Sichtprüfung Auftraggeber „passend“, Commit `66f39f2` |
 | GitHub-Remote `origin` | ✅ gepusht 07.10.2026 (`main` → `origin/main`, Stand `add5f96`), Zugang per Fine-grained Token im macOS-Schlüsselbund |
-| I2 Big picture | ✅ umgesetzt, QA PASS mit Einschränkungen (`docs/qa/CHG-002-big-picture.md`); fachliches Review der Verbindungen ausstehend |
+| I2 Big picture | ✅ Rev. 2 als Swimlane-Matrix (E23, CHG-003), QA PASS mit Einschränkungen; Bestätigung ACs Rev. 2 und Zellinhalte ausstehend |
 | Freigabe I3 (Capability deep dive) | ⏳ nicht erteilt |
 
 ## Tatsächlicher Dateistand
@@ -20,18 +20,20 @@
 ## Aktive Elemente
 - REQ-001…010: Draft
 - CHG-001 Walking Skeleton: abgeschlossen
-- CHG-002 Big picture: umgesetzt, QA PASS mit Einschränkungen
+- CHG-002 Big picture (Netzdiagramm): durch CHG-003 ersetzt
+- CHG-003 Swimlane-Matrix: umgesetzt, QA PASS mit Einschränkungen
 - ADR-001/002 Accepted, ADR-003 Accepted
 - Kein BUG
 
 ## Offene Fragen an den Auftraggeber (priorisiert)
-1. **Fachliches Review** des Gesamtbilds: C2/C7 entschieden (E22); offen: die 15 Verbindungen sowie C3/C8 (EPM/LPM gemeinsam?)
+1. **Review Swimlane-Matrix:** Leserichtung tragfähig? Zellinhalte (32 Tätigkeiten) und neu gefasste ACs REQ-003 Rev. 2 bestätigen
 2. **C3/C8:** Führungsabfolge EPM → LPM wie bei C2 oder gemeinsame Führung?
 3. **Gate:** Freigabe I3 (Capability deep dive, Start mit C2)
 
 Zurückgestellt bis I7 (bestätigt): E5a–c (Hex-Werte, Webfont-Lizenz, Logo-SVG), E15 (Skill `eraneos-ci`), E4 (Hosting), E9 (Lizenzprüfung vor externer Nutzung).
 
 ## Letzte Evidenz
+- 07.10.2026: CHG-003 Swimlane-Matrix – `npm run check` Exit 0: 44/44 Unit, 17/17 E2E inkl. axe, Viewports 768–1920 px
 - 07.10.2026: Push nach GitHub verifiziert (`git ls-remote origin` → `refs/heads/main` = `add5f96`)
 - 07.10.2026: E22 umgesetzt (C2 EPM → LPM, C7 IT Ops); `npm run check` Exit 0, 50/50 Unit, 16/16 E2E
 - 07.10.2026 14:15: CHG-002 – `npm run check` Exit 0: typecheck, lint, 47/47 Unit, build (18 Seiten), 15/15 E2E inkl. axe (0 serious/critical) und Viewports 768–1920 px; Screenreader/Firefox/Safari NOT RUN
@@ -46,8 +48,9 @@ Zurückgestellt bis I7 (bestätigt): E5a–c (Hex-Werte, Webfont-Lizenz, Logo-SV
 - Quellenabruf 07.10.2026 (`docs/sources.md`); Gartner/PMI NICHT VERIFIZIERT (HTTP 403)
 
 ## Fixversuche
+- CHG-003: Lint (Memoisierung) 1 Fix; E2E Lane-Kopf nicht klickbar (Ursache: ganze Zeile ausgeblendet) 1 Fix; jeweils danach PASS
 - CHG-002: 1 E2E-Fehler (Linie „hidden“), Ursache im Test (SVG-Linie mit Höhe 0), 1 Fix, danach PASS
 - CHG-001: 2 Testfehler im ersten Lauf, Ursache jeweils im Test (Fixture-Kontext, fehlender `public/`-Ordner), je 1 Fix, danach PASS
 
 ## Nächster Schritt
-Auftraggeber prüft das Gesamtbild (`npm run build && npm run serve:out` → http://localhost:4180/big-picture/) → fachliches Feedback zu den Verbindungen → Freigabe I3 (`1-requirements-engineering` für Inhalte C2, dann `3-frontend`, `5-qa`).
+Auftraggeber prüft die Swimlane-Matrix (http://localhost:4180/big-picture/) → Feedback zu Zellinhalten und ACs Rev. 2 → Freigabe I3 (`1-requirements-engineering` für Inhalte C2, dann `3-frontend`, `5-qa`).

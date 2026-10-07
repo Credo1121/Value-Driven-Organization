@@ -146,116 +146,355 @@
       "role": "loop"
     }
   ],
-  "environment": {
-    "id": "finance",
-    "name": "Corporate finance processes",
-    "description": "Budgeting, forecasting, accounting and capitalisation – adjacent to technology steering, not part of TBM."
-  },
-  "links": [
+  "phases": [
     {
-      "id": "l1",
-      "from": "c1",
-      "to": "c2",
-      "type": "strategic-contribution",
-      "label": "Objectives and investment themes set the direction for funding."
+      "id": "direct",
+      "label": "Direct",
+      "capabilityId": "c1"
     },
     {
-      "id": "l2",
-      "from": "c2",
-      "to": "c3",
-      "type": "funding",
-      "label": "Approved budgets and guardrails define what can be prioritised."
+      "id": "fund",
+      "label": "Fund",
+      "capabilityId": "c2"
     },
     {
-      "id": "l3",
-      "from": "c3",
-      "to": "c6",
-      "type": "delivery",
-      "label": "Prioritised investments are pulled into delivery."
+      "id": "prioritise",
+      "label": "Prioritise",
+      "capabilityId": "c3"
     },
     {
-      "id": "l4",
-      "from": "c6",
-      "to": "c7",
-      "type": "delivery",
-      "label": "Delivered products and changes go into operation."
+      "id": "deliver",
+      "label": "Deliver",
+      "capabilityId": "c6"
     },
     {
-      "id": "l5",
-      "from": "c7",
-      "to": "c8",
-      "type": "outcome-feedback",
-      "label": "Usage, service quality and run cost show what is actually achieved."
+      "id": "operate",
+      "label": "Operate",
+      "capabilityId": "c7"
     },
     {
-      "id": "l6",
-      "from": "c8",
-      "to": "c1",
-      "type": "outcome-feedback",
-      "label": "Realised outcomes revise objectives and themes."
-    },
-    {
-      "id": "l7",
-      "from": "c8",
-      "to": "c2",
-      "type": "outcome-feedback",
-      "label": "Results trigger continued funding, reallocation or stop."
-    },
-    {
-      "id": "l8",
-      "from": "c4",
-      "to": "c2",
-      "type": "cost-allocation",
-      "label": "Actual and forecast cost by solution and consumer inform budgets."
-    },
-    {
-      "id": "l9",
-      "from": "c4",
-      "to": "c8",
-      "type": "cost-allocation",
-      "label": "Allocated actual cost shows the economics of what was delivered."
-    },
-    {
-      "id": "l10",
-      "from": "c7",
-      "to": "c4",
-      "type": "cost-allocation",
-      "label": "Run cost and consumption drivers flow into cost allocation."
-    },
-    {
-      "id": "l11",
-      "from": "c5",
-      "to": "c3",
-      "type": "architecture-dependency",
-      "label": "Dependencies and end-of-life dates constrain sequencing."
-    },
-    {
-      "id": "l12",
-      "from": "c5",
-      "to": "c6",
-      "type": "architecture-dependency",
-      "label": "Target architecture and platforms shape how work is delivered."
-    },
-    {
-      "id": "l13",
-      "from": "c5",
-      "to": "c1",
-      "type": "strategic-contribution",
-      "label": "Capability map and technology risk inform strategic choices."
-    },
-    {
-      "id": "l14",
-      "from": "env",
-      "to": "c2",
-      "type": "funding",
-      "label": "Budgeting and forecasting provide the financial frame."
-    },
-    {
-      "id": "l15",
-      "from": "env",
-      "to": "c4",
-      "type": "cost-allocation",
-      "label": "Accounting delivers booked actuals to the cost model."
+      "id": "realise",
+      "label": "Realise value",
+      "capabilityId": "c8"
     }
-  ]
+  ],
+  "lanes": [
+    {
+      "id": "enterprise",
+      "label": "Enterprise",
+      "sublabel": "EPM",
+      "kind": "hierarchy",
+      "disciplineIds": [
+        "epm"
+      ]
+    },
+    {
+      "id": "portfolio",
+      "label": "Portfolio",
+      "sublabel": "LPM",
+      "kind": "hierarchy",
+      "disciplineIds": [
+        "lpm"
+      ]
+    },
+    {
+      "id": "delivery",
+      "label": "Delivery & operations",
+      "sublabel": "Value streams · IT Ops",
+      "kind": "hierarchy",
+      "disciplineIds": [
+        "ops"
+      ]
+    },
+    {
+      "id": "cost",
+      "label": "Cost transparency",
+      "sublabel": "TBM",
+      "kind": "parallel",
+      "disciplineIds": [
+        "tbm"
+      ],
+      "capabilityId": "c4"
+    },
+    {
+      "id": "architecture",
+      "label": "Architecture & lifecycle",
+      "sublabel": "EA",
+      "kind": "parallel",
+      "disciplineIds": [
+        "ea"
+      ],
+      "capabilityId": "c5"
+    },
+    {
+      "id": "finance",
+      "label": "Corporate finance",
+      "sublabel": "adjacent, not part of TBM",
+      "kind": "adjacent",
+      "disciplineIds": [
+        "finance"
+      ]
+    }
+  ],
+  "cells": [
+    {
+      "lane": "enterprise",
+      "phase": "direct",
+      "title": "Enterprise objectives & investment themes",
+      "detail": "Translates enterprise strategy into a small set of [[strategic-objective|strategic objectives]] and investment themes that all portfolios work towards."
+    },
+    {
+      "lane": "enterprise",
+      "phase": "fund",
+      "title": "Portfolio budgets & guardrails",
+      "detail": "Allocates the overall technology budget to portfolios and sets [[guardrail|guardrails]]. Decides on investments that span portfolios and splits their funding.",
+      "valueTypes": [
+        "target",
+        "budget"
+      ],
+      "handoff": {
+        "to": "portfolio",
+        "type": "funding",
+        "label": "Budgets and guardrails"
+      }
+    },
+    {
+      "lane": "enterprise",
+      "phase": "prioritise",
+      "title": "Cross-portfolio sequencing",
+      "detail": "Sets the order of shared and cross-portfolio investments so that dependent work is not prioritised differently in each portfolio.",
+      "handoff": {
+        "to": "portfolio",
+        "type": "strategic-contribution",
+        "label": "Shared priorities and sequence"
+      }
+    },
+    {
+      "lane": "enterprise",
+      "phase": "realise",
+      "title": "Reallocate between portfolios",
+      "detail": "Uses outcome, cost and risk evidence to shift funding between portfolios for the next cycle.",
+      "valueTypes": [
+        "variance"
+      ]
+    },
+    {
+      "lane": "portfolio",
+      "phase": "direct",
+      "title": "Portfolio strategy & themes",
+      "detail": "Adapts the enterprise themes to the portfolio and states what the portfolio wants to achieve."
+    },
+    {
+      "lane": "portfolio",
+      "phase": "fund",
+      "title": "Fund value streams",
+      "detail": "Funds long-lived [[value-stream|value streams]] within the portfolio budget instead of approving every project individually (lean budgets).",
+      "valueTypes": [
+        "budget"
+      ],
+      "handoff": {
+        "to": "delivery",
+        "type": "funding",
+        "label": "Value stream budgets"
+      }
+    },
+    {
+      "lane": "portfolio",
+      "phase": "prioritise",
+      "title": "Portfolio Kanban",
+      "detail": "Reviews [[investment|investments]] against a [[benefit-hypothesis|benefit hypothesis]], approves them and sets their order within the portfolio.",
+      "handoff": {
+        "to": "delivery",
+        "type": "delivery",
+        "label": "Prioritised investments"
+      }
+    },
+    {
+      "lane": "portfolio",
+      "phase": "deliver",
+      "title": "Track flow & capacity",
+      "detail": "Watches flow, capacity and dependencies across value streams and adjusts when work gets stuck."
+    },
+    {
+      "lane": "portfolio",
+      "phase": "operate",
+      "title": "Balance RUN and CHANGE",
+      "detail": "Keeps the split of [[delivery-capacity|capacity]] between [[run-change|RUN and CHANGE]] deliberate, including modernisation and technical debt."
+    },
+    {
+      "lane": "portfolio",
+      "phase": "realise",
+      "title": "Review outcomes, reallocate within",
+      "detail": "Compares expected and actual [[outcome|outcomes]] and shifts funding between value streams inside the portfolio.",
+      "handoff": {
+        "to": "enterprise",
+        "type": "outcome-feedback",
+        "label": "Portfolio results"
+      }
+    },
+    {
+      "lane": "delivery",
+      "phase": "fund",
+      "title": "Receive budget & capacity",
+      "detail": "Value streams receive a stable budget and thereby a stable team capacity for the period, instead of funding per project."
+    },
+    {
+      "lane": "delivery",
+      "phase": "prioritise",
+      "title": "Plan team capacity",
+      "detail": "Value streams pull the prioritised investments into their plans according to available capacity."
+    },
+    {
+      "lane": "delivery",
+      "phase": "deliver",
+      "title": "Build & release",
+      "detail": "Teams build and release products and platform changes. A delivered investment is an [[output]], not yet an outcome."
+    },
+    {
+      "lane": "delivery",
+      "phase": "operate",
+      "title": "Run, support & secure",
+      "detail": "IT operations runs, supports and secures the services, including incidents, resilience and compliance."
+    },
+    {
+      "lane": "delivery",
+      "phase": "realise",
+      "title": "Measure usage & outcomes",
+      "detail": "Collects usage, adoption and service quality as evidence of what was actually achieved.",
+      "handoff": {
+        "to": "portfolio",
+        "type": "outcome-feedback",
+        "label": "Usage and outcome evidence"
+      }
+    },
+    {
+      "lane": "cost",
+      "phase": "direct",
+      "title": "Cost baseline",
+      "detail": "Shows today's technology cost by solution and consumer as a starting point for strategic choices."
+    },
+    {
+      "lane": "cost",
+      "phase": "fund",
+      "title": "Run cost & unit cost input",
+      "detail": "Provides run cost and unit cost so that budgets reflect what existing services really cost."
+    },
+    {
+      "lane": "cost",
+      "phase": "prioritise",
+      "title": "Cost of options",
+      "detail": "Makes the cost of alternatives visible, including the cost of keeping legacy solutions running."
+    },
+    {
+      "lane": "cost",
+      "phase": "deliver",
+      "title": "Track change cost",
+      "detail": "Tracks the cost of change by value stream and investment."
+    },
+    {
+      "lane": "cost",
+      "phase": "operate",
+      "title": "Allocate actuals to consumers",
+      "detail": "Distributes booked actuals from cost pools via towers and solutions to consumers ([[cost-allocation|cost allocation]]), including an explicit [[unallocated-cost|unallocated share]]; basis for [[showback]] or [[chargeback]].",
+      "valueTypes": [
+        "actual"
+      ]
+    },
+    {
+      "lane": "cost",
+      "phase": "realise",
+      "title": "Unit cost & total cost of ownership",
+      "detail": "Shows the economics of what was delivered: unit cost and total cost of ownership over time."
+    },
+    {
+      "lane": "architecture",
+      "phase": "direct",
+      "title": "Capability map & target state",
+      "detail": "Links objectives to [[business-capability|business capabilities]] and describes the target architecture."
+    },
+    {
+      "lane": "architecture",
+      "phase": "fund",
+      "title": "Lifecycle & technology risk",
+      "detail": "Points out technologies reaching end of life and the risks that require mandatory investment."
+    },
+    {
+      "lane": "architecture",
+      "phase": "prioritise",
+      "title": "Dependencies & constraints",
+      "detail": "Shows architecture dependencies and end-of-life dates that constrain the order of work."
+    },
+    {
+      "lane": "architecture",
+      "phase": "deliver",
+      "title": "Guardrails & platforms",
+      "detail": "Provides architecture guardrails and shared [[platform|platforms]] that teams build on."
+    },
+    {
+      "lane": "architecture",
+      "phase": "operate",
+      "title": "Lifecycle status & technical debt",
+      "detail": "Keeps the lifecycle status of [[application|applications]] and [[technology|technologies]] and the technical debt visible."
+    },
+    {
+      "lane": "architecture",
+      "phase": "realise",
+      "title": "Rationalise & decommission",
+      "detail": "Uses results to remove redundant applications and to complete replacements."
+    },
+    {
+      "lane": "finance",
+      "phase": "direct",
+      "title": "IT cost target",
+      "detail": "Sets a top-down [[target]], for example a cost ratio, as orientation for planning.",
+      "valueTypes": [
+        "target"
+      ]
+    },
+    {
+      "lane": "finance",
+      "phase": "fund",
+      "title": "Approved budget",
+      "detail": "Budgeting approves the [[budget]] per period. It is not the same as actual cost.",
+      "valueTypes": [
+        "budget"
+      ]
+    },
+    {
+      "lane": "finance",
+      "phase": "deliver",
+      "title": "Rolling forecast",
+      "detail": "Forecasting updates the expected cost for the period on a rolling basis ([[forecast]]).",
+      "valueTypes": [
+        "forecast"
+      ]
+    },
+    {
+      "lane": "finance",
+      "phase": "operate",
+      "title": "Booked actuals",
+      "detail": "Accounting books the [[actual-cost|actual cost]], which TBM then allocates.",
+      "valueTypes": [
+        "actual"
+      ]
+    },
+    {
+      "lane": "finance",
+      "phase": "realise",
+      "title": "Variance review",
+      "detail": "Compares forecast and actuals with the budget. A [[variance]] is calculated, never added to other values.",
+      "valueTypes": [
+        "variance"
+      ]
+    }
+  ],
+  "feedback": {
+    "from": "realise",
+    "to": [
+      "direct",
+      "fund"
+    ],
+    "type": "outcome-feedback",
+    "label": "Outcomes, cost and risk evidence feed the next cycle of direction and funding."
+  }
 }
