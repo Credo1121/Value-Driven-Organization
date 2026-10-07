@@ -7,12 +7,12 @@
 |---|---|
 | P0 Dokumentation, fachlich abgenommen | ✅ 07.10.2026 |
 | I1 Walking Skeleton | ✅ PASS, Sichtprüfung Auftraggeber „passend“, Commit `66f39f2` |
-| GitHub-Remote `origin` | eingerichtet; **Push durch Auftraggeber ausstehend** |
+| GitHub-Remote `origin` | ✅ gepusht 07.10.2026 (`main` → `origin/main`, Stand `add5f96`), Zugang per Fine-grained Token im macOS-Schlüsselbund |
 | I2 Big picture | ✅ umgesetzt, QA PASS mit Einschränkungen (`docs/qa/CHG-002-big-picture.md`); fachliches Review der Verbindungen ausstehend |
 | Freigabe I3 (Capability deep dive) | ⏳ nicht erteilt |
 
 ## Tatsächlicher Dateistand
-- Git: Branch `main`, Remote `origin` = github.com/Credo1121/Value-Driven-Organization (noch nicht gepusht).
+- Git: Branch `main` verfolgt `origin/main` (github.com/Credo1121/Value-Driven-Organization, privat).
 - Code: I1 (Glossar, Navigation, Tokens, Inhaltsvalidierung) + I2 (Gesamtbild, Fähigkeits-Platzhalter, Playwright/axe).
 - Vorhanden: `CLAUDE.md`, `docs/` (inkl. `docs/design/tokens.md` aus CI-Screenshots) (Kontext, Stand, Register, Glossar, Modell, Quellen, REQ-001…010, Architektur, ADR-001/002, QA-Review P0).
 - Vorarbeiten in `/Users/Marvin/Desktop/Claude/Portfolio Management/` unverändert.
@@ -25,13 +25,14 @@
 - Kein BUG
 
 ## Offene Fragen an den Auftraggeber (priorisiert)
-1. **Push zu GitHub** durch den Auftraggeber (`git push -u origin main`)
-2. **Fachliches Review** des Gesamtbilds: C2/C7 entschieden (E22); offen: die 15 Verbindungen sowie C3/C8 (EPM/LPM gemeinsam?)
+1. **Fachliches Review** des Gesamtbilds: C2/C7 entschieden (E22); offen: die 15 Verbindungen sowie C3/C8 (EPM/LPM gemeinsam?)
+2. **C3/C8:** Führungsabfolge EPM → LPM wie bei C2 oder gemeinsame Führung?
 3. **Gate:** Freigabe I3 (Capability deep dive, Start mit C2)
 
 Zurückgestellt bis I7 (bestätigt): E5a–c (Hex-Werte, Webfont-Lizenz, Logo-SVG), E15 (Skill `eraneos-ci`), E4 (Hosting), E9 (Lizenzprüfung vor externer Nutzung).
 
 ## Letzte Evidenz
+- 07.10.2026: Push nach GitHub verifiziert (`git ls-remote origin` → `refs/heads/main` = `add5f96`)
 - 07.10.2026: E22 umgesetzt (C2 EPM → LPM, C7 IT Ops); `npm run check` Exit 0, 50/50 Unit, 16/16 E2E
 - 07.10.2026 14:15: CHG-002 – `npm run check` Exit 0: typecheck, lint, 47/47 Unit, build (18 Seiten), 15/15 E2E inkl. axe (0 serious/critical) und Viewports 768–1920 px; Screenreader/Firefox/Safari NOT RUN
 - 07.10.2026: Commit `66f39f2` (P0 + I1), Remote origin eingerichtet; QA-I1-1 erledigt (AC-001-1 Rev. 3)
@@ -49,4 +50,4 @@ Zurückgestellt bis I7 (bestätigt): E5a–c (Hex-Werte, Webfont-Lizenz, Logo-SV
 - CHG-001: 2 Testfehler im ersten Lauf, Ursache jeweils im Test (Fixture-Kontext, fehlender `public/`-Ordner), je 1 Fix, danach PASS
 
 ## Nächster Schritt
-Auftraggeber pusht nach GitHub und prüft das Gesamtbild (`npm run build && npm run serve:out` → http://localhost:4180/big-picture/) → fachliches Feedback zu den Verbindungen → Freigabe I3 (`1-requirements-engineering` für Inhalte C2, dann `3-frontend`, `5-qa`).
+Auftraggeber prüft das Gesamtbild (`npm run build && npm run serve:out` → http://localhost:4180/big-picture/) → fachliches Feedback zu den Verbindungen → Freigabe I3 (`1-requirements-engineering` für Inhalte C2, dann `3-frontend`, `5-qa`).
