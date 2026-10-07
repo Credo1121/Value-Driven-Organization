@@ -1,13 +1,13 @@
 # Projektstand
 
-**Stand:** 07.10.2026 · **Phase:** I3 Capability deep dive – **C2 als Musterseite fertig, Review durch Auftraggeber ausstehend**
+**Stand:** 07.10.2026 · **Phase:** I3 Capability deep dive – **C2 als Musterseite fertig, Review durch Auftraggeber ausstehend** · Gesamtbild im Clean-Light-Design mit interaktivem Kreis (E27)
 
 ## Gates
 | Gate | Status |
 |---|---|
 | P0 Dokumentation, fachlich abgenommen | ✅ 07.10.2026 |
 | I1 Walking Skeleton | ✅ PASS, Sichtprüfung Auftraggeber „passend“, Commit `66f39f2` |
-| GitHub-Remote `origin` | ✅ gepusht 07.10.2026 (`main` → `origin/main`, Stand `add5f96`), Zugang per Fine-grained Token im macOS-Schlüsselbund |
+| GitHub-Remote `origin` | ✅ eingerichtet; `main` verfolgt `origin/main`, jeder abgeschlossene Schritt wird gepusht (aktuellen Stand mit `git log` prüfen). Zugang per Fine-grained Token im macOS-Schlüsselbund |
 | I2 Big picture | ✅ als PoC abgenommen (E25) |
 | I3 Capability deep dive | C2 Entwurf + 7 Vorlagen umgesetzt, QA PASS (CHG-004); fachliches Review C2 ausstehend |
 
