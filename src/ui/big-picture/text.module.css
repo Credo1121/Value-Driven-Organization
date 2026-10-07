@@ -1,0 +1,49 @@
+.text {
+  margin-top: var(--space-5);
+  border-top: var(--line);
+  padding-top: var(--space-3);
+}
+
+.text summary {
+  font-weight: 600;
+  cursor: pointer;
+  padding: var(--space-2) 0;
+}
+
+.text h3 {
+  margin-top: var(--space-4);
+}
+
+.text h4 {
+  margin: var(--space-3) 0 var(--space-1);
+  font-size: var(--fs-body);
+}
+
+.text table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+}
+
+.text th,
+.text td {
+  padding: var(--space-2);
+  border-bottom: var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.text thead th {
+  color: var(--c-grey-900);
+  font-weight: 600;
+}
+
+.text ul {
+  margin: 0;
+  padding-left: var(--space-4);
+}
+
+.tag {
+  font-weight: 400;
+  color: var(--c-grey-900);
+}

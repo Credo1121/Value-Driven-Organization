@@ -27,7 +27,7 @@ Der Einstiegspunkt im Workshop. Er soll in wenigen Minuten zeigen, dass EPM, TBM
 - **AC-003-7** Given das Inhaltsmodell, when eine Verbindung keinen Typ oder keine Beschreibung hat, then schlägt der Build fehl.
 
 ## Qualitätsanforderungen
-Lesbar auf Präsentationsbildschirm bei 1280 px Breite (Mindestschriftgröße wird in I2 festgelegt). Fester Koordinatensatz, kein Layout-Springen.
+Lesbar auf Präsentationsbildschirm bei 1280 px Breite. Mindestschriftgröße (festgelegt in I2): 14 px für Codes/Disziplinen, 16 px für Fähigkeitsnamen; darüber skaliert der Text mit der Breite. Fester Koordinatensatz, kein Layout-Springen.
 
 ## Offene Fragen
 Ob die Kantenmenge auf Fähigkeitsebene fachlich vollständig ist, klärt ein Review mit dem Auftraggeber in I2.

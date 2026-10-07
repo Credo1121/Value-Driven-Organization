@@ -2,7 +2,7 @@
   "name": "value-driven-organization",
   "version": "0.1.0",
   "private": true,
-  "description": "The Value Driven Organization – moderated explainer for integrated technology steering (EPM, TBM, LPM, EA)",
+  "description": "The Value Driven Organization \u2013 moderated explainer for integrated technology steering (EPM, TBM, LPM, EA)",
   "engines": {
     "node": ">=24 <25"
   },
@@ -13,8 +13,9 @@
     "lint": "eslint .",
     "test": "vitest run",
     "validate:content": "vitest run tests/content.test.ts",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run build",
-    "serve:out": "node scripts/serve-out.mjs"
+    "check": "npm run typecheck && npm run lint && npm run test && npm run build && npm run test:e2e",
+    "serve:out": "node scripts/serve-out.mjs",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "next": "16.4.0",
@@ -23,6 +24,8 @@
     "zod": "4.6.5"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
     "@types/node": "24.19.1",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",

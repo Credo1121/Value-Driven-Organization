@@ -2,8 +2,8 @@
 export type NavItem = { href: string; label: string; area?: string; ready: boolean }
 
 export const navItems: NavItem[] = [
-  { href: '/big-picture/', label: 'Big picture', area: 'A', ready: false },
-  { href: '/capabilities/', label: 'Capabilities', area: 'B', ready: false },
+  { href: '/big-picture/', label: 'Big picture', area: 'A', ready: true },
+  { href: '/capabilities/', label: 'Capabilities', area: 'B', ready: true },
   { href: '/references/', label: 'Reference approaches', area: 'C', ready: false },
   { href: '/scenarios/', label: 'Scenarios', area: 'D', ready: false },
   { href: '/example/', label: 'End-to-end example', area: 'E', ready: false },

@@ -40,7 +40,7 @@ Der Stack ist bestätigt (Next.js, Node.js, TypeScript). Die Versionen müssen u
 
 - Alle Versionen **exakt** gepinnt (kein `^`/`~`), `package-lock.json` wird mitversioniert.
 - Paketmanager: **npm 11** (mit Node ausgeliefert, keine Zusatzinstallation).
-- **Nicht in I1:** Playwright und axe für E2E- und a11y-Tests. Sie werden in I2 mit dem Gesamtbild eingeführt (eigene Versionsprüfung).
+- **Ergänzt in I2 (07.10.2026):** `@playwright/test` 1.63.0 (Node ≥ 20, neueste Version), `@axe-core/playwright` 4.13.0 (bringt axe-core ~4.13 mit; Peer `playwright-core >= 1`), Browser: Chromium Headless Shell 153 über `npx playwright install chromium`.
 
 ## Folgen
 - Upgrades nur über eigenen CHG mit Begründung (Sicherheitsfix oder Bedarf), keine beiläufigen Upgrades.

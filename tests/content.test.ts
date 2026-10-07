@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import glossaryJson from '@content/glossary.json'
 import sourcesJson from '@content/sources.json'
+import bigPictureJson from '@content/big-picture.json'
 import { ContentValidationError, parseContent } from '@/content/load'
 import { validateContent, extractTermRefs } from '@/domain/validation'
 import { GlossaryFileSchema, SourcesFileSchema } from '@/content/schema'
@@ -14,7 +15,7 @@ const terms = GlossaryFileSchema.parse(glossaryJson).terms
 describe('real content (REQ-001, REQ-002)', () => {
   it('passes all consistency rules', () => {
     expect(validateContent({ sources, terms })).toEqual([])
-    expect(() => parseContent({ glossary: glossaryJson, sources: sourcesJson })).not.toThrow()
+    expect(() => parseContent({ glossary: glossaryJson, sources: sourcesJson, bigPicture: bigPictureJson })).not.toThrow()
   })
 
   it('AC-001-4: required term pairs exist and each has a distinction', () => {
@@ -125,8 +126,8 @@ describe('negative fixtures: invalid content must be rejected', () => {
         i === 0 ? { ...t, related: ['ghost'] } : t,
       ),
     }
-    expect(() => parseContent({ glossary: broken, sources: sourcesJson })).toThrow(ContentValidationError)
-    expect(() => parseContent({ glossary: broken, sources: sourcesJson })).toThrow(/\[R1\].*ghost/)
+    expect(() => parseContent({ glossary: broken, sources: sourcesJson, bigPicture: bigPictureJson })).toThrow(ContentValidationError)
+    expect(() => parseContent({ glossary: broken, sources: sourcesJson, bigPicture: bigPictureJson })).toThrow(/\[R1\].*ghost/)
   })
 })
 

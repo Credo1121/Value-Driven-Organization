@@ -47,3 +47,58 @@ export type GlossaryTerm = z.infer<typeof GlossaryTermSchema>
 
 export const SourcesFileSchema = z.object({ sources: z.array(SourceSchema).min(1) })
 export const GlossaryFileSchema = z.object({ terms: z.array(GlossaryTermSchema).min(1) })
+
+// Big picture (REQ-003): steering capabilities and typed links (docs/domain/model.md, sections 1 and 4).
+export const linkTypes = [
+  'strategic-contribution',
+  'funding',
+  'cost-allocation',
+  'delivery',
+  'architecture-dependency',
+  'outcome-feedback',
+] as const
+export const LinkTypeSchema = z.enum(linkTypes)
+export type LinkType = z.infer<typeof LinkTypeSchema>
+
+export const linkTypeLabels: Record<LinkType, string> = {
+  'strategic-contribution': 'Strategic contribution',
+  funding: 'Funding',
+  'cost-allocation': 'Cost allocation',
+  delivery: 'Delivery',
+  'architecture-dependency': 'Architecture dependency',
+  'outcome-feedback': 'Outcome feedback',
+}
+
+export const DisciplineSchema = z.object({
+  id,
+  short: z.string().min(1),
+  glossaryId: id.nullable(),
+})
+
+export const CapabilitySchema = z.object({
+  id,
+  code: z.string().regex(/^C\d$/),
+  name: z.string().min(1),
+  question: z.string().min(1),
+  primary: z.array(id).min(1),
+  supporting: z.array(id),
+  role: z.enum(['loop', 'cross']),
+})
+
+export const LinkSchema = z.object({
+  id,
+  from: id,
+  to: id,
+  type: LinkTypeSchema,
+  label: z.string().min(1),
+})
+
+export const BigPictureFileSchema = z.object({
+  disciplines: z.array(DisciplineSchema).min(1),
+  capabilities: z.array(CapabilitySchema).length(8),
+  environment: z.object({ id, name: z.string().min(1), description: z.string().min(1) }),
+  links: z.array(LinkSchema).min(1),
+})
+export type BigPicture = z.infer<typeof BigPictureFileSchema>
+export type Capability = z.infer<typeof CapabilitySchema>
+export type Link = z.infer<typeof LinkSchema>
