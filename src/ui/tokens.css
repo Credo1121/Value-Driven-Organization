@@ -1,37 +1,42 @@
 /*
- * Design tokens – Eraneos CI, web transfer (docs/design/tokens.md, REQ-010).
- * Provisional: hex values read from screenshot pixels (E5a), web fonts pending (E5b).
+ * Design tokens – clean light look (E27): Apple-like neutrals and system type,
+ * Eraneos orange as the only accent (docs/design/tokens.md, REQ-010).
  * This is the only file allowed to contain colour values (AC-010-1).
+ * Token names are kept stable so components did not have to change.
  */
 :root {
-  /* Greyscale (default palette) */
-  --c-ink: #202020;
-  --c-grey-900: #584f4a;
-  --c-grey-700: #93867d; /* large text / non-text only */
-  --c-grey-500: #b1a39a; /* decorative only */
-  --c-grey-300: #cfc2b9;
-  --c-grey-200: #e7ded7;
-  --c-grey-100: #f3ece6;
-  --c-surface-warm: #fcf8f7;
-  --c-surface: #ffffff;
+  /* Neutrals */
+  --c-ink: #1d1d1f;
+  --c-grey-900: #515154; /* secondary text, 7.3:1 on surfaces */
+  --c-grey-700: #6e6e73; /* tertiary text, ≥ 4.6:1 */
+  --c-grey-500: #d2d2d7; /* hairlines, decorative */
+  --c-grey-300: #e5e5ea;
+  --c-grey-200: #ececf0;
+  --c-grey-100: #f2f2f5;
+  --c-surface-warm: #f5f5f7; /* page and stage background */
+  --c-surface: #ffffff; /* cards and glass */
+  --c-glass: #ffffffcc; /* translucent bands (backdrop blur) */
+  --c-glass-light: #ffffff8c; /* parallel lanes, lighter glass */
 
   /* Orange accent – highlight only */
-  --c-accent: #ff6529; /* fills and markers, never text */
-  --c-accent-strong: #dd3d01; /* lines, icons, focus ring */
-  --c-accent-text: #932901; /* small text and links */
-  --c-accent-tint: #fee0d5;
-  --c-on-accent: #202020; /* text on --c-accent */
+  --c-accent: #ff6529; /* fills, markers, progress, never text */
+  --c-accent-soft: #ffb08f; /* gradient start, influence lines */
+  --c-accent-strong: #dd3d01; /* lines, icons, focus ring (≥ 4:1) */
+  --c-accent-text: #b33000; /* text and links (≥ 5.7:1) */
+  --c-accent-tint: #fff4ee;
+  --c-on-accent: #1d1d1f;
 
-  /* Typography (Aptos referenced by name only, never bundled – E5b) */
-  --f-display: 'Eraneos Display', 'Helvetica Neue', Arial, sans-serif;
-  --f-body: 'Aptos', 'Segoe UI', Arial, Helvetica, sans-serif;
-  --fs-h1: clamp(2.5rem, 4vw, 4rem);
-  --fs-h2: clamp(1.75rem, 2.6vw, 2.75rem);
-  --fs-h3: 1.3rem;
-  --fs-preamble: 1.25rem;
-  --fs-body: 1.125rem;
-  --fs-small: 1rem;
-  --fs-min: 0.875rem; /* 14 px floor for shared screens */
+  /* Typography: system UI (San Francisco on Apple devices), no font files shipped */
+  --f-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --f-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --fs-h1: clamp(2.5rem, 4.2vw, 3.75rem);
+  --fs-h2: clamp(1.6rem, 2.4vw, 2.25rem);
+  --fs-h3: 1.25rem;
+  --fs-preamble: 1.3rem;
+  --fs-body: 1.0625rem;
+  --fs-small: 0.95rem;
+  --fs-min: 0.875rem;
+  --tracking-tight: -0.025em;
 
   /* Spacing and shape */
   --space-1: 0.25rem;
@@ -40,8 +45,15 @@
   --space-4: 1.5rem;
   --space-5: 2.5rem;
   --space-6: 4rem;
-  --radius: 0.375rem;
+  --radius: 0.75rem;
+  --radius-lg: 1.375rem;
+  --radius-xl: 2rem;
   --line: 1px solid var(--c-grey-300);
+  --shadow-soft: 0 1px 2px #0000000a, 0 12px 30px -18px #0000002e;
+  --shadow-float: 0 30px 60px -24px #0000004d;
+  --shadow-accent: 0 18px 40px -16px #ff652973;
+  --shadow-stage: 0 1px 0 #ffffff inset, 0 30px 80px -40px #00000040;
+  --shadow-hairline: drop-shadow(0 1px 1px #0000000a);
   --focus-ring: 3px solid var(--c-accent-strong);
-  --content-width: 72rem;
+  --content-width: 76rem;
 }

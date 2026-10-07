@@ -23,16 +23,19 @@
 - CHG-002 Big picture (Netzdiagramm): durch CHG-003 ersetzt
 - CHG-003 Swimlane-Matrix: abgenommen (PoC)
 - CHG-004 Capability deep dive: C2 Entwurf, QA PASS mit Einschränkungen
+- CHG-005 Clean Light-Redesign (E27): Kreis-Übersicht, Detailansicht mit Strahl und Einflusslinien, ganze Website; QA PASS
 - ADR-001/002 Accepted, ADR-003 Accepted
 - Kein BUG
 
 ## Offene Fragen an den Auftraggeber (priorisiert)
+0. **Sichtprüfung Redesign** (http://localhost:4180/big-picture/)
 1. **Review C2** (http://localhost:4180/capabilities/c2/): Rollen, Entscheidungsrechte je Ausprägung, Wertarten, typische Brüche – passt Tiefe und Ton für Workshops?
 2. Danach: Inhalte C1, C3–C8 nach demselben Muster schreiben (Reihenfolge-Vorschlag: C4, C8, C3, C1, C5, C6, C7)
 
 Zurückgestellt bis I7 (bestätigt): E5a–c (Hex-Werte, Webfont-Lizenz, Logo-SVG), E15 (Skill `eraneos-ci`), E4 (Hosting), E9 (Lizenzprüfung vor externer Nutzung).
 
 ## Letzte Evidenz
+- 07.10.2026: CHG-005 – `npm run check` Exit 0: 65/65 Unit, 114/114 E2E (3 Browser) inkl. axe und Hydration-Prüfung
 - 07.10.2026: CHG-004 – `npm run check` Exit 0: 65/65 Unit, 96/96 E2E (3 Browser), axe 0 serious/critical
 - 07.10.2026: Gesamtbild als PoC abgenommen (E25), I3 freigegeben (E26)
 - 07.10.2026: BUG-001 behoben, E24 umgesetzt (`d5b0f4d`); `npm run check` Exit 0 – 46/46 Unit, 54/54 E2E (Chromium, Firefox, WebKit)

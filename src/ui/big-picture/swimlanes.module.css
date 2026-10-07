@@ -1,5 +1,7 @@
+/* Detailed view (concept A): clean light matrix with a progress beam under the six phases,
+   glass bands per level and dotted influence lines. */
+
 .wrap {
-  /* Use more width than normal text pages: the matrix is the main presentation object. */
   width: min(100vw - 2 * var(--space-4), 92rem);
   margin-left: 50%;
   transform: translateX(-50%);
@@ -18,23 +20,24 @@
 
 .controls button {
   font: inherit;
-  font-size: var(--fs-small);
+  font-size: var(--fs-min);
   color: var(--c-ink);
   background: var(--c-surface);
-  border: 1px solid var(--c-grey-900);
-  border-radius: var(--radius);
-  padding: var(--space-2) var(--space-3);
+  border: none;
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  box-shadow: inset 0 0 0 1px var(--c-grey-300);
   cursor: pointer;
 }
 
 .controls button:hover:not(:disabled) {
-  background: var(--c-grey-100);
+  box-shadow: inset 0 0 0 1px var(--c-grey-700);
 }
 
 .controls button:disabled {
-  color: var(--c-grey-900);
-  border-color: var(--c-grey-300);
+  color: var(--c-grey-700);
   cursor: default;
+  opacity: 0.55;
 }
 
 .controls .secondary {
@@ -44,12 +47,13 @@
 .stepStatus {
   margin: 0;
   min-width: 20rem;
+  letter-spacing: -0.01em;
 }
 
 .stepCount {
   margin-right: var(--space-2);
-  color: var(--c-grey-900);
-  font-size: var(--fs-small);
+  color: var(--c-grey-700);
+  font-size: var(--fs-min);
 }
 
 .stepDescription {
@@ -57,26 +61,31 @@
   max-width: 56rem;
   min-height: 3em;
   font-size: var(--fs-preamble);
-  color: var(--c-grey-900);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--c-grey-700);
 }
 
-/* ---------- Matrix ---------- */
+/* ---------- Stage ---------- */
 .stage {
-  background: var(--c-surface-warm);
-  border: var(--line);
-  border-radius: var(--radius);
-  padding: var(--space-2);
+  position: relative;
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  background: radial-gradient(1200px 500px at 30% 0%, var(--c-surface) 0%, var(--c-surface-warm) 60%);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-stage);
 }
 
 .matrix {
+  position: relative;
+  z-index: 1;
   width: 100%;
   table-layout: fixed;
   border-collapse: separate;
-  border-spacing: 5px;
+  border-spacing: 24px 22px;
 }
 
 .headCol {
-  width: 10rem;
+  width: 9.5rem;
 }
 
 .corner {
@@ -85,46 +94,42 @@
 
 .axis {
   font-size: var(--fs-min);
-  color: var(--c-grey-900);
+  color: var(--c-grey-700);
 }
 
-/* Sequence: phase heads read as one connected chevron band. */
+/* Phase heads: big numerals, quiet until reached. */
 .phaseHead {
-  position: relative;
-  padding: 0.45rem 1.2rem 0.45rem 1.4rem;
+  padding: 0 0.6rem;
   text-align: left;
-  vertical-align: top;
-  background: var(--c-grey-200);
-  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%, 14px 50%);
-}
-
-.phaseHead:first-of-type {
-  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
-}
-
-.activeHead {
-  background: var(--c-accent);
-}
-
-.activeHead .phaseCap,
-.activeHead .phaseNum {
-  color: var(--c-on-accent);
+  vertical-align: bottom;
 }
 
 .phaseNum {
   display: block;
   font-family: var(--f-display);
-  font-size: var(--fs-small);
-  font-weight: 700;
-  color: var(--c-grey-900);
+  font-size: 2.6rem;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--c-grey-500);
+  transition: color 0.3s ease;
+}
+
+.reached .phaseNum {
+  color: var(--c-grey-700);
+}
+
+.activeHead .phaseNum {
+  color: var(--c-accent);
 }
 
 .phaseLink {
   display: block;
+  margin-top: 0.25rem;
   font-family: var(--f-display);
-  font-size: var(--fs-h3);
-  font-weight: 700;
-  line-height: 1.1;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: var(--c-ink);
   text-decoration: none;
 }
@@ -135,33 +140,41 @@
 
 .phaseCap {
   display: block;
-  margin-top: var(--space-1);
-  font-size: var(--fs-min);
-  color: var(--c-grey-900);
+  font-size: 0.8rem;
+  color: var(--c-grey-700);
 }
 
+/* The beam under the phases shows how far the cycle has been walked. */
+.beamCell {
+  padding: 0 0.6rem;
+}
+
+.beam {
+  height: 4px;
+  border-radius: 4px;
+  background: var(--c-grey-300);
+  overflow: hidden;
+}
+
+.beamFill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--c-accent-soft), var(--c-accent));
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Level heads */
 .laneHead {
-  padding: 0.4rem 0.6rem;
+  padding: 0.4rem 0.6rem 0.4rem 0;
   text-align: left;
   vertical-align: middle;
-  background: var(--c-surface);
-  border-left: 4px solid var(--c-ink);
-}
-
-.parallel .laneHead {
-  border-left-style: double;
-  border-left-width: 6px;
-}
-
-.adjacent .laneHead {
-  border-left-style: dashed;
-  border-left-color: var(--c-grey-900);
 }
 
 .laneLabel,
 .laneLink {
   display: block;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--c-ink);
   line-height: 1.15;
 }
@@ -176,44 +189,54 @@
 
 .laneSub {
   display: block;
-  font-size: var(--fs-min);
-  color: var(--c-grey-900);
+  font-size: 0.8rem;
+  color: var(--c-grey-700);
 }
 
+.groupMuted .laneLabel,
+.groupMuted .laneLink {
+  color: var(--c-grey-700);
+}
+
+/* ---------- Cells ---------- */
 .cell {
   padding: 0;
   vertical-align: top;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
 }
 
-/* The table cell itself is the visible box: table cells grow with their content in every
-   browser, so text can never spill into the next row (Firefox does not stretch children
-   with height: 100% inside table cells). */
+/* The table cell is the visible box: it grows with its content in every browser (BUG-001). */
 .filled {
   position: relative;
-  background: var(--c-surface);
-  border: 1px solid var(--c-grey-500);
+  background: var(--c-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: inset 0 0 0 1px var(--c-surface), var(--shadow-soft);
+  transition: box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .filled:hover {
-  background: var(--c-grey-100);
+  background: var(--c-surface);
+}
+
+/* Cells outside the current phase recede while a phase is walked through. */
+.matrix:has(.activeCol) .filled:not(.activeCol) .cardTitle {
+  color: var(--c-grey-700);
+}
+
+.activeCol.filled {
+  background: var(--c-surface);
+  box-shadow: 0 0 0 2px var(--c-accent), var(--shadow-accent);
 }
 
 .filled:has(.card[aria-pressed='true']) {
   background: var(--c-accent-tint);
-  border-color: var(--c-accent-strong);
-  box-shadow: inset 0 0 0 1px var(--c-accent-strong);
+  box-shadow: 0 0 0 2px var(--c-accent-strong), var(--shadow-accent);
 }
 
 .filled:has(.card:focus-visible) {
   outline: var(--focus-ring);
-  outline-offset: 2px;
-}
-
-/* Cards in the current phase get a stronger frame. */
-.activeCol.filled {
-  border-color: var(--c-ink);
-  box-shadow: inset 0 0 0 1px var(--c-ink);
+  outline-offset: 3px;
 }
 
 .hidden {
@@ -223,10 +246,10 @@
 .card {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.35rem;
   width: 100%;
-  min-height: 3.4rem;
-  padding: 0.45rem 0.6rem;
+  min-height: 3.6rem;
+  padding: 0.7rem 0.85rem;
   font: inherit;
   text-align: left;
   color: var(--c-ink);
@@ -235,7 +258,6 @@
   cursor: pointer;
 }
 
-/* Makes the whole box clickable, also the empty space below short content. */
 .card::after {
   content: '';
   position: absolute;
@@ -247,48 +269,57 @@
 }
 
 .parallel .filled {
-  background: var(--c-surface-warm);
+  background: var(--c-glass-light);
 }
 
 .parallel .card,
 .adjacent .card {
-  min-height: 2.6rem;
+  min-height: 2.8rem;
 }
 
 .adjacent .filled {
-  border-style: dashed;
   background: transparent;
+  backdrop-filter: none;
+  box-shadow: inset 0 0 0 1px var(--c-grey-500);
 }
 
 .cardTitle {
-  font-size: var(--fs-small);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+}
+
+.activeCol .cardTitle {
   font-weight: 600;
-  line-height: 1.2;
 }
 
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-1);
+  gap: 0.3rem;
 }
 
 .chip {
   white-space: nowrap;
-  line-height: 1.35;
-  padding: 0 var(--space-1);
-  font-size: var(--fs-min);
-  border: 1px solid var(--c-grey-900);
+  padding: 0.05rem 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 500;
   border-radius: 999px;
+  background: var(--c-grey-100);
   color: var(--c-grey-900);
 }
 
+.activeCol .chip {
+  background: var(--c-accent-tint);
+  color: var(--c-accent-text);
+}
+
 .handoff {
-  padding-top: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 500;
   line-height: 1.25;
-  font-size: var(--fs-min);
-  font-weight: 600;
   color: var(--c-grey-900);
-  border-top: 1px dashed var(--c-grey-300);
 }
 
 .down,
@@ -297,59 +328,89 @@
 }
 
 .groupLabel {
-  padding: var(--space-2) 0 0;
+  padding: 0;
   text-align: left;
   font-size: var(--fs-min);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--c-grey-900);
+  font-weight: 500;
+  color: var(--c-grey-700);
 }
 
-/* Before the parallel step only the lane heads are shown (structure); cells stay hidden via .hidden. */
-.groupMuted .laneHead {
-  border-left-color: var(--c-grey-300);
-  background: transparent;
+/* ---------- Influence lines ---------- */
+.wires {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.wireDown,
+.wireNext {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.wireDown {
+  stroke: var(--c-accent-strong);
+  stroke-width: 2.2;
+  stroke-dasharray: 2 5;
+}
+
+.wireNext {
+  stroke: var(--c-grey-700);
+  stroke-width: 1.6;
+  stroke-dasharray: 2 5;
+}
+
+.wireHeadDown {
+  fill: var(--c-accent-strong);
+}
+
+.wireHeadNext {
+  fill: var(--c-grey-700);
 }
 
 /* ---------- Feedback loop ---------- */
 .feedback {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  margin: var(--space-2) 6px 0;
-  padding: var(--space-2) var(--space-3);
-  border: 2px dashed var(--c-accent-strong);
-  border-radius: var(--radius);
-  background: var(--c-surface);
+  margin: var(--space-2) 8px 0;
+  padding: 0.6rem 0.4rem;
+  color: var(--c-grey-900);
 }
 
 .feedbackArrow {
-  font-size: 1.75rem;
+  font-size: 1.6rem;
   line-height: 1;
-  color: var(--c-accent-strong);
+  color: var(--c-accent);
 }
 
 .feedbackRoute {
-  color: var(--c-grey-900);
+  color: var(--c-grey-700);
 }
 
 /* ---------- Detail panel ---------- */
 .detail {
-  padding: var(--space-3) var(--space-4);
-  border-left: 4px solid var(--c-accent-strong);
-  background: var(--c-surface-warm);
+  padding: var(--space-4);
+  background: var(--c-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
   min-height: 7.5rem;
 }
 
 .detailHeading {
   margin-bottom: var(--space-1);
-  font-size: var(--fs-h3);
+  font-size: 1.4rem;
 }
 
 .detailMeta,
 .detailHint {
-  color: var(--c-grey-900);
+  color: var(--c-grey-700);
   font-size: var(--fs-small);
 }
 
@@ -371,9 +432,9 @@
 
 .narrowNote {
   display: none;
-  padding: var(--space-3);
-  background: var(--c-surface-warm);
-  border-left: 4px solid var(--c-accent-strong);
+  padding: var(--space-3) var(--space-4);
+  background: var(--c-surface);
+  border-radius: var(--radius);
 }
 
 @media (max-width: 47.99rem) {
@@ -389,5 +450,12 @@
 
   .narrowNote {
     display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beamFill,
+  .phaseNum {
+    transition: none;
   }
 }

@@ -104,7 +104,7 @@ test.describe('Capability templates (REQ-004, E26)', () => {
 
   test('AC-003-5 → REQ-004: the Fund phase in the big picture opens the C2 deep dive', async ({ page }) => {
     await open(page, '/big-picture/')
-    await page.getByRole('link', { name: 'Fund' }).click()
+    await page.getByTestId('swimlane-matrix').getByRole('link', { name: 'Fund', exact: true }).click()
     await expect(page.getByRole('heading', { level: 2, name: 'Decision rights' })).toBeVisible()
   })
 })

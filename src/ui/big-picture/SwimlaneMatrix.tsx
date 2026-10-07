@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { linkTypeLabels, valueTypeLabels, type BigPicture, type Cell } from '@/content/schema'
 import { formatLeads } from './leads'
 import { buildSteps, clampStep } from './steps'
@@ -16,6 +16,9 @@ export function SwimlaneMatrix({ data }: { data: BigPicture }) {
   const [selected, setSelected] = useState<string | null>(null)
   const step = steps[clampStep(stepIndex, steps)]!
   const stepCount = steps.length
+
+  const stageRef = useRef<HTMLDivElement>(null)
+  const [wires, setWires] = useState<{ d: string; kind: 'down' | 'next' }[]>([])
 
   const go = useCallback(
     (delta: number) => setStepIndex((i) => Math.min(Math.max(i + delta, 0), stepCount - 1)),
@@ -37,6 +40,48 @@ export function SwimlaneMatrix({ data }: { data: BigPicture }) {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [go])
+
+  // Dotted influence lines (concepts A + B): down through the levels of the active phase,
+  // and on to the same level in the next phase. Measured from the rendered boxes.
+  useLayoutEffect(() => {
+    const stage = stageRef.current
+    function measure() {
+      if (!stage || !step.activePhase) return setWires([])
+      const base = stage.getBoundingClientRect()
+      const box = (k: string) => stage.querySelector<HTMLElement>(`[data-box="${k}"]`)?.getBoundingClientRect()
+      const active = step.activePhase
+      const nextPhase = data.phases[data.phases.findIndex((p) => p.id === active) + 1]?.id
+      const out: { d: string; kind: 'down' | 'next' }[] = []
+      for (const c of data.cells.filter((x) => x.phase === active && x.handoff)) {
+        const a = box(`${c.lane}/${c.phase}`)
+        const b = box(`${c.handoff!.to}/${c.phase}`)
+        if (!a || !b) continue
+        const down = b.top > a.top
+        const x = a.left + a.width / 2 - base.left + (down ? -10 : 10)
+        const y1 = (down ? a.bottom + 3 : a.top - 3) - base.top
+        const y2 = (down ? b.top - 5 : b.bottom + 5) - base.top
+        if (Math.abs(y2 - y1) < 8) continue // not enough room for a readable arrow
+        out.push({ d: `M${x},${y1} L${x},${y2}`, kind: 'down' })
+      }
+      // Points ahead to the next phase (also before it is revealed: it shows where this phase leads).
+      if (nextPhase) {
+        for (const lane of ['enterprise', 'portfolio', 'delivery']) {
+          const a = box(`${lane}/${active}`)
+          const b = box(`${lane}/${nextPhase}`)
+          // Only where the level acts in both phases, so the arrow always connects two real steps.
+          if (!a || !b) continue
+          const y = a.top + a.height / 2 - base.top
+          if (b.left - a.right < 10) continue
+          out.push({ d: `M${a.right - base.left + 2},${y} L${b.left - base.left - 4},${y}`, kind: 'next' })
+        }
+      }
+      setWires(out)
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    if (stage) ro.observe(stage)
+    return () => ro.disconnect()
+  }, [step.activePhase, data])
 
   const phaseIndex = new Map(data.phases.map((p, i) => [p.id, i]))
   const capById = new Map(data.capabilities.map((c) => [c.id, c]))
@@ -147,7 +192,7 @@ export function SwimlaneMatrix({ data }: { data: BigPicture }) {
       </div>
       <p className={styles.stepDescription}>{step.description}</p>
 
-      <div className={styles.stage} data-testid="swimlane-matrix">
+      <div className={styles.stage} data-testid="swimlane-matrix" ref={stageRef}>
         <table className={styles.matrix}>
           <caption className="visually-hidden">
             Steering phases from left to right, levels from top to bottom, parallel capabilities below
@@ -168,8 +213,13 @@ export function SwimlaneMatrix({ data }: { data: BigPicture }) {
                 return (
                   <th
                     key={p.id}
+                    id={`detail-${p.id}`}
                     scope="col"
-                    className={cx(styles.phaseHead, step.activePhase === p.id && styles.activeHead)}
+                    className={cx(
+                      styles.phaseHead,
+                      step.activePhase === p.id && styles.activeHead,
+                      i < step.revealedPhases && styles.reached,
+                    )}
                   >
                     <span className={styles.phaseNum} aria-hidden="true">
                       {i + 1}
@@ -183,6 +233,17 @@ export function SwimlaneMatrix({ data }: { data: BigPicture }) {
                   </th>
                 )
               })}
+            </tr>
+            <tr aria-hidden="true">
+              <td />
+              <td colSpan={data.phases.length} className={styles.beamCell}>
+                <div className={styles.beam}>
+                  <div
+                    className={styles.beamFill}
+                    style={{ width: `${(Math.max(step.revealedPhases, 0) / data.phases.length) * 100}%` }}
+                  />
+                </div>
+              </td>
             </tr>
           </thead>
           <tbody>{lanesOf('hierarchy').map((l) => renderLane(l.id))}</tbody>
@@ -203,6 +264,26 @@ export function SwimlaneMatrix({ data }: { data: BigPicture }) {
             {lanesOf('adjacent').map((l) => renderLane(l.id))}
           </tbody>
         </table>
+
+        <svg className={styles.wires} aria-hidden="true" focusable="false">
+          <defs>
+            <marker id="w-down" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0 0 L10 5 L0 10 z" className={styles.wireHeadDown} />
+            </marker>
+            <marker id="w-next" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0 0 L10 5 L0 10 z" className={styles.wireHeadNext} />
+            </marker>
+          </defs>
+          {wires.map((w, i) => (
+            <path
+              key={i}
+              d={w.d}
+              className={w.kind === 'down' ? styles.wireDown : styles.wireNext}
+              markerEnd={`url(#w-${w.kind})`}
+              data-wire={w.kind}
+            />
+          ))}
+        </svg>
 
         <div
           className={cx(styles.feedback, !step.showFeedback && styles.hidden)}

@@ -182,3 +182,64 @@ test.describe('Other routes (AC-009-7 smoke)', () => {
     })
   }
 })
+
+test.describe('Cycle overview (E27, entry picture)', () => {
+  test.beforeEach(async ({ page }) => open(page, '/big-picture/'))
+
+  test('shows six phases as a ring and Fund selected by default, with levels named in the card', async ({ page }) => {
+    await expect(page.getByTestId('cycle')).toBeVisible()
+    await expect(page.getByRole('button', { name: /2\s*Fund/ })).toHaveAttribute('aria-pressed', 'true')
+    const card = page.getByTestId('cycle-card')
+    await expect(card.getByRole('heading', { level: 3 })).toContainText('Fund')
+    for (const level of ['Enterprise level', 'Portfolio level', 'Delivery & operations level'])
+      await expect(card.getByText(level)).toBeVisible()
+    await expect(card).toContainText('handed down to Portfolio')
+    await expect(card).toContainText('Next: Prioritise')
+  })
+
+  test('selecting another phase updates the card; levels without a step say so', async ({ page }) => {
+    await page.getByRole('button', { name: /1\s*Direct/ }).click()
+    const card = page.getByTestId('cycle-card')
+    await expect(card.getByRole('heading', { level: 3 })).toContainText('Direct')
+    await expect(card.locator('[data-level="delivery"]')).toContainText('No dedicated step on this level')
+    await page.getByRole('button', { name: /6\s*Realise value/ }).click()
+    await expect(card).toContainText('the evidence starts the next cycle')
+    await expect(card).toContainText('reported up to Enterprise')
+  })
+
+  test('the card links to the capability and to the phase in the detailed view', async ({ page }) => {
+    const card = page.getByTestId('cycle-card')
+    await expect(card.getByRole('link', { name: 'Open Investment & funding' })).toHaveAttribute('href', '/capabilities/c2/')
+    await card.getByRole('link', { name: 'Show in the detailed view' }).click()
+    await expect(page).toHaveURL(/#detail-fund$/)
+  })
+})
+
+test.describe('Influence lines in the detailed view (E27)', () => {
+  test.beforeEach(async ({ page }) => open(page, '/big-picture/'))
+
+  test('walking to Fund draws dotted lines down through the levels and on to the next phase', async ({ page }) => {
+    await expect(page.locator('[data-wire]')).toHaveCount(0)
+    for (let i = 0; i < 2; i++) await page.getByRole('button', { name: 'Next' }).click()
+    await expect(page.locator('[data-wire="down"]')).toHaveCount(2)
+    await expect(page.locator('[data-wire="next"]')).toHaveCount(3)
+  })
+
+  test('the beam under the phases grows with each phase', async ({ page }) => {
+    const fill = page.getByTestId('swimlane-matrix').locator('[style*="width"]')
+    await expect(fill).toHaveAttribute('style', /width:\s*0%/)
+    await page.getByRole('button', { name: 'Next' }).click()
+    await expect(fill).toHaveAttribute('style', /width:\s*16\.6/)
+    await page.getByRole('button', { name: 'Show complete picture' }).click()
+    await expect(fill).toHaveAttribute('style', /width:\s*100%/)
+  })
+
+  test('no hydration or console errors on the big picture page', async ({ page }) => {
+    const errors: string[] = []
+    page.on('pageerror', (e) => errors.push(e.message))
+    page.on('console', (m) => m.type() === 'error' && errors.push(m.text()))
+    await open(page, '/big-picture/')
+    await page.waitForTimeout(500)
+    expect(errors).toEqual([])
+  })
+})

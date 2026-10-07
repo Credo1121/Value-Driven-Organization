@@ -2,15 +2,15 @@
   margin-bottom: var(--space-2);
   font-size: var(--fs-small);
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--c-accent-text);
 }
 
 .preamble {
-  max-width: 48rem;
+  max-width: 40rem;
   font-size: var(--fs-preamble);
-  color: var(--c-grey-900);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--c-grey-700);
 }
 
 .section {
@@ -40,16 +40,18 @@
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-4);
-  background: var(--c-surface-warm);
-  border: var(--line);
-  border-radius: var(--radius);
+  background: var(--c-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
 }
 
 .cardArea {
   font-family: var(--f-display);
-  font-size: var(--fs-h3);
-  font-weight: 700;
-  color: var(--c-ink);
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--c-grey-700);
 }
 
 .cardTitle {
@@ -63,6 +65,7 @@
 
 .notice {
   padding: var(--space-3) var(--space-4);
-  background: var(--c-surface-warm);
-  border-left: 4px solid var(--c-accent-strong);
+  background: var(--c-surface);
+  border-radius: var(--radius);
+  box-shadow: inset 3px 0 0 var(--c-accent-strong);
 }

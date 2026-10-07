@@ -1,5 +1,7 @@
 # Design-Tokens – Eraneos CI (Web-Übertragung)
 
+> **Aktualisierung 07.10.2026 (E27):** Für die Website gilt jetzt ein cleaner, Apple-naher Light-Look: Apple-Neutraltöne (`#1d1d1f`, `#f5f5f7`, `#6e6e73`) und die Systemschrift statt der warmen CI-Grautöne und Aptos. Das Eraneos-Orange bleibt der einzige Akzent (Flächen `#FF6529`, Linien `#DD3D01`, Text `#B33000`). Maßgeblich sind die Werte in `src/ui/tokens.css`. Die folgenden Abschnitte dokumentieren die CI-Herkunft.
+
 - **Status:** Draft v0.1 · 07.10.2026 · Grundlage für REQ-010
 - **Quelle:** Screenshots des Eraneos „PowerPoint Guide“, Seiten 16 (Type scales) und 17 (Colours), vom Auftraggeber am 07.10.2026 bereitgestellt. [BEST]
 - **Methode:** Farbwerte als Pixelwerte aus Seite 17 (Custom Colors/Theme Colors) ausgelesen. Sie können durch Bildkompression um wenige Einheiten abweichen → **offizielle Hex-Werte bestätigen lassen** (E5a).

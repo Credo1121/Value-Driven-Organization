@@ -12,11 +12,13 @@ html {
 
 body {
   margin: 0;
-  background: var(--c-surface);
+  background: var(--c-surface-warm);
   color: var(--c-ink);
   font-family: var(--f-body);
   font-size: var(--fs-body);
-  line-height: 1.45;
+  line-height: 1.47;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
@@ -30,17 +32,21 @@ h1 {
   font-family: var(--f-display);
   font-size: var(--fs-h1);
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
 }
 
 h2 {
+  font-family: var(--f-display);
   font-size: var(--fs-h2);
   font-weight: 600;
+  letter-spacing: var(--tracking-tight);
 }
 
 h3 {
   font-size: var(--fs-h3);
   font-weight: 600;
+  letter-spacing: -0.015em;
 }
 
 p {
@@ -49,7 +55,12 @@ p {
 
 a {
   color: var(--c-accent-text);
-  text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
 }
 
 :focus-visible {

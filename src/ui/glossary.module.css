@@ -29,9 +29,11 @@
 
 .termList {
   margin: 0;
-  padding: 0;
+  padding: 0 var(--space-4);
   list-style: none;
-  border-top: var(--line);
+  background: var(--c-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
 }
 
 .term {
@@ -43,10 +45,15 @@
   scroll-margin-top: var(--space-5);
 }
 
+.term:last-child {
+  border-bottom: none;
+}
+
 .term:target {
   background: var(--c-accent-tint);
-  outline: 3px solid var(--c-accent-strong);
+  outline: 2px solid var(--c-accent-strong);
   outline-offset: 0;
+  border-radius: var(--radius);
 }
 
 .termName {
@@ -58,10 +65,8 @@
   display: block;
   margin-top: var(--space-2);
   font-size: var(--fs-min);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--c-grey-900);
+  font-weight: 500;
+  color: var(--c-grey-700);
 }
 
 .body p {
@@ -78,12 +83,12 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  padding: 0 var(--space-2);
-  border: var(--line);
-  border-radius: var(--radius);
-  font-size: var(--fs-min);
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
   color: var(--c-grey-900);
-  background: var(--c-surface);
+  background: var(--c-grey-100);
   white-space: nowrap;
 }
 
