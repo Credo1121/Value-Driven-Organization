@@ -1,8 +1,9 @@
 # REQ-003 – Big picture
 
-- **Status:** Accepted (PoC, 07.10.2026, E25) · **Revision:** 2 (07.10.2026) · **Prio:** Must · **Inkrement:** I2
+- **Status:** Accepted (PoC, 07.10.2026, E25) · **Revision:** 3 (07.10.2026) · **Prio:** Must · **Inkrement:** I2
 - **Quelle:** Auftrag Abschn. 8A, 10, 13 [BEST]; Fähigkeiten-Synthese `model.md` Abschn. 1 [SYN]
 - **Änderung Rev. 2 [BEST, 07.10.2026]:** Der Auftraggeber bewertete das Netzdiagramm (Rev. 1) nach Sichtprüfung als „sehr diffus, schwer zu verstehen und zu vermitteln“. Er entschied sich für eine **Swimlane-Matrix** aus Phasen (Sequenz) × Ebenen (Hierarchie) mit parallelen Lanes; das Netzdiagramm wird **ersetzt** (E23). Die ACs wurden entsprechend neu gefasst und sind zur Bestätigung durch den Auftraggeber offen.
+- **Änderung Rev. 3 [BEST, 07.10.2026]:** Der Auftraggeber empfand die Swimlane-Matrix unterhalb der Kreis-Übersicht auf `/big-picture/` als „noch nicht richtig platziert“. `SwimlaneMatrix` bleibt vollständig implementiert und getestet (Komponente, Unit- und E2E-Tests), wird aber vorerst **nicht auf der Einstiegsseite eingebunden**; eine eigene Unterseite ist eine offene Entscheidung (kein Scope-Verlust, siehe `docs/register.md` E29). An ihrer Stelle zeigt die Einstiegsseite jetzt eine Capability-Bridge-Übersicht (EPM/TBM/EA/LPM, illustrativ, nicht Teil dieser Anforderung – siehe `docs/project-state.md`).
 
 ## Problem und Nutzen
 Der Einstiegspunkt im Workshop. Er soll in wenigen Minuten zeigen, dass EPM, TBM, LPM und EA **gemeinsame Steuerungsfähigkeiten** bedienen: in welcher Reihenfolge gesteuert wird, auf welcher Ebene, was parallel läuft und wie Ergebnisse zurückfließen.

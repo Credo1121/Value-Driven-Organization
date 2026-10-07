@@ -1,17 +1,20 @@
 import bigPictureJson from '@content/big-picture.json'
 import breaksJson from '@content/breaks.json'
 import capabilitiesJson from '@content/capabilities.json'
+import capabilityBridgesJson from '@content/capability-bridges.json'
 import glossaryJson from '@content/glossary.json'
 import sourcesJson from '@content/sources.json'
-import { validateBigPicture, validateContent, validateDeepDives } from '@/domain/validation'
+import { validateBigPicture, validateCapabilityBridge, validateContent, validateDeepDives } from '@/domain/validation'
 import {
   BigPictureFileSchema,
   BreaksFileSchema,
+  CapabilityBridgeFileSchema,
   DeepDivesFileSchema,
   GlossaryFileSchema,
   SourcesFileSchema,
   type BigPicture,
   type Break,
+  type CapabilityBridge,
   type DeepDive,
   type GlossaryTerm,
   type Source,
@@ -25,9 +28,17 @@ export type Content = {
   bigPicture: BigPicture
   breaks: Break[]
   deepDives: DeepDive[]
+  capabilityBridge: CapabilityBridge
 }
 
-type RawContent = { glossary: unknown; sources: unknown; bigPicture: unknown; breaks?: unknown; deepDives?: unknown }
+type RawContent = {
+  glossary: unknown
+  sources: unknown
+  bigPicture: unknown
+  breaks?: unknown
+  deepDives?: unknown
+  capabilityBridge?: unknown
+}
 
 export class ContentValidationError extends Error {}
 
@@ -37,16 +48,18 @@ export function parseContent(raw: RawContent): Content {
   const bigPicture = BigPictureFileSchema.parse(raw.bigPicture)
   const breaks = BreaksFileSchema.parse(raw.breaks ?? breaksJson).breaks
   const deepDives = DeepDivesFileSchema.parse(raw.deepDives ?? capabilitiesJson).deepDives
+  const capabilityBridge = CapabilityBridgeFileSchema.parse(raw.capabilityBridge ?? capabilityBridgesJson)
   const findings = [
     ...validateContent({ sources, terms }),
     ...validateBigPicture(bigPicture, terms),
     ...validateDeepDives(deepDives, { capabilities: bigPicture.capabilities, terms, sources, breaks }),
+    ...validateCapabilityBridge(capabilityBridge, bigPicture),
   ]
   if (findings.length > 0) {
     const lines = findings.map((f) => `  [${f.rule}] ${f.id}: ${f.message}`).join('\n')
     throw new ContentValidationError(`Content validation failed:\n${lines}`)
   }
-  return { sources, terms, bigPicture, breaks, deepDives }
+  return { sources, terms, bigPicture, breaks, deepDives, capabilityBridge }
 }
 
 let cached: Content | undefined

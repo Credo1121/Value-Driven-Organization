@@ -16,7 +16,8 @@ const axe = (page: Page) =>
 const serious = (r: Awaited<ReturnType<typeof axe>>) =>
   r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => `${v.id}: ${v.nodes.length}`)
 
-test.describe('Big picture swimlanes (REQ-003)', () => {
+// vorübergehend: SwimlaneMatrix ist von /big-picture/ entkoppelt, siehe REQ-003 Rev. 3
+test.describe.skip('Big picture swimlanes (REQ-003)', () => {
   test.beforeEach(async ({ page }) => {
     await open(page, '/big-picture/')
   })
@@ -153,7 +154,8 @@ test.describe('Big picture swimlanes (REQ-003)', () => {
   })
 })
 
-test.describe('Viewports (AC-009-4)', () => {
+// vorübergehend: SwimlaneMatrix ist von /big-picture/ entkoppelt, siehe REQ-003 Rev. 3
+test.describe.skip('Viewports (AC-009-4)', () => {
   for (const width of [1280, 1440, 1920]) {
     test(`no horizontal scrolling at ${width}px; matrix fits the screen width`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 })
@@ -215,7 +217,8 @@ test.describe('Cycle overview (E27, entry picture)', () => {
   })
 })
 
-test.describe('Influence lines in the detailed view (E27)', () => {
+// vorübergehend: SwimlaneMatrix ist von /big-picture/ entkoppelt, siehe REQ-003 Rev. 3
+test.describe.skip('Influence lines in the detailed view (E27)', () => {
   test.beforeEach(async ({ page }) => open(page, '/big-picture/'))
 
   test('walking to Fund draws dotted lines down through the levels and on to the next phase', async ({ page }) => {
@@ -292,6 +295,49 @@ test.describe('Cycle overview interaction: click and hover', () => {
   test('no serious or critical axe violations with the interactive ring', async ({ page }) => {
     await segment(page, 'operate').click()
     const r = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).include('[data-testid="cycle"]').analyze()
+    expect(r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([])
+  })
+})
+
+test.describe('Capability bridge (entry page)', () => {
+  test.beforeEach(async ({ page }) => open(page, '/big-picture/'))
+  const node = (page: Page, id: string) => page.locator(`[data-node="${id}"]`)
+
+  test('shows four discipline columns with their capabilities', async ({ page }) => {
+    for (const col of ['EPM', 'TBM', 'EA', 'LPM']) await expect(page.getByRole('heading', { name: col, level: 3 })).toBeVisible()
+    await expect(node(page, 'portfolio-budgets')).toBeVisible()
+    await expect(node(page, 'technology-roadmap')).toBeVisible()
+  })
+
+  test('clicking a card selects it and shows its connections in the side panel', async ({ page }) => {
+    await node(page, 'technology-towers').click()
+    await expect(node(page, 'technology-towers')).toHaveAttribute('aria-pressed', 'true')
+    await expect(page.getByRole('heading', { level: 3, name: 'Technology towers (cost & investment planning)' })).toBeVisible()
+    await expect(page.getByText('Sets guardrail for')).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Open Cost transparency & allocation' })).toBeVisible()
+  })
+
+  test('hovering a card previews its connections without changing the selection', async ({ page }) => {
+    await node(page, 'portfolio-budgets').click()
+    await node(page, 'technology-roadmap').hover()
+    await expect(page.getByText('Preview – click to select')).toBeVisible()
+    await expect(node(page, 'portfolio-budgets')).toHaveAttribute('aria-pressed', 'true')
+    await page.mouse.move(5, 5)
+    await expect(page.getByText('Preview – click to select')).toBeHidden()
+  })
+
+  test('cards are keyboard operable', async ({ page }) => {
+    await node(page, 'fund-value-streams').focus()
+    await page.keyboard.press('Enter')
+    await expect(node(page, 'fund-value-streams')).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  test('no serious or critical axe violations in the capability bridge', async ({ page }) => {
+    await node(page, 'technology-towers').click()
+    const r = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .include('[data-node]')
+      .analyze()
     expect(r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([])
   })
 })

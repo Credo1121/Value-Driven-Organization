@@ -1,4 +1,4 @@
-import type { BigPicture, Break, DeepDive, GlossaryTerm, Source } from '@/content/schema'
+import type { BigPicture, Break, CapabilityBridge, DeepDive, GlossaryTerm, Source } from '@/content/schema'
 
 // Content consistency rules from docs/domain/model.md, section 5.
 // Pure functions: they return findings instead of throwing, so build and tests share them.
@@ -130,6 +130,34 @@ export function validateBigPicture(bp: BigPicture, terms: GlossaryTerm[]): Findi
 
   for (const p of [bp.feedback.from, ...bp.feedback.to])
     if (!phaseIds.has(p)) findings.push({ rule: 'R1', id: 'feedback', message: `unknown phase ${p}` })
+
+  return findings
+}
+
+// Capability bridge (entry page, best-of-breed overview): curated EPM/TBM/EA/LPM capabilities and
+// typed links between them. Not covered by a REQ yet; validated the same way as other content.
+export function validateCapabilityBridge(bridge: CapabilityBridge, bigPicture: BigPicture): Finding[] {
+  const findings: Finding[] = []
+  const disciplineIds = new Set(bigPicture.disciplines.map((d) => d.id))
+  const capabilityIds = new Set(bigPicture.capabilities.map((c) => c.id))
+  const nodeIds = new Set(bridge.nodes.map((n) => n.id))
+
+  for (const d of duplicates(bridge.nodes.map((n) => n.id)))
+    findings.push({ rule: 'UNIQUE', id: d, message: `duplicate capability bridge node ${d}` })
+
+  for (const n of bridge.nodes) {
+    if (!disciplineIds.has(n.disciplineId))
+      findings.push({ rule: 'R1', id: n.id, message: `unknown discipline ${n.disciplineId}` })
+    if (!capabilityIds.has(n.capabilityId))
+      findings.push({ rule: 'R1', id: n.id, message: `unknown capability ${n.capabilityId}` })
+  }
+
+  for (const l of bridge.links) {
+    const id = `${l.from}->${l.to}`
+    if (!nodeIds.has(l.from)) findings.push({ rule: 'R1', id, message: `link from unknown node ${l.from}` })
+    if (!nodeIds.has(l.to)) findings.push({ rule: 'R1', id, message: `link to unknown node ${l.to}` })
+    if (l.from === l.to) findings.push({ rule: 'BP', id, message: 'link points to its own node' })
+  }
 
   return findings
 }

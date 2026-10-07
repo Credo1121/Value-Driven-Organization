@@ -1,0 +1,196 @@
+.wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(18rem, 0.7fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.stage {
+  position: relative;
+}
+
+.wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.wire {
+  stroke: var(--c-grey-500);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 5;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.wire[data-wire='out'] {
+  stroke: var(--c-accent-strong);
+}
+
+.wireHead {
+  fill: var(--c-accent-strong);
+}
+
+.columns {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.columnHead {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-grey-700);
+  text-align: center;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  width: 100%;
+  font: inherit;
+  font-size: var(--fs-min);
+  line-height: 1.3;
+  text-align: left;
+  color: var(--c-ink);
+  background: var(--c-surface);
+  border: none;
+  border-radius: var(--radius);
+  box-shadow: inset 0 0 0 1px var(--c-grey-300);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  transition: box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.card:hover {
+  box-shadow: inset 0 0 0 1px var(--c-grey-700);
+}
+
+.card:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.card.connected {
+  box-shadow: inset 0 0 0 1.5px var(--c-accent-strong);
+  background: var(--c-accent-tint);
+}
+
+.card.active {
+  background: var(--c-ink);
+  color: var(--c-surface);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}
+
+/* Side detail card, same pattern as the cycle overview */
+.detail {
+  padding: var(--space-4);
+  background: var(--c-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-float);
+}
+
+.previewing {
+  box-shadow: 0 0 0 2px var(--c-accent-soft), var(--shadow-float);
+}
+
+.previewNote {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-min);
+  font-weight: 500;
+  color: var(--c-grey-700);
+}
+
+.detailDiscipline {
+  margin: 0;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--c-accent-text);
+}
+
+.detailTitle {
+  margin: var(--space-1) 0 var(--space-3);
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+}
+
+.empty {
+  font-size: var(--fs-small);
+  color: var(--c-grey-700);
+}
+
+.links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.links li {
+  padding-top: var(--space-2);
+  border-top: var(--line);
+}
+
+.links li:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.linkType {
+  display: inline-block;
+  font-size: var(--fs-min);
+  font-weight: 700;
+  color: var(--c-accent-text);
+}
+
+.linkLabel {
+  margin: var(--space-1) 0 0;
+  font-size: var(--fs-small);
+  color: var(--c-grey-900);
+}
+
+.detailActions {
+  margin: var(--space-4) 0 0;
+  padding-top: var(--space-3);
+  border-top: var(--line);
+  font-size: var(--fs-small);
+}
+
+@media (max-width: 60rem) {
+  .wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -104,7 +104,8 @@ test.describe('Capability templates (REQ-004, E26)', () => {
 
   test('AC-003-5 → REQ-004: the Fund phase in the big picture opens the C2 deep dive', async ({ page }) => {
     await open(page, '/big-picture/')
-    await page.getByTestId('swimlane-matrix').getByRole('link', { name: 'Fund', exact: true }).click()
+    // vorübergehend über die Kreis-Übersicht statt der entkoppelten SwimlaneMatrix, siehe REQ-003 Rev. 3
+    await page.getByTestId('cycle-card').getByRole('link', { name: 'Open Investment & funding' }).click()
     await expect(page.getByRole('heading', { level: 2, name: 'Decision rights' })).toBeVisible()
   })
 })

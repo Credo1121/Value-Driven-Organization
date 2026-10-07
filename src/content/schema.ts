@@ -98,6 +98,43 @@ export const valueTypeLabels: Record<(typeof valueTypes)[number], string> = {
   variance: 'Variance',
 }
 
+// Capability bridge (entry page, best-of-breed overview): a small, curated set of EPM/TBM/EA/LPM
+// capabilities and how they connect across planning, funding, delivery and value realisation.
+// Not a complete framework mapping — illustrative, backed by the same C1–C8 capabilities.
+export const bridgeLinkTypes = ['sets-guardrail-for', 'funds', 'informs', 'delivers-to', 'feeds-back-to'] as const
+export const BridgeLinkTypeSchema = z.enum(bridgeLinkTypes)
+export type BridgeLinkType = z.infer<typeof BridgeLinkTypeSchema>
+
+export const bridgeLinkTypeLabels: Record<BridgeLinkType, string> = {
+  'sets-guardrail-for': 'Sets guardrail for',
+  funds: 'Funds',
+  informs: 'Informs',
+  'delivers-to': 'Delivers to',
+  'feeds-back-to': 'Feeds back to',
+}
+
+export const CapabilityBridgeNodeSchema = z.object({
+  id,
+  disciplineId: id,
+  label: z.string().min(1),
+  capabilityId: id,
+})
+
+export const CapabilityBridgeLinkSchema = z.object({
+  from: id,
+  to: id,
+  type: BridgeLinkTypeSchema,
+  label: z.string().min(1),
+})
+
+export const CapabilityBridgeFileSchema = z.object({
+  nodes: z.array(CapabilityBridgeNodeSchema).min(1),
+  links: z.array(CapabilityBridgeLinkSchema).min(1),
+})
+export type CapabilityBridgeNode = z.infer<typeof CapabilityBridgeNodeSchema>
+export type CapabilityBridgeLink = z.infer<typeof CapabilityBridgeLinkSchema>
+export type CapabilityBridge = z.infer<typeof CapabilityBridgeFileSchema>
+
 export const PhaseSchema = z.object({ id, label: z.string().min(1), capabilityId: id })
 
 export const LaneSchema = z.object({
