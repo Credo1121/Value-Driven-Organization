@@ -33,5 +33,10 @@
 | QA-I2-5 | E2E: Kopf „Cost transparency“ im Struktur-Schritt nicht klickbar, weil die ganze Zeile ausgeblendet war. Reproduziert (visibility hidden), 1 Fix: nur Zellen ausblenden, Lane-Köpfe zeigen; Regressionsprüfung ergänzt | erledigt |
 | QA-I2-6 | Abgedämpfte Lane-Köpfe zunächst per Deckkraft; ersetzt durch hellen Rand, damit der Textkontrast unverändert bleibt; axe-Test für Schritt 1 ergänzt | erledigt |
 
+## Nachtrag 07.10.2026 – BUG-001, E24, Cross-Browser
+- BUG-001 (Firefox-Überlauf) behoben, siehe `docs/bugs/BUG-001-swimlane-overflow-firefox.md`.
+- E24: C3 und C8 als Führungsabfolge EPM → LPM; Unit- und E2E-Test ergänzt.
+- E2E jetzt in Chromium, Firefox, WebKit: `npm run check` Exit 0 – 46/46 Unit, 54/54 E2E.
+
 ## NOT RUN
-Screenreader, Firefox/Safari, fachliches Review der 32 Zellinhalte durch den Auftraggeber.
+Screenreader, fachliches Review der 32 Zellinhalte durch den Auftraggeber.

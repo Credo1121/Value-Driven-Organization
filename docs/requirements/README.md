@@ -22,7 +22,7 @@ Spalten „Implementierung“ und „Nachweis“ werden ab I1 mit Pfaden zu Code
 | ID | Ziel | Messung | Status |
 |---|---|---|---|
 | QZ1 | Zielauflösung 1280–1920 px Breite (Präsentation), nutzbar ab 768 px | Viewport-Prüfung im Browser | [BEST] Richtung, Werte [ANN] |
-| QZ2 | Browser: aktuelle Chrome/Edge, Safari, Firefox | manuelle Prüfung | [ANN] |
+| QZ2 | Browser: aktuelle Chrome/Edge, Safari, Firefox | automatisiert: Playwright Chromium, Firefox, WebKit (Safari-Engine) seit 07.10.2026 | [ANN] Zielbrowser; Prüfung umgesetzt |
 | QZ3 | Zugänglichkeit: WCAG 2.2 AA als Orientierung | axe + manuelle Prüfung | [BEST] Anforderungen, Konformitätsziel [ANN] |
 | QZ4 | Offline-Nutzung vom Laptop | statischer Build lokal ohne Netz starten und alle Routen prüfen | [BEST] A4 |
 | QZ5 | Performance | keine Zielwerte festgelegt. Bei statischer Auslieferung nachrangig, [OFFEN] | – |

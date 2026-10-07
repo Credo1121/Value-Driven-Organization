@@ -87,6 +87,6 @@ Kommunikation und Dokumentation auf Deutsch. **App-Oberfläche und -Inhalte auf 
 | Lint | `npm run lint` |
 | Tests (inkl. Inhaltsvalidierung, Token-Kontraste) | `npm test` |
 | Statischer Build nach `out/` (bricht bei ungültigen Inhalten ab) | `npm run build` |
-| Browser-Tests + a11y (axe) gegen den statischen Build; einmalig vorher `npx playwright install chromium` | `npm run test:e2e` |
+| Browser-Tests + a11y (axe) in Chromium, Firefox, WebKit gegen den statischen Build (Port 4210); einmalig vorher `npx playwright install chromium firefox webkit` | `npm run test:e2e` |
 | Alle Gates nacheinander (inkl. E2E) | `npm run check` |
 | Build offline ausliefern (http://localhost:4180) | `npm run serve:out` |

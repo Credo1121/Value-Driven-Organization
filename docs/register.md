@@ -63,3 +63,4 @@ Stand: 07.10.2026. Jede ID ist stabil und wird nicht wiederverwendet.
 | R9 | Next.js-Minor-Releases in kurzer Folge | Versionsdrift | exaktes Pinning, Upgrades nur per eigenem CHG |
 | R10 | Wertarten wirken wie Controlling-Tool | App wird als operatives Finanzsystem missverstanden (Nicht-Scope) | wenige synthetische Jahreswerte, Fokus auf Steuerungslogik und Rückkopplung statt auf Reporting |
 | R11 | `npm audit`: 5 × high (braces, DoS) in der Lint-Toolchain (eslint-config-next 16.4.0 → fast-glob → micromatch) | nur Entwicklungswerkzeug, nicht im ausgelieferten Build; `--omit=dev` = 0 Befunde | kein `audit fix --force` (würde auf v14 zurückstufen); bei neuer eslint-config-next-Version erneut prüfen |
+| R12 | Darstellungsunterschiede zwischen Browsern (BUG-001 blieb in Chromium-only-QA unentdeckt) | Workshop-Darstellung auf Kundengeräten fehlerhaft | E2E seit 07.10.2026 in Chromium, Firefox, WebKit inkl. Layout-Integritätstest |
