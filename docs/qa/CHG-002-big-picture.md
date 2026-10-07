@@ -47,6 +47,10 @@ Alle Akzeptanzkriterien von REQ-003 sind automatisiert im Browser geprüft. Die 
 | QA-I2-2 | info | Das Vorschau-Tool der Desktop-App liest weiterhin die Startkonfiguration des alten Ordners; Ersatz: Playwright-Screenshots unter `.qa-shots/` (nicht versioniert) | offen (Werkzeug) |
 | QA-I2-3 | info | Mindestschriftgröße (QA-P0-4) festgelegt: Diagrammtext skaliert mit der Breite, Untergrenze 14 px (Code/Disziplinen) bzw. 16 px (Fähigkeitsname) | erledigt |
 
+## Nachtrag 07.10.2026 – Entscheidung E22 (C2 EPM → LPM, C7 IT Ops)
+- Umsetzung: `leadSequence`/`leadNote` im Inhaltsvertrag, Anzeige „Leads: EPM → LPM“ im Diagramm, Erläuterung in Textansicht und Fähigkeitsseite.
+- `npm run check` Exit 0: 50/50 Unit (3 neu), 16/16 E2E (1 neu), axe weiterhin 0 serious/critical; Sichtprüfung C2-Knoten PASS.
+
 ## Restrisiken
 - Kantenmenge ist unsere Synthese ([SYN]) und noch nicht fachlich abgenommen.
 - R11 (Dev-Audit braces) unverändert.

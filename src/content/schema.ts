@@ -83,6 +83,9 @@ export const CapabilitySchema = z.object({
   primary: z.array(id).min(1),
   supporting: z.array(id),
   role: z.enum(['loop', 'cross']),
+  // true: leads hand over in the listed order (e.g. EPM → LPM); false: joint lead.
+  leadSequence: z.boolean().default(false),
+  leadNote: z.string().min(1).optional(),
 })
 
 export const LinkSchema = z.object({

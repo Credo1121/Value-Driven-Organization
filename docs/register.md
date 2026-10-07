@@ -30,6 +30,7 @@ Stand: 07.10.2026. Jede ID ist stabil und wird nicht wiederverwendet.
 | E19 | Wertarten Target / Budget / Forecast / Actual | ✅ entschieden [BEST] | Als Wertart-Achse für Kosten und Finanzierung (`model.md` 2.1). MVP-Tiefe: in Vertiefungen C2/C4 und im Halvard-Beispiel, keine eigene Seite | 07.10.2026 |
 | E20 | Glossar-Gliederung | ✅ entschieden [BEST] | Gruppiert nach Kategorien, alphabetisch je Gruppe; AC-001-1 Rev. 3 (QA-I1-1) | 07.10.2026 |
 | E21 | GitHub-Repository | ✅ entschieden [BEST] | `https://github.com/Credo1121/Value-Driven-Organization.git` als Remote `origin`; Übertragung nach Commit | 07.10.2026 |
+| E22 | Leitdisziplinen C2 und C7 | ✅ entschieden [BEST] | C2: EPM führt übergreifend, danach übernimmt LPM (Abfolge EPM → LPM). C7: IT Ops führt. C3 und C8 (EPM/LPM) noch nicht bestätigt | 07.10.2026 |
 
 ## Annahmen
 

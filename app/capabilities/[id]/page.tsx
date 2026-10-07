@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getContent } from '@/content/load'
+import { formatLeads } from '@/ui/big-picture/leads'
 import styles from '@/ui/page.module.css'
 
 // Static capability pages. The full deep-dive template (REQ-004) follows in I3.
@@ -33,7 +34,7 @@ export default async function CapabilityPage({ params }: Props) {
       <h1>{c.name}</h1>
       <p className={styles.preamble}>{c.question}</p>
       <p>
-        <strong>Leads:</strong> {names(c.primary)}
+        <strong>Leads:</strong> {formatLeads(c, short)}
         {c.supporting.length > 0 && (
           <>
             {' · '}
@@ -41,6 +42,7 @@ export default async function CapabilityPage({ params }: Props) {
           </>
         )}
       </p>
+      {c.leadNote && <p>{c.leadNote}</p>}
       <p className={styles.notice}>
         The full deep dive (roles, inputs and outputs, decision rights, interfaces, typical breaks)
         follows in increment I3.

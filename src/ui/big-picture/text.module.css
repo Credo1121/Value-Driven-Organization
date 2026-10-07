@@ -47,3 +47,9 @@
   font-weight: 400;
   color: var(--c-grey-900);
 }
+
+.note {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--c-grey-900);
+}

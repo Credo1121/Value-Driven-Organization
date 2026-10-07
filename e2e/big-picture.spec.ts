@@ -80,6 +80,13 @@ test.describe('Big picture (REQ-003)', () => {
     await expect(page.getByRole('heading', { level: 1, name: 'Investment & funding' })).toBeVisible()
   })
 
+  test('E22: C2 shows the lead sequence EPM → LPM in diagram and text view', async ({ page }) => {
+    await page.keyboard.press('ArrowRight')
+    await expect(page.locator('[data-capability="c2"]')).toContainText('Leads: EPM → LPM')
+    await page.getByText('Text view: all capabilities and links').click()
+    await expect(page.locator('#text-view')).toContainText('LPM then takes the lead within each portfolio')
+  })
+
   test('AC-003-6: the text view lists every capability and every link', async ({ page }) => {
     await page.getByText('Text view: all capabilities and links').click()
     const text = page.locator('#text-view')

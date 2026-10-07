@@ -1,11 +1,35 @@
 {
   "disciplines": [
-    { "id": "epm", "short": "EPM", "glossaryId": "epm" },
-    { "id": "lpm", "short": "LPM", "glossaryId": "lpm" },
-    { "id": "tbm", "short": "TBM", "glossaryId": "tbm" },
-    { "id": "ea", "short": "EA", "glossaryId": "ea" },
-    { "id": "ops", "short": "IT Ops", "glossaryId": null },
-    { "id": "finance", "short": "Finance", "glossaryId": "finance-processes" }
+    {
+      "id": "epm",
+      "short": "EPM",
+      "glossaryId": "epm"
+    },
+    {
+      "id": "lpm",
+      "short": "LPM",
+      "glossaryId": "lpm"
+    },
+    {
+      "id": "tbm",
+      "short": "TBM",
+      "glossaryId": "tbm"
+    },
+    {
+      "id": "ea",
+      "short": "EA",
+      "glossaryId": "ea"
+    },
+    {
+      "id": "ops",
+      "short": "IT Ops",
+      "glossaryId": null
+    },
+    {
+      "id": "finance",
+      "short": "Finance",
+      "glossaryId": "finance-processes"
+    }
   ],
   "capabilities": [
     {
@@ -13,8 +37,13 @@
       "code": "C1",
       "name": "Strategic direction",
       "question": "Which objectives do we pursue, and what do they mean for technology?",
-      "primary": ["epm"],
-      "supporting": ["lpm", "ea"],
+      "primary": [
+        "epm"
+      ],
+      "supporting": [
+        "lpm",
+        "ea"
+      ],
       "role": "loop"
     },
     {
@@ -22,17 +51,30 @@
       "code": "C2",
       "name": "Investment & funding",
       "question": "How much money flows where, and within which guardrails?",
-      "primary": ["epm", "lpm"],
-      "supporting": ["tbm", "finance"],
-      "role": "loop"
+      "primary": [
+        "epm",
+        "lpm"
+      ],
+      "supporting": [
+        "tbm",
+        "finance"
+      ],
+      "role": "loop",
+      "leadSequence": true,
+      "leadNote": "EPM leads across the enterprise (portfolio budgets, guardrails, cross-portfolio investments); LPM then takes the lead within each portfolio (value stream funding). In the compact variant without a separate EPM level, LPM or an integrated portfolio governance leads throughout."
     },
     {
       "id": "c3",
       "code": "C3",
       "name": "Prioritisation & dependencies",
       "question": "What do we do first, what not at all, and what depends on what?",
-      "primary": ["lpm", "epm"],
-      "supporting": ["ea"],
+      "primary": [
+        "lpm",
+        "epm"
+      ],
+      "supporting": [
+        "ea"
+      ],
       "role": "loop"
     },
     {
@@ -40,8 +82,12 @@
       "code": "C4",
       "name": "Cost transparency & allocation",
       "question": "What does technology cost, for what, and who consumes it?",
-      "primary": ["tbm"],
-      "supporting": ["finance"],
+      "primary": [
+        "tbm"
+      ],
+      "supporting": [
+        "finance"
+      ],
       "role": "cross"
     },
     {
@@ -49,8 +95,13 @@
       "code": "C5",
       "name": "Architecture & lifecycle",
       "question": "Which target architecture, which technology is ending, which risks exist?",
-      "primary": ["ea"],
-      "supporting": ["tbm", "lpm"],
+      "primary": [
+        "ea"
+      ],
+      "supporting": [
+        "tbm",
+        "lpm"
+      ],
       "role": "cross"
     },
     {
@@ -58,8 +109,12 @@
       "code": "C6",
       "name": "Delivery & capacity",
       "question": "How does work flow through limited capacity?",
-      "primary": ["lpm"],
-      "supporting": ["ea"],
+      "primary": [
+        "lpm"
+      ],
+      "supporting": [
+        "ea"
+      ],
       "role": "loop"
     },
     {
@@ -67,8 +122,13 @@
       "code": "C7",
       "name": "Operations & service quality",
       "question": "Do services run reliably, securely and economically?",
-      "primary": ["ops"],
-      "supporting": ["tbm", "ea"],
+      "primary": [
+        "ops"
+      ],
+      "supporting": [
+        "tbm",
+        "ea"
+      ],
       "role": "loop"
     },
     {
@@ -76,8 +136,13 @@
       "code": "C8",
       "name": "Value realisation & reallocation",
       "question": "Does it work? What do we keep funding, change or stop?",
-      "primary": ["epm", "lpm"],
-      "supporting": ["tbm"],
+      "primary": [
+        "epm",
+        "lpm"
+      ],
+      "supporting": [
+        "tbm"
+      ],
       "role": "loop"
     }
   ],
@@ -87,20 +152,110 @@
     "description": "Budgeting, forecasting, accounting and capitalisation – adjacent to technology steering, not part of TBM."
   },
   "links": [
-    { "id": "l1", "from": "c1", "to": "c2", "type": "strategic-contribution", "label": "Objectives and investment themes set the direction for funding." },
-    { "id": "l2", "from": "c2", "to": "c3", "type": "funding", "label": "Approved budgets and guardrails define what can be prioritised." },
-    { "id": "l3", "from": "c3", "to": "c6", "type": "delivery", "label": "Prioritised investments are pulled into delivery." },
-    { "id": "l4", "from": "c6", "to": "c7", "type": "delivery", "label": "Delivered products and changes go into operation." },
-    { "id": "l5", "from": "c7", "to": "c8", "type": "outcome-feedback", "label": "Usage, service quality and run cost show what is actually achieved." },
-    { "id": "l6", "from": "c8", "to": "c1", "type": "outcome-feedback", "label": "Realised outcomes revise objectives and themes." },
-    { "id": "l7", "from": "c8", "to": "c2", "type": "outcome-feedback", "label": "Results trigger continued funding, reallocation or stop." },
-    { "id": "l8", "from": "c4", "to": "c2", "type": "cost-allocation", "label": "Actual and forecast cost by solution and consumer inform budgets." },
-    { "id": "l9", "from": "c4", "to": "c8", "type": "cost-allocation", "label": "Allocated actual cost shows the economics of what was delivered." },
-    { "id": "l10", "from": "c7", "to": "c4", "type": "cost-allocation", "label": "Run cost and consumption drivers flow into cost allocation." },
-    { "id": "l11", "from": "c5", "to": "c3", "type": "architecture-dependency", "label": "Dependencies and end-of-life dates constrain sequencing." },
-    { "id": "l12", "from": "c5", "to": "c6", "type": "architecture-dependency", "label": "Target architecture and platforms shape how work is delivered." },
-    { "id": "l13", "from": "c5", "to": "c1", "type": "strategic-contribution", "label": "Capability map and technology risk inform strategic choices." },
-    { "id": "l14", "from": "env", "to": "c2", "type": "funding", "label": "Budgeting and forecasting provide the financial frame." },
-    { "id": "l15", "from": "env", "to": "c4", "type": "cost-allocation", "label": "Accounting delivers booked actuals to the cost model." }
+    {
+      "id": "l1",
+      "from": "c1",
+      "to": "c2",
+      "type": "strategic-contribution",
+      "label": "Objectives and investment themes set the direction for funding."
+    },
+    {
+      "id": "l2",
+      "from": "c2",
+      "to": "c3",
+      "type": "funding",
+      "label": "Approved budgets and guardrails define what can be prioritised."
+    },
+    {
+      "id": "l3",
+      "from": "c3",
+      "to": "c6",
+      "type": "delivery",
+      "label": "Prioritised investments are pulled into delivery."
+    },
+    {
+      "id": "l4",
+      "from": "c6",
+      "to": "c7",
+      "type": "delivery",
+      "label": "Delivered products and changes go into operation."
+    },
+    {
+      "id": "l5",
+      "from": "c7",
+      "to": "c8",
+      "type": "outcome-feedback",
+      "label": "Usage, service quality and run cost show what is actually achieved."
+    },
+    {
+      "id": "l6",
+      "from": "c8",
+      "to": "c1",
+      "type": "outcome-feedback",
+      "label": "Realised outcomes revise objectives and themes."
+    },
+    {
+      "id": "l7",
+      "from": "c8",
+      "to": "c2",
+      "type": "outcome-feedback",
+      "label": "Results trigger continued funding, reallocation or stop."
+    },
+    {
+      "id": "l8",
+      "from": "c4",
+      "to": "c2",
+      "type": "cost-allocation",
+      "label": "Actual and forecast cost by solution and consumer inform budgets."
+    },
+    {
+      "id": "l9",
+      "from": "c4",
+      "to": "c8",
+      "type": "cost-allocation",
+      "label": "Allocated actual cost shows the economics of what was delivered."
+    },
+    {
+      "id": "l10",
+      "from": "c7",
+      "to": "c4",
+      "type": "cost-allocation",
+      "label": "Run cost and consumption drivers flow into cost allocation."
+    },
+    {
+      "id": "l11",
+      "from": "c5",
+      "to": "c3",
+      "type": "architecture-dependency",
+      "label": "Dependencies and end-of-life dates constrain sequencing."
+    },
+    {
+      "id": "l12",
+      "from": "c5",
+      "to": "c6",
+      "type": "architecture-dependency",
+      "label": "Target architecture and platforms shape how work is delivered."
+    },
+    {
+      "id": "l13",
+      "from": "c5",
+      "to": "c1",
+      "type": "strategic-contribution",
+      "label": "Capability map and technology risk inform strategic choices."
+    },
+    {
+      "id": "l14",
+      "from": "env",
+      "to": "c2",
+      "type": "funding",
+      "label": "Budgeting and forecasting provide the financial frame."
+    },
+    {
+      "id": "l15",
+      "from": "env",
+      "to": "c4",
+      "type": "cost-allocation",
+      "label": "Accounting delivers booked actuals to the cost model."
+    }
   ]
 }

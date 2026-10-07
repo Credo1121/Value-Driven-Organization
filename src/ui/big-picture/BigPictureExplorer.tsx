@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { linkTypeLabels, type BigPicture, type LinkType } from '@/content/schema'
 import { VIEW, boxes, pathFor, pct, routes, trimEnd, type Box } from './layout'
 import { lineStyleNames, linkStyles, type MarkerShape } from './linkStyles'
+import { formatLeads } from './leads'
 import { lastStep, steps, typeOrder, viewState } from './steps'
 import styles from './bigPicture.module.css'
 
@@ -187,7 +188,7 @@ export function BigPictureExplorer({ data }: { data: BigPicture }) {
               <span className={styles.name}>{c.name}</span>
               {view.showDisciplines && (
                 <span className={styles.disciplines}>
-                  <span className={styles.lead}>Leads: {names(c.primary)}</span>
+                  <span className={styles.lead}>Leads: {formatLeads(c, shortName)}</span>
                   {c.supporting.length > 0 && <span>Supports: {names(c.supporting)}</span>}
                 </span>
               )}

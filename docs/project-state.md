@@ -26,12 +26,13 @@
 
 ## Offene Fragen an den Auftraggeber (priorisiert)
 1. **Push zu GitHub** durch den Auftraggeber (`git push -u origin main`)
-2. **Fachliches Review** des Gesamtbilds: Sind die 15 Verbindungen und die Leitdisziplinen so tragfähig?
+2. **Fachliches Review** des Gesamtbilds: C2/C7 entschieden (E22); offen: die 15 Verbindungen sowie C3/C8 (EPM/LPM gemeinsam?)
 3. **Gate:** Freigabe I3 (Capability deep dive, Start mit C2)
 
 Zurückgestellt bis I7 (bestätigt): E5a–c (Hex-Werte, Webfont-Lizenz, Logo-SVG), E15 (Skill `eraneos-ci`), E4 (Hosting), E9 (Lizenzprüfung vor externer Nutzung).
 
 ## Letzte Evidenz
+- 07.10.2026: E22 umgesetzt (C2 EPM → LPM, C7 IT Ops); `npm run check` Exit 0, 50/50 Unit, 16/16 E2E
 - 07.10.2026 14:15: CHG-002 – `npm run check` Exit 0: typecheck, lint, 47/47 Unit, build (18 Seiten), 15/15 E2E inkl. axe (0 serious/critical) und Viewports 768–1920 px; Screenreader/Firefox/Safari NOT RUN
 - 07.10.2026: Commit `66f39f2` (P0 + I1), Remote origin eingerichtet; QA-I1-1 erledigt (AC-001-1 Rev. 3)
 - 07.10.2026 13:43: CHG-001 – typecheck, lint, 22/22 Tests, build PASS; Build-Bruchtest PASS (Exit 1 bei R1-Verstoß); Offline-Auslieferung PASS; Browser-Sichtprüfung und manuelle a11y NOT RUN

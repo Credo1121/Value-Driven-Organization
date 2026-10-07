@@ -4,6 +4,7 @@ import glossaryJson from '@content/glossary.json'
 import { BigPictureFileSchema, GlossaryFileSchema, linkTypes } from '@/content/schema'
 import { validateBigPicture } from '@/domain/validation'
 import { VIEW, boxes, routes } from '@/ui/big-picture/layout'
+import { formatLeads } from '@/ui/big-picture/leads'
 import { linkStyles } from '@/ui/big-picture/linkStyles'
 import { steps, typeOrder, viewState } from '@/ui/big-picture/steps'
 
@@ -52,6 +53,26 @@ describe('big picture content (REQ-003)', () => {
       const n = bp.capabilities.filter((c) => [...c.primary, ...c.supporting].includes(d)).length
       expect(n, d).toBeGreaterThanOrEqual(2)
     }
+  })
+})
+
+describe('confirmed lead decisions (register E22)', () => {
+  const short = new Map(bp.disciplines.map((d) => [d.id, d.short]))
+  const cap = (id: string) => bp.capabilities.find((c) => c.id === id)!
+
+  it('C2: EPM leads first, then LPM takes over – shown as a sequence with an explanation', () => {
+    expect(cap('c2').primary).toEqual(['epm', 'lpm'])
+    expect(cap('c2').leadSequence).toBe(true)
+    expect(formatLeads(cap('c2'), short)).toBe('EPM → LPM')
+    expect(cap('c2').leadNote).toMatch(/compact/i)
+  })
+
+  it('C7: IT operations leads', () => {
+    expect(cap('c7').primary).toEqual(['ops'])
+  })
+
+  it('joint leads without a sequence are not shown with an arrow', () => {
+    expect(formatLeads(cap('c3'), short)).not.toContain('→')
   })
 })
 

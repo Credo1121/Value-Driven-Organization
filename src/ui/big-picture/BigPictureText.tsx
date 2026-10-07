@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { linkTypeLabels, type BigPicture } from '@/content/schema'
+import { formatLeads } from './leads'
 import { typeOrder } from './steps'
 import styles from './text.module.css'
 
@@ -37,7 +38,10 @@ export function BigPictureText({ data }: { data: BigPicture }) {
                 {c.role === 'cross' && <span className={styles.tag}> (cross-cutting)</span>}
               </th>
               <td>{c.question}</td>
-              <td>{names(c.primary)}</td>
+              <td>
+                {formatLeads(c, shortName)}
+                {c.leadNote && <span className={styles.note}>{c.leadNote}</span>}
+              </td>
               <td>{names(c.supporting) || '–'}</td>
             </tr>
           ))}
