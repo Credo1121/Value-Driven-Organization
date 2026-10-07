@@ -1,0 +1,190 @@
+{
+  "sources": [
+    {
+      "id": "S-TBM-1",
+      "title": "TBM Framework",
+      "publisher": "TBM Council",
+      "urls": ["https://www.tbmcouncil.org/framework/"],
+      "retrieved": "2026-10-07",
+      "version": "Framework, second version (page © 2026)",
+      "status": "verified",
+      "supports": [
+        "Four layers: Foundations, TBM Model, TBM Outcomes, Organizational Value Drivers.",
+        "The TBM Model lists connected standards, including Agile, Strategic Portfolio Management (SPM), FinOps and IT financial management."
+      ],
+      "notVerified": [],
+      "limits": "Layer names taken from page text and figure captions; the figure itself was not inspected. Listing 'Benchmark' as a TBM outcome does not mean this app provides benchmarks.",
+      "license": "All rights reserved. Framework graphics are not reproduced."
+    },
+    {
+      "id": "S-TBM-2",
+      "title": "TBM Taxonomy",
+      "publisher": "TBM Council",
+      "urls": ["https://www.tbmcouncil.org/taxonomy/"],
+      "retrieved": "2026-10-07",
+      "version": "5.0.1, published 18 July 2025",
+      "status": "verified",
+      "supports": [
+        "Layers: Technology Cost Pool, Technology Resource Towers, Technology Solutions, Technology Consumer.",
+        "The Technology Consumer layer was renamed in version 5.0 (previously 'Business Layer').",
+        "Finance, IT and Business views are cross-sections, not layers."
+      ],
+      "notVerified": ["Sub-categories and white paper content (likely members only)."],
+      "limits": "Only the public taxonomy page was read.",
+      "license": "No licence note on the page; treated like S-TBM-1."
+    },
+    {
+      "id": "S-SAFE-1",
+      "title": "Lean Portfolio Management",
+      "publisher": "Scaled Agile, Inc.",
+      "urls": ["https://framework.scaledagile.com/lean-portfolio-management/"],
+      "retrieved": "2026-10-07",
+      "version": "SAFe 6.0 (inferred indirectly, not stated on the page)",
+      "status": "verified",
+      "supports": [
+        "LPM covers strategy and investment funding, Agile portfolio operations and Lean governance.",
+        "LPM governs a specific portfolio within an enterprise."
+      ],
+      "notVerified": ["Detailed content behind login."],
+      "limits": "Public part of the article only.",
+      "license": "Copying text or images requires written permission. SAFe is a registered trademark."
+    },
+    {
+      "id": "S-SAFE-2",
+      "title": "Lean Portfolio Management Discipline",
+      "publisher": "Scaled Agile, Inc.",
+      "urls": ["https://framework.scaledagile.com/lean-portfolio-management-discipline/"],
+      "retrieved": "2026-10-07",
+      "version": "Last updated 31 March 2025",
+      "status": "verified",
+      "supports": [
+        "Larger enterprises may manage multiple portfolios.",
+        "Strategic themes are adapted at portfolio level.",
+        "Enabling agility with enterprise architecture is one of the discipline's competencies."
+      ],
+      "notVerified": ["Three of nine competencies were not yet published."],
+      "limits": "Does not describe a governance layer above multiple portfolios; the enterprise portfolio layer in this app is our own synthesis.",
+      "license": "Copying text or images requires written permission. SAFe is a registered trademark."
+    },
+    {
+      "id": "S-SAFE-3",
+      "title": "Lean Budgets",
+      "publisher": "Scaled Agile, Inc.",
+      "urls": ["https://framework.scaledagile.com/lean-budgets/"],
+      "retrieved": "2026-10-07",
+      "version": "SAFe 6.0 (inferred indirectly, not stated on the page)",
+      "status": "verified",
+      "supports": [
+        "Lean budgets fund value streams instead of projects.",
+        "Each portfolio operates within an approved budget."
+      ],
+      "notVerified": ["Guardrails, participatory budgeting and cadence (behind login)."],
+      "limits": "Public part of the article only.",
+      "license": "Copying text or images requires written permission. SAFe is a registered trademark."
+    },
+    {
+      "id": "S-SAFE-4",
+      "title": "CapEx and OpEx",
+      "publisher": "Scaled Agile, Inc.",
+      "urls": ["https://framework.scaledagile.com/capex-and-opex/"],
+      "retrieved": "2026-10-07",
+      "version": "Extended guidance, no version stated",
+      "status": "verified",
+      "supports": [
+        "Lean budgets can contain both CapEx and OpEx.",
+        "Labour for software development can be capitalised; finance should be involved early."
+      ],
+      "notVerified": [],
+      "limits": "Accounting rules are country- and company-specific.",
+      "license": "Copying text or images requires written permission. SAFe is a registered trademark."
+    },
+    {
+      "id": "S-SAFE-5",
+      "title": "Epic",
+      "publisher": "Scaled Agile, Inc.",
+      "urls": ["https://framework.scaledagile.com/epic/"],
+      "retrieved": "2026-10-07",
+      "version": "Last updated 11 March 2025",
+      "status": "verified",
+      "supports": [
+        "Business and enabler epics.",
+        "An epic requires an MVP, a Lean business case and a cost estimate, and is governed through the portfolio Kanban."
+      ],
+      "notVerified": ["Epic hypothesis statement and business outcome hypothesis (behind login)."],
+      "limits": "Public part of the article only.",
+      "license": "Copying text or images requires written permission. SAFe is a registered trademark."
+    },
+    {
+      "id": "S-OG-1",
+      "title": "The IT4IT Standard",
+      "publisher": "The Open Group",
+      "urls": ["https://publications.opengroup.org/standards/it4it/c24a", "https://www.opengroup.org/it4it"],
+      "retrieved": "2026-10-07",
+      "version": "3.0.1, published 24 October 2024 (document C24A)",
+      "status": "verified",
+      "supports": [
+        "Covers the digital product portfolio at scale and product-based investment models.",
+        "Covers the lifecycle from investment decision to end of life."
+      ],
+      "notVerified": ["Full standard text (login required)."],
+      "limits": "Based on the publication page. The 'About IT4IT' page still describes version 2.1 and is not used.",
+      "license": "Commercial use requires a licence. Use for training LLMs or generative AI is prohibited."
+    },
+    {
+      "id": "S-OG-2",
+      "title": "IT4IT certification programme FAQ",
+      "publisher": "The Open Group",
+      "urls": ["https://www.opengroup.org/certifications/it4it-certification-program-faqs"],
+      "retrieved": "2026-10-07",
+      "version": "IT4IT 3 Foundation",
+      "status": "verified",
+      "supports": [
+        "Seven value streams: Evaluate, Explore, Integrate, Deploy, Release, Consume, Operate."
+      ],
+      "notVerified": [],
+      "limits": "Taken from the certification FAQ and syllabus, not from the standard text.",
+      "license": "See S-OG-1."
+    },
+    {
+      "id": "S-OG-3",
+      "title": "The TOGAF Standard",
+      "publisher": "The Open Group",
+      "urls": ["https://www.opengroup.org/togaf", "https://www.opengroup.org/togaf/series-guides"],
+      "retrieved": "2026-10-07",
+      "version": "10th Edition",
+      "status": "verified",
+      "supports": [
+        "Series guides 'Business Capabilities' and 'Business Capability Planning' exist under Business Architecture."
+      ],
+      "notVerified": ["Version, date and content of the series guides (login required)."],
+      "limits": "Existence of the guides only.",
+      "license": "A web account is required to read the online standard."
+    },
+    {
+      "id": "S-GART-1",
+      "title": "Strategic Portfolio Management (market term)",
+      "publisher": "Gartner",
+      "urls": ["https://www.gartner.com/"],
+      "retrieved": "2026-10-07",
+      "version": "n/a",
+      "status": "not-verified",
+      "supports": [],
+      "notVerified": ["All Gartner pages returned HTTP 403. A search snippet mentions a 'Magic Quadrant for Strategic Portfolio Management'; dates were contradictory."],
+      "limits": "Must not be used as evidence. No figures or study content.",
+      "license": "Gartner content is for clients only."
+    },
+    {
+      "id": "S-PMI-1",
+      "title": "The Standard for Portfolio Management",
+      "publisher": "Project Management Institute",
+      "urls": ["https://www.pmi.org/standards/for-portfolio-management"],
+      "retrieved": "2026-10-07",
+      "version": "n/a",
+      "status": "not-verified",
+      "supports": [],
+      "notVerified": ["Page returned HTTP 403. Search results suggest a published 4th edition and a 5th edition in draft."],
+      "limits": "Must not be used as evidence until checked manually.",
+      "license": "n/a"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+# Abhängigkeiten und Build-Ergebnisse (ab I1)
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+playwright-report/
+test-results/
+
+# Lokale Umgebung und Secrets – niemals committen
+.env
+.env.*
+!.env.example
+
+# Betriebssystem / Editor
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# Schriftdateien ohne dokumentierte Web-Lizenz (docs/design/tokens.md, E5b)
+*.ttf
+*.otf
+*.woff
+*.woff2

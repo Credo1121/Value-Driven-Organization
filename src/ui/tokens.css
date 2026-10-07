@@ -1,0 +1,47 @@
+/*
+ * Design tokens – Eraneos CI, web transfer (docs/design/tokens.md, REQ-010).
+ * Provisional: hex values read from screenshot pixels (E5a), web fonts pending (E5b).
+ * This is the only file allowed to contain colour values (AC-010-1).
+ */
+:root {
+  /* Greyscale (default palette) */
+  --c-ink: #202020;
+  --c-grey-900: #584f4a;
+  --c-grey-700: #93867d; /* large text / non-text only */
+  --c-grey-500: #b1a39a; /* decorative only */
+  --c-grey-300: #cfc2b9;
+  --c-grey-200: #e7ded7;
+  --c-grey-100: #f3ece6;
+  --c-surface-warm: #fcf8f7;
+  --c-surface: #ffffff;
+
+  /* Orange accent – highlight only */
+  --c-accent: #ff6529; /* fills and markers, never text */
+  --c-accent-strong: #dd3d01; /* lines, icons, focus ring */
+  --c-accent-text: #932901; /* small text and links */
+  --c-accent-tint: #fee0d5;
+  --c-on-accent: #202020; /* text on --c-accent */
+
+  /* Typography (Aptos referenced by name only, never bundled – E5b) */
+  --f-display: 'Eraneos Display', 'Helvetica Neue', Arial, sans-serif;
+  --f-body: 'Aptos', 'Segoe UI', Arial, Helvetica, sans-serif;
+  --fs-h1: clamp(2.5rem, 4vw, 4rem);
+  --fs-h2: clamp(1.75rem, 2.6vw, 2.75rem);
+  --fs-h3: 1.3rem;
+  --fs-preamble: 1.25rem;
+  --fs-body: 1.125rem;
+  --fs-small: 1rem;
+  --fs-min: 0.875rem; /* 14 px floor for shared screens */
+
+  /* Spacing and shape */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+  --radius: 0.375rem;
+  --line: 1px solid var(--c-grey-300);
+  --focus-ring: 3px solid var(--c-accent-strong);
+  --content-width: 72rem;
+}

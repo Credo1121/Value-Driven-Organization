@@ -1,0 +1,496 @@
+{
+  "terms": [
+    {
+      "id": "epm",
+      "term": "Enterprise Portfolio Management (EPM)",
+      "category": "discipline",
+      "definition": "Overarching steering frame for large enterprises: enterprise strategy, cross-portfolio initiatives, long-term investment planning, prioritisation across portfolios, guardrails, decision rights, transparency on results and reallocation.",
+      "distinction": "Our reference model, not a universal standard. The term 'Strategic Portfolio Management' is also used in the market.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["lpm", "enterprise-initiative", "guardrail"]
+    },
+    {
+      "id": "lpm",
+      "term": "Lean Portfolio Management (LPM)",
+      "category": "discipline",
+      "definition": "Steers a portfolio through strategy and investment funding, Agile portfolio operations and Lean governance.",
+      "distinction": "Not just a delivery layer. Larger enterprises may run several LPM portfolios.",
+      "variants": "SAFe term; the app also explains hybrid and other flow-based delivery models.",
+      "statementType": "framework",
+      "sourceIds": ["S-SAFE-1", "S-SAFE-2"],
+      "related": ["epm", "portfolio", "value-stream"]
+    },
+    {
+      "id": "tbm",
+      "term": "Technology Business Management (TBM)",
+      "category": "discipline",
+      "definition": "Discipline for a shared economic view of technology: costs, resources, solutions, consumers, allocation and value.",
+      "distinction": "Distinct from budgeting, forecasting and accounting, which remain finance processes. TBM provides transparency and drivers as input.",
+      "statementType": "framework",
+      "sourceIds": ["S-TBM-1", "S-TBM-2"],
+      "related": ["cost-allocation", "finance-processes"]
+    },
+    {
+      "id": "ea",
+      "term": "Enterprise Architecture (EA)",
+      "category": "discipline",
+      "definition": "Connects steering with business capabilities, product and application landscapes, platforms, dependencies, current and target states, roadmaps, lifecycles and technical risk.",
+      "distinction": "Distinguishes [[business-capability]], [[product]], [[application]] and [[platform]] rather than treating them as the same thing.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["business-capability", "technology"]
+    },
+    {
+      "id": "finance-processes",
+      "term": "Corporate finance processes",
+      "category": "discipline",
+      "definition": "Budgeting, forecasting, accounting and capitalisation.",
+      "distinction": "Adjacent to technology steering, with interfaces to investment planning and to [[tbm]].",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["budget", "forecast", "actual-cost"]
+    },
+    {
+      "id": "strategic-objective",
+      "term": "Strategic objective",
+      "category": "object",
+      "definition": "An intended effect at enterprise or portfolio level.",
+      "distinction": "Not a [[metric]]. Strategic themes are adapted at portfolio level in SAFe.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["metric", "investment"]
+    },
+    {
+      "id": "business-capability",
+      "term": "Business capability",
+      "category": "object",
+      "definition": "What the organisation must be able to do, independent of how, by whom and with what it is done. Organised hierarchically.",
+      "distinction": "Not an [[application]], not a [[product]], not a process.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["application", "product"]
+    },
+    {
+      "id": "enterprise-initiative",
+      "term": "Enterprise initiative",
+      "category": "object",
+      "definition": "A cross-portfolio bundle of investments serving an enterprise objective. Its investments may themselves span portfolios.",
+      "distinction": "A separate steering level only in the enterprise variant.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["investment", "portfolio"]
+    },
+    {
+      "id": "portfolio",
+      "term": "Portfolio",
+      "category": "object",
+      "definition": "A steering unit with its own budget, value streams, strategy and governance.",
+      "distinction": "Not every portfolio is coupled to others; a portfolio may run without any cross-portfolio investments.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["value-stream", "investment"]
+    },
+    {
+      "id": "investment",
+      "term": "Investment",
+      "category": "object",
+      "definition": "Generic investment and work item with a business case or benefit hypothesis. It can span portfolios: funded and delivered in several portfolios, with exactly one lead portfolio.",
+      "distinction": "A delivered investment is not yet a realised [[outcome]].",
+      "variants": "Epic (SAFe), project, programme.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["portfolio-participation", "enterprise-initiative"]
+    },
+    {
+      "id": "portfolio-participation",
+      "term": "Portfolio participation",
+      "category": "object",
+      "definition": "A portfolio's share in an investment: role (lead or contributing), funding share and delivering value streams.",
+      "distinction": "Prevents double counting when investments span portfolios.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["investment", "portfolio"]
+    },
+    {
+      "id": "value-stream",
+      "term": "Value stream",
+      "category": "object",
+      "definition": "A long-lived delivery organisation with its own capacity that creates value for customers or consumers. Belongs to exactly one portfolio.",
+      "distinction": "Not a project phase. Lean budgets fund value streams instead of projects.",
+      "statementType": "framework",
+      "sourceIds": ["S-SAFE-3"],
+      "related": ["portfolio", "delivery-capacity"]
+    },
+    {
+      "id": "product",
+      "term": "Product",
+      "category": "object",
+      "definition": "An offering for customers or internal users with accountability for outcomes.",
+      "distinction": "Not an [[application]]: a product may use several applications.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["application", "platform", "service"]
+    },
+    {
+      "id": "platform",
+      "term": "Platform",
+      "category": "object",
+      "definition": "A shared technical or business foundation used by several products.",
+      "distinction": "Has internal consumers; how it is funded is a separate steering question.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["product", "service"]
+    },
+    {
+      "id": "service",
+      "term": "Service",
+      "category": "object",
+      "definition": "A consumable offering with a defined service promise (business or IT service).",
+      "distinction": "TBM technology solutions include services and products.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["technology-solution", "product"]
+    },
+    {
+      "id": "application",
+      "term": "Application",
+      "category": "object",
+      "definition": "A software system that realises business capabilities and uses technologies.",
+      "distinction": "Not a [[product]] and not a [[business-capability]].",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["business-capability", "technology"]
+    },
+    {
+      "id": "technology",
+      "term": "Technology",
+      "category": "object",
+      "definition": "A technical component such as a database, runtime or infrastructure, with a lifecycle status.",
+      "distinction": "Lifecycle status (for example end-of-life) drives modernisation and risk.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["application"]
+    },
+    {
+      "id": "funding-allocation",
+      "term": "Funding allocation",
+      "category": "object",
+      "definition": "Assignment of budget to a recipient (portfolio, value stream, initiative or platform), with guardrails.",
+      "distinction": "Not a [[cost-allocation]]: funding decides what may be spent, cost allocation distributes what was spent.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["budget", "guardrail"]
+    },
+    {
+      "id": "guardrail",
+      "term": "Guardrail",
+      "category": "object",
+      "definition": "An agreed boundary within which decisions may be made in a delegated way.",
+      "distinction": "The specific SAFe guardrails are not yet verified against the source.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["funding-allocation", "epm"]
+    },
+    {
+      "id": "cost-pool",
+      "term": "Cost pool",
+      "category": "object",
+      "definition": "Actual costs grouped by cost type.",
+      "distinction": "TBM taxonomy layer 'Technology Cost Pool'.",
+      "statementType": "framework",
+      "sourceIds": ["S-TBM-2"],
+      "related": ["resource-tower", "cost-allocation"]
+    },
+    {
+      "id": "resource-tower",
+      "term": "Resource tower",
+      "category": "object",
+      "definition": "A category of technology resources.",
+      "distinction": "TBM taxonomy layer 'Technology Resource Towers'.",
+      "statementType": "framework",
+      "sourceIds": ["S-TBM-2"],
+      "related": ["cost-pool", "technology-solution"]
+    },
+    {
+      "id": "technology-solution",
+      "term": "Technology solution",
+      "category": "object",
+      "definition": "A consumable solution, such as a product or service, to which costs are assigned.",
+      "distinction": "TBM taxonomy layer 'Technology Solutions'. Modelled in this app as product, platform or service; an application is not a solution by itself.",
+      "statementType": "framework",
+      "sourceIds": ["S-TBM-2"],
+      "related": ["product", "platform", "service"]
+    },
+    {
+      "id": "technology-consumer",
+      "term": "Technology consumer",
+      "category": "object",
+      "definition": "An organisational unit or user group that consumes technology solutions.",
+      "distinction": "TBM taxonomy layer 'Technology Consumer', called 'Business Layer' before version 5.0.",
+      "statementType": "framework",
+      "sourceIds": ["S-TBM-2"],
+      "related": ["cost-allocation", "showback", "chargeback"]
+    },
+    {
+      "id": "cost-allocation",
+      "term": "Cost allocation",
+      "category": "object",
+      "definition": "Distribution of actual costs from cost pools via resource towers and solutions to consumers, using drivers, including unallocated shares.",
+      "distinction": "Not a [[funding-allocation]] and not the same as [[chargeback]].",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["cost-pool", "unallocated-cost"]
+    },
+    {
+      "id": "unallocated-cost",
+      "term": "Unallocated / shared cost",
+      "category": "object",
+      "definition": "Costs that are deliberately not assigned to a consumer or an investment.",
+      "distinction": "A legitimate part of the model, not an error.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["cost-allocation"]
+    },
+    {
+      "id": "showback",
+      "term": "Showback",
+      "category": "object",
+      "definition": "Costs are made transparent to consumers but not charged.",
+      "distinction": "Unlike [[chargeback]], no internal charge is made.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["chargeback", "technology-consumer"]
+    },
+    {
+      "id": "chargeback",
+      "term": "Chargeback",
+      "category": "object",
+      "definition": "Costs are charged internally to consumers.",
+      "distinction": "Unlike [[showback]], consumers bear the cost economically.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["showback", "technology-consumer"]
+    },
+    {
+      "id": "delivery-capacity",
+      "term": "Delivery capacity",
+      "category": "object",
+      "definition": "Available capacity per value stream or team and period, split across RUN, CHANGE and investments.",
+      "distinction": "In flow-based models RUN and CHANGE are a capacity split, not separate budget lines.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["value-stream", "run-change"]
+    },
+    {
+      "id": "run-change",
+      "term": "RUN / CHANGE",
+      "category": "object",
+      "definition": "Steering perspectives: operating and sustaining versus changing and building.",
+      "distinction": "Not the same as [[capex-opex]].",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["capex-opex", "delivery-capacity"]
+    },
+    {
+      "id": "capex-opex",
+      "term": "CapEx / OpEx",
+      "category": "object",
+      "definition": "Accounting treatment of spending as capital or operating expenditure.",
+      "distinction": "An interface to finance, not a steering perspective. Lean budgets can contain both.",
+      "statementType": "framework",
+      "sourceIds": ["S-SAFE-4"],
+      "related": ["run-change", "finance-processes"]
+    },
+    {
+      "id": "value-type",
+      "term": "Value type",
+      "category": "value-type",
+      "definition": "The kind of financial value: target, budget, forecast or actual.",
+      "distinction": "Independent of [[run-change]] and [[capex-opex]]. Values of different types are never added up.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["target", "budget", "forecast", "actual-cost", "variance"]
+    },
+    {
+      "id": "target",
+      "term": "Target",
+      "category": "value-type",
+      "definition": "A top-down orientation value, for example a cost target or cost ratio.",
+      "distinction": "Not an approved [[budget]], and not an outcome goal (outcomes use 'expected').",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["budget", "value-type"]
+    },
+    {
+      "id": "budget",
+      "term": "Budget",
+      "category": "value-type",
+      "definition": "Approved funds per period and level (plan).",
+      "distinction": "Not [[actual-cost]] and not a [[target]].",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["funding-allocation", "forecast", "value-type"]
+    },
+    {
+      "id": "forecast",
+      "term": "Forecast",
+      "category": "value-type",
+      "definition": "The current expectation of a value for the period, updated on a rolling basis.",
+      "distinction": "Not a [[budget]]. Forecasting is a finance process with input from portfolio management and TBM.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["budget", "variance", "value-type"]
+    },
+    {
+      "id": "actual-cost",
+      "term": "Actual cost",
+      "category": "value-type",
+      "definition": "Costs actually booked.",
+      "distinction": "Not a [[budget]] and not a [[forecast]]. Cost allocation is applied to actuals.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["cost-allocation", "value-type"]
+    },
+    {
+      "id": "variance",
+      "term": "Variance",
+      "category": "value-type",
+      "definition": "A derived difference between two value types, for example forecast versus budget.",
+      "distinction": "Always calculated, never stored as a base value.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["forecast", "budget", "actual-cost"]
+    },
+    {
+      "id": "output",
+      "term": "Output",
+      "category": "object",
+      "definition": "A delivered result, for example a feature that is live.",
+      "distinction": "Not an [[outcome]].",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["outcome", "financial-benefit"]
+    },
+    {
+      "id": "outcome",
+      "term": "Outcome",
+      "category": "object",
+      "definition": "An observable change in behaviour or results, for example adoption or handling time.",
+      "distinction": "Not an [[output]] and not a [[financial-benefit]].",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["output", "metric"]
+    },
+    {
+      "id": "financial-benefit",
+      "term": "Financial benefit",
+      "category": "object",
+      "definition": "An effect valued in money, such as revenue or cost avoidance.",
+      "distinction": "Not an [[outcome]].",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["outcome", "metric"]
+    },
+    {
+      "id": "metric",
+      "term": "Metric",
+      "category": "object",
+      "definition": "A measurable quantity for output, outcome or benefit, with an expected and an actual value.",
+      "distinction": "Several investments may contribute; a change is not attributed to a single investment.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["outcome", "benefit-hypothesis"]
+    },
+    {
+      "id": "benefit-hypothesis",
+      "term": "Benefit hypothesis",
+      "category": "object",
+      "definition": "The expected outcome or benefit of an investment, stated so that it can be tested.",
+      "distinction": "The SAFe variant (epic hypothesis) is not yet verified against the source.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["investment", "metric"]
+    },
+    {
+      "id": "decision-right",
+      "term": "Decision right",
+      "category": "object",
+      "definition": "Who (role or body) decides on which type of decision at which level.",
+      "distinction": "Depends on the organisational scenario.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["guardrail", "epm", "lpm"]
+    },
+    {
+      "id": "steering-capability",
+      "term": "Steering capability",
+      "category": "object",
+      "definition": "A cross-discipline steering task. The model uses eight of them.",
+      "distinction": "Not an organisational unit and not a governance body.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["epm", "lpm", "tbm", "ea"]
+    },
+    {
+      "id": "rel-strategic-contribution",
+      "term": "Strategic contribution",
+      "category": "relationship",
+      "definition": "Link type: X contributes to objective or capability Y.",
+      "distinction": "Does not imply funding or delivery.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["strategic-objective"]
+    },
+    {
+      "id": "rel-funding",
+      "term": "Funding",
+      "category": "relationship",
+      "definition": "Link type: budget is assigned from X to Y.",
+      "distinction": "Not a cost flow.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["funding-allocation"]
+    },
+    {
+      "id": "rel-cost-allocation",
+      "term": "Cost allocation (link)",
+      "category": "relationship",
+      "definition": "Link type: actual costs flow from X to Y.",
+      "distinction": "Not a funding flow.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["cost-allocation"]
+    },
+    {
+      "id": "rel-delivery",
+      "term": "Delivery",
+      "category": "relationship",
+      "definition": "Link type: X builds or delivers Y.",
+      "distinction": "Delivery does not imply a realised outcome.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["value-stream"]
+    },
+    {
+      "id": "rel-architecture-dependency",
+      "term": "Architecture dependency",
+      "category": "relationship",
+      "definition": "Link type: X depends technically on Y.",
+      "distinction": "A technical dependency, not an organisational one.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["platform", "technology"]
+    },
+    {
+      "id": "rel-outcome-feedback",
+      "term": "Outcome feedback",
+      "category": "relationship",
+      "definition": "Link type: results from X inform decisions in Y.",
+      "distinction": "Closes the steering loop from operations and value realisation back to strategy and funding.",
+      "statementType": "synthesis",
+      "sourceIds": [],
+      "related": ["metric", "outcome"]
+    }
+  ]
+}

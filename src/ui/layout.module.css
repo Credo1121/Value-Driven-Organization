@@ -1,0 +1,85 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: var(--line);
+  background: var(--c-surface);
+}
+
+.brand {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  color: var(--c-ink);
+  text-decoration: none;
+}
+
+.navList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-1);
+  color: var(--c-grey-900);
+  font-size: var(--fs-small);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+
+.navLink:hover {
+  color: var(--c-ink);
+}
+
+/* Active state: orange underline plus bold weight, never colour alone (AC-009-3). */
+.navLink[aria-current='page'] {
+  color: var(--c-ink);
+  font-weight: 600;
+  border-bottom-color: var(--c-accent-strong);
+}
+
+.navArea {
+  font-size: var(--fs-min);
+  font-weight: 600;
+  color: var(--c-grey-900);
+  border: var(--line);
+  border-radius: var(--radius);
+  padding: 0 var(--space-1);
+}
+
+.main {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--space-5);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-5);
+  border-top: var(--line);
+  color: var(--c-grey-900);
+  font-size: var(--fs-min);
+}
+
+@media (max-width: 48rem) {
+  .header,
+  .main,
+  .footer {
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+}
