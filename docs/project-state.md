@@ -35,6 +35,7 @@
 Zurückgestellt bis I7 (bestätigt): E5a–c (Hex-Werte, Webfont-Lizenz, Logo-SVG), E15 (Skill `eraneos-ci`), E4 (Hosting), E9 (Lizenzprüfung vor externer Nutzung).
 
 ## Letzte Evidenz
+- 07.10.2026: Fester Ablauf je Inkrement in `CLAUDE.md` Abschn. 5a (E28)
 - 07.10.2026: Kreis interaktiv (Klick + Mouse-over-Vorschau); `npm run check` Exit 0 – 65/65 Unit, 129/129 E2E
 - 07.10.2026: CHG-005 – `npm run check` Exit 0: 65/65 Unit, 114/114 E2E (3 Browser) inkl. axe und Hydration-Prüfung
 - 07.10.2026: CHG-004 – `npm run check` Exit 0: 65/65 Unit, 96/96 E2E (3 Browser), axe 0 serious/critical
@@ -61,4 +62,4 @@ Zurückgestellt bis I7 (bestätigt): E5a–c (Hex-Werte, Webfont-Lizenz, Logo-SV
 - CHG-001: 2 Testfehler im ersten Lauf, Ursache jeweils im Test (Fixture-Kontext, fehlender `public/`-Ordner), je 1 Fix, danach PASS
 
 ## Nächster Schritt
-Auftraggeber prüft C2 → Korrekturen einarbeiten → übrige Fähigkeiten nach demselben Muster (`1-requirements-engineering` für Inhalte, `5-qa`).
+Ablauf nach `CLAUDE.md` Abschn. 5a. Offen: Review C2 durch den PO (Schritt 7 von CHG-004); danach C4 Kostentransparenz ab Schritt 1 (`1-requirements-engineering`).

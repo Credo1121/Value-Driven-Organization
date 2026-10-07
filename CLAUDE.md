@@ -61,6 +61,44 @@ Die Skills sind kontoweit installiert. Ihre Texte verweisen auf `web-*`-Namen. Z
 
 Die Skills sind Arbeitsmodi mit expliziten Übergaben, kein unabhängiges Team. Ein Rollenwechsel im selben Modell ist keine unabhängige Prüfung. Keine parallelen Schreibzugriffe auf dieselben Dateien.
 
+## 5a. Fester Ablauf je Inkrement (agiles, cross-funktionales Team)
+
+Jede Weiterentwicklung (neues Inkrement, neue Anforderung, Änderungswunsch) läuft in dieser Reihenfolge. Die Rollen entsprechen einem cross-funktionalen Team; der Auftraggeber ist **Product Owner** und hält die fachlichen Freigaben. Ein Skill löst den nächsten nicht selbst aus: Claude lädt die nächste Rolle, sobald die Übergabe der vorherigen vollständig ist.
+
+| # | Schritt (Team-Analogie) | Rolle / Skill | Ergebnis = Übergabe an den nächsten Schritt | Gate |
+|---|---|---|---|---|
+| 0 | **Einstieg** (Daily/Kontext) | `7-help` | `docs/project-state.md` gelesen und mit Code/Git abgeglichen; Auftrag einem REQ/BUG zugeordnet oder neu angelegt | – |
+| 1 | **Refinement** | `1-requirements-engineering` | REQ mit Ziel, Scope/Nicht-Scope, Geschäftsregeln, ACs (Given/When/Then); max. drei Rückfragen an den PO | **Definition of Ready** (s. u.) |
+| 2 | **Testbarkeits-Check** (Three Amigos) | `5-qa` | ACs geprüft auf Eindeutigkeit und Testbarkeit; Testideen inkl. Negativfälle; Befunde zurück an Schritt 1 | keine blockierenden Befunde |
+| 3 | **Sprint-Freigabe** | Auftraggeber (PO) | Freigabe zur Umsetzung; Status REQ → `Ready` | **PO-Freigabe erforderlich** |
+| 4 | **Design** | `2-architecture` | nur wenn Datenmodell, Inhaltsvertrag, Struktur, Abhängigkeiten oder Sicherheit betroffen: Vertrag/Schema, ggf. ADR; sonst ausdrücklich „keine Architekturänderung“ vermerkt | Vertrag steht vor der Umsetzung |
+| 5 | **Umsetzung** | `4-backend` (Domäne, Regeln, Inhaltsvalidierung) → `3-frontend` (UI) | Code + Tests gegen die ACs, Inhalte in `content/`; kleinster vertikaler Schnitt | `typecheck`, `lint`, Unit-Tests lokal grün |
+| 6 | **Verifikation** | `5-qa` | `npm run check` (inkl. E2E in 3 Browsern), Sichtprüfung per Screenshot, `docs/qa/CHG-*.md` mit PASS/FAIL/NOT RUN je AC | **Definition of Done** (s. u.) |
+| 7 | **Review** (Sprint Review) | Auftraggeber (PO) | kurze Zusammenfassung: Ergebnis, Nachweis, offene Punkte, lokale URL zum Ansehen | Feedback → neuer Durchlauf ab Schritt 1 oder Abnahme (`Accepted`) |
+| 8 | **Abschluss** | `7-help` | `docs/changes/CHG-*.md`, Traceability in `docs/requirements/README.md`, `docs/register.md`, `docs/project-state.md` (nächster Schritt) aktualisiert; Commit + Push | Commit nur nach grünem Schritt 6 (E18) |
+| – | **Release** | `6-deploy` | nur auf ausdrücklichen Aufruf | Freigabe je Umgebung |
+| – | **Störung** | `7-help` | nach zwei erfolglosen Fixversuchen derselben Ursache: anhalten, Diagnose, dann zurück in Schritt 5 | neue Evidenz erforderlich |
+
+### Definition of Ready (vor Schritt 3)
+- Ziel und Nutzen in einem Satz, Bezug zu einem der sieben Brüche oder einem Bereich A–E
+- Scope und Nicht-Scope benannt; keine ungefragten Erweiterungen (Abschn. 2, E8)
+- ACs beobachtbar formuliert, inkl. Fehler-, Leer- und Grenzfällen, wo relevant
+- Fachliche Aussagen mit Aussagetyp; Framework-Aussagen nur mit verifizierter Quelle (Abschn. 3, 4)
+- Offene Fragen sind beantwortet oder ausdrücklich als nicht blockierend markiert
+
+### Definition of Done (nach Schritt 6)
+- Alle ACs des Inkrements PASS oder begründet NOT RUN; keine stillschweigend geänderten ACs
+- `npm run check` Exit 0 (Typecheck, Lint, Unit, Build, E2E in Chromium, Firefox, WebKit inkl. axe)
+- Sichtprüfung der betroffenen Seiten per Screenshot; keine Konsolen- oder Hydration-Fehler
+- Inhalte valide (Build bricht sonst ab), Farben nur über Tokens, Texte der App auf Englisch
+- Dokumentation nachgeführt (Schritt 8)
+
+### Arbeitsweise
+- **Kleine vertikale Schnitte:** lieber ein vollständiges Stück (Inhalt + Regeln + UI + Tests) als viele halbe.
+- **Abkürzung für kleine Änderungen:** Bei Korrekturen ohne fachliche Auswirkung (Darstellung, Tippfehler, Bugfix mit klarer Ursache) dürfen die Schritte 1–4 auf eine Zeile im CHG verkürzt werden; Schritte 5–8 bleiben vollständig.
+- **Auftrag an Claude:** Ein Auftrag nennt *was* und *wie weit*, z. B. „bis Schritt 1“ (nur Anforderungen), „bis Schritt 7“ (umsetzen und vorstellen) oder „inkl. Schritt 8“ (abschließen und committen). Ohne Angabe hält Claude nach Schritt 2 an und holt die Freigabe ein.
+- **Transparenz:** Bei jedem Rollenwechsel kurz benennen, welche Rolle jetzt arbeitet und was übergeben wurde.
+
 ## 6. Dokumentationsorte (eine Wahrheit je Thema)
 | Thema | Datei |
 |---|---|

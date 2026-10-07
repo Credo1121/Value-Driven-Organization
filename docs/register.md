@@ -36,6 +36,7 @@ Stand: 07.10.2026. Jede ID ist stabil und wird nicht wiederverwendet.
 | E25 | Abnahme Gesamtbild | ✅ entschieden [BEST] | Swimlane-Matrix inkl. Zellinhalte und ACs REQ-003 Rev. 2 als PoC abgenommen; Feinschliff später möglich | 07.10.2026 |
 | E26 | Vorgehen I3 | ✅ entschieden [BEST] | I3 freigegeben. C2 zuerst vollständig, die übrigen sieben mit Vorlage und offenen Abschnitten; Inhalte C1, C3–C8 erst nach Review von C2 | 07.10.2026 |
 | E27 | Visuelle Richtung | ✅ entschieden [BEST] | Clean, Apple-naher Light-Look für die ganze Website: Konzept A (Matrix mit Zeitleisten-Strahl) als Detailansicht mit gepunkteten Einflusspfeilen aus B; Konzept C (Kreis) als Einstiegs- und Übersichtsbild ohne Punkt-Halo, Beschreibungskarte rechts mit Pfeilen nach unten/weiter und benannten Ebenen. Apple-Neutraltöne und Systemschrift statt warmer CI-Grautöne/Aptos; Eraneos-Orange bleibt Akzent | 07.10.2026 |
+| E28 | Fester Entwicklungsablauf | ✅ entschieden [BEST] | Ablauf je Inkrement wie in einem agilen, cross-funktionalen Team (Refinement → Testbarkeits-Check → PO-Freigabe → Design → Umsetzung → Verifikation → Review → Abschluss) mit Definition of Ready/Done; verbindlich in `CLAUDE.md` Abschn. 5a | 07.10.2026 |
 
 ## Annahmen
 
