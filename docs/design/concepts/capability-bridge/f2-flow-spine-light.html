@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Concept F2 – Flow spine, light (E27 tokens)</title>
+<script src="data.js"></script>
+<style>
+  :root {
+    /* Same tokens as src/ui/tokens.css (E27 clean light look) */
+    --bg: #f5f5f7; --panel: #ffffff; --panel-2: #f2f2f5; --line: #e5e5ea;
+    --ink: #1d1d1f; --ink-2: #515154; --ink-3: #6e6e73;
+    --orange: #ff6529; --orange-d: #dd3d01; --orange-text: #b33000; --orange-glow: rgba(255,101,41,.22);
+    --font: -apple-system, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font); }
+  .page { width: 1440px; padding: 56px 64px 64px; position: relative; }
+  .eyebrow { color: var(--orange-text); font-weight: 700; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 10px; }
+  h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; max-width: 26ch; }
+  .lede { margin-top: 12px; color: var(--ink-2); font-size: 17px; max-width: 60ch; line-height: 1.5; }
+
+  .flow { margin-top: 48px; position: relative; display: grid; grid-template-columns: 1fr; gap: 0; }
+  .spine { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, transparent, var(--orange), transparent); opacity: .6; }
+
+  .stage { position: relative; display: grid; grid-template-columns: 1fr 220px 1fr; align-items: center; min-height: 92px; }
+  .stage .mid { display: flex; justify-content: center; }
+  .node-dot { width: 54px; height: 54px; border-radius: 99px; background: var(--panel); border: 2px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--ink-2); position: relative; z-index: 2; box-shadow: 0 10px 20px -14px rgba(0,0,0,.18); }
+  .node-dot.active { border-color: var(--orange); color: var(--orange-d); box-shadow: 0 0 0 6px var(--orange-glow); }
+
+  .side-card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px 18px; cursor: pointer; transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease; box-shadow: 0 1px 2px rgba(0,0,0,.03); }
+  .side-card:hover { transform: translateX(2px); border-color: var(--ink-3); box-shadow: 0 12px 24px -18px rgba(0,0,0,.18); }
+  .side-card.active { border-color: var(--orange); box-shadow: 0 0 0 2px var(--orange), 0 16px 30px -20px rgba(0,0,0,.18); }
+  .side-card .disc { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--orange-text); }
+  .side-card h3 { font-size: 15px; margin-top: 4px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+  .left { text-align: right; } .left .side-card { margin-left: auto; max-width: 320px; }
+  .right .side-card { max-width: 320px; }
+
+  .panel-detail { margin-top: 56px; background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; box-shadow: 0 30px 60px -36px rgba(0,0,0,.14); }
+  .panel-detail .tag { color: var(--orange-text); font-weight: 700; font-size: 13px; }
+  .panel-detail h2 { font-size: 24px; margin-top: 6px; letter-spacing: -0.02em; }
+  .link-grid { margin-top: 18px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .link-item { background: var(--panel-2); border-radius: 14px; padding: 14px 16px; }
+  .link-item .k { font-size: 12px; font-weight: 700; color: var(--orange-text); text-transform: uppercase; letter-spacing: .03em; }
+  .link-item p { font-size: 13px; color: var(--ink-2); margin-top: 6px; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="eyebrow">Where EPM, TBM, EA and LPM meet</div>
+  <h1>One flow, four disciplines feeding it</h1>
+  <p class="lede">Enterprise-level and operating capabilities sit either side of the spine. Select any node to trace what it sets, funds or feeds back.</p>
+
+  <div class="flow" id="flow">
+    <div class="spine"></div>
+  </div>
+
+  <div class="panel-detail" id="detail"></div>
+</div>
+<script>
+const B = window.BRIDGE
+const leftIds = B.nodes.filter(n => n.disciplineId === 'epm' || n.disciplineId === 'ea').map(n => n.id)
+const rightIds = B.nodes.filter(n => n.disciplineId === 'tbm' || n.disciplineId === 'lpm').map(n => n.id)
+const rows = Math.max(leftIds.length, rightIds.length)
+let active = B.nodes[0].id
+
+function render() {
+  const flow = document.getElementById('flow')
+  let html = '<div class="spine"></div>'
+  for (let i = 0; i < rows; i++) {
+    const l = leftIds[i], r = rightIds[i]
+    html += `<div class="stage">
+      <div class="left">${l ? card(l) : ''}</div>
+      <div class="mid"><div class="node-dot${(l===active||r===active)?' active':''}">${i+1}</div></div>
+      <div class="right">${r ? card(r) : ''}</div>
+    </div>`
+  }
+  flow.innerHTML = html
+  flow.querySelectorAll('.side-card').forEach(el => el.addEventListener('click', () => { active = el.dataset.id; render() }))
+
+  const node = B.nodes.find(n => n.id === active)
+  const out = B.links.filter(x => x.from === active)
+  const inc = B.links.filter(x => x.to === active)
+  const byId = id => B.nodes.find(n => n.id === id)?.label
+  document.getElementById('detail').innerHTML = `<div class="tag">${node.disciplineId.toUpperCase()}</div><h2>${node.label}</h2>
+    <div class="link-grid">` +
+    out.map(x => `<div class="link-item"><div class="k">${x.type.replace(/-/g,' ')} → ${byId(x.to)}</div><p>${x.label}</p></div>`).join('') +
+    inc.map(x => `<div class="link-item"><div class="k">${byId(x.from)} ${x.type.replace(/-/g,' ')} this</div><p>${x.label}</p></div>`).join('') +
+    `</div>`
+}
+function card(id) {
+  const n = B.nodes.find(x => x.id === id)
+  return `<div class="side-card${id===active?' active':''}" data-id="${id}"><div class="disc">${n.disciplineId}</div><h3>${n.label}</h3></div>`
+}
+render()
+</script>
+</body>
+</html>

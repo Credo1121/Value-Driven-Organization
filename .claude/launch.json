@@ -12,6 +12,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--", "-p", "4181"],
       "port": 4181
+    },
+    {
+      "name": "vdo-concepts",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["http-server", "docs/design/concepts", "-p", "4182", "-c-1"],
+      "port": 4182
     }
   ]
 }

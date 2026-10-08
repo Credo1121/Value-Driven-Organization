@@ -69,3 +69,50 @@
   border-radius: var(--radius);
   box-shadow: inset 3px 0 0 var(--c-accent-strong);
 }
+
+.disciplineList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 52rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.disciplineList li {
+  padding: var(--space-3) var(--space-4);
+  background: var(--c-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.disciplineName {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-weight: 700;
+}
+
+.question {
+  max-width: 40rem;
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.answerCard {
+  max-width: 44rem;
+  padding: var(--space-4) var(--space-5);
+  background: var(--c-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-float);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  font-weight: 600;
+  color: var(--c-accent-text);
+}

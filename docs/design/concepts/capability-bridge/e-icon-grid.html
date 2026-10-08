@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Concept E – Icon grid (Eraneos pattern-card style)</title>
+<script src="data.js"></script>
+<style>
+  :root {
+    --ink: #1d1d1f; --ink-2: #515154; --ink-3: #6e6e73;
+    --line: #e5e5ea; --panel: #f5f5f5; --panel-warm: #f1ece7;
+    --surface: #ffffff; --orange: #ff6529; --orange-d: #dd3d01; --orange-text: #b33000; --orange-tint: #fff4ee;
+    --font: -apple-system, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--surface); color: var(--ink); font-family: var(--font); }
+  .page { width: 1440px; padding: 56px 64px 64px; }
+  .eyebrow { color: var(--orange-text); font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+  h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.08; max-width: 20ch; }
+  .lede { margin-top: 14px; color: var(--ink-2); font-size: 18px; line-height: 1.5; max-width: 60ch; }
+
+  .columns { margin-top: 44px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .col-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .col-head .dot { width: 10px; height: 10px; border-radius: 99px; background: var(--orange); }
+  .col-head h2 { font-size: 14px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+
+  .pattern-card { background: var(--panel-warm); border-radius: 24px; padding: 22px; min-height: 150px; position: relative; overflow: hidden; margin-bottom: 16px; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; }
+  .pattern-card:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -18px rgba(0,0,0,.18); }
+  .pattern-card.active { background: #fff; box-shadow: 0 0 0 2px var(--orange), 0 20px 40px -20px rgba(0,0,0,.25); }
+
+  /* icon diagrams, abstracted per discipline, in the pattern-card spirit */
+  .mini { height: 46px; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+  .chip { height: 10px; border-radius: 4px; background: #c9c0b8; }
+  .chip.lg { width: 28px; } .chip.md { width: 18px; } .chip.sm { width: 12px; }
+  .ring { width: 30px; height: 30px; border-radius: 99px; border: 3px solid var(--orange); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--orange-d); background: #fff; }
+  .bar { height: 8px; border-radius: 4px; background: var(--orange); flex: 1; opacity: .85; }
+
+  .pattern-card h3 { font-size: 16px; font-weight: 650; letter-spacing: -0.01em; line-height: 1.25; }
+  .pattern-card .arrow { margin-top: 10px; color: var(--orange-text); font-weight: 700; font-size: 14px; }
+
+  .side { margin-top: 48px; display: grid; grid-template-columns: 1fr 420px; gap: 32px; align-items: start; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--ink-3); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .sw { width: 10px; height: 10px; border-radius: 3px; }
+
+  .detail { background: var(--surface); border: 1px solid var(--line); border-radius: 28px; padding: 28px; box-shadow: 0 30px 60px -36px rgba(0,0,0,.18); }
+  .detail .tag { font-size: 13px; font-weight: 700; color: var(--orange-text); }
+  .detail h3 { font-size: 24px; margin-top: 6px; letter-spacing: -0.02em; }
+  .link-row { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .link-row .k { font-size: 13px; font-weight: 700; color: var(--orange-text); }
+  .link-row p { font-size: 14px; color: var(--ink-2); margin-top: 4px; line-height: 1.45; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="eyebrow">Where EPM, TBM, EA and LPM meet</div>
+  <h1>Four disciplines, one steering flow</h1>
+  <p class="lede">A best-of-breed view: pick a capability to see what it connects to across planning, funding, delivery and value realisation.</p>
+
+  <div class="columns" id="columns"></div>
+
+  <div class="side">
+    <div>
+      <div class="legend">
+        <span><span class="sw" style="background:#ff6529"></span> Sets guardrail for</span>
+        <span><span class="sw" style="background:#ffb08f"></span> Funds</span>
+        <span><span class="sw" style="background:#c9c0b8"></span> Informs</span>
+        <span><span class="sw" style="background:#515154"></span> Delivers to</span>
+        <span><span class="sw" style="background:#dd3d01"></span> Feeds back to</span>
+      </div>
+    </div>
+    <div class="detail" id="detail"></div>
+  </div>
+</div>
+<script>
+const B = window.BRIDGE
+const cols = [['epm','EPM'], ['tbm','TBM'], ['ea','EA'], ['lpm','LPM']]
+const minis = {
+  epm: '<div class="mini"><div class="chip lg"></div><div class="chip md"></div><div class="ring">E</div></div>',
+  tbm: '<div class="mini"><div class="bar"></div><div class="chip sm"></div><div class="chip sm"></div></div>',
+  ea: '<div class="mini"><div class="ring">A</div><div class="chip md"></div><div class="chip lg"></div></div>',
+  lpm: '<div class="mini"><div class="chip sm"></div><div class="ring">L</div><div class="chip md"></div></div>',
+}
+let active = B.nodes[0].id
+function render() {
+  const colsEl = document.getElementById('columns')
+  colsEl.innerHTML = cols.map(([id, label]) => {
+    const nodes = B.nodes.filter(n => n.disciplineId === id)
+    return `<div><div class="col-head"><span class="dot"></span><h2>${label}</h2></div>` +
+      nodes.map(n => `<div class="pattern-card${n.id===active?' active':''}" data-id="${n.id}">${minis[id]}<h3>${n.label}</h3><div class="arrow">→</div></div>`).join('') +
+      `</div>`
+  }).join('')
+  colsEl.querySelectorAll('.pattern-card').forEach(el => el.addEventListener('click', () => { active = el.dataset.id; render() }))
+
+  const node = B.nodes.find(n => n.id === active)
+  const out = B.links.filter(l => l.from === active)
+  const inc = B.links.filter(l => l.to === active)
+  const byId = id => B.nodes.find(n => n.id === id)?.label
+  document.getElementById('detail').innerHTML = `<div class="tag">${node.disciplineId.toUpperCase()}</div><h3>${node.label}</h3>` +
+    out.map(l => `<div class="link-row"><div class="k">${l.type.replace(/-/g,' ')} → ${byId(l.to)}</div><p>${l.label}</p></div>`).join('') +
+    inc.map(l => `<div class="link-row"><div class="k">${byId(l.from)} ${l.type.replace(/-/g,' ')} this</div><p>${l.label}</p></div>`).join('')
+}
+render()
+</script>
+</body>
+</html>

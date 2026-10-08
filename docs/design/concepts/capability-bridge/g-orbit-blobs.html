@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Concept G – Orbit blobs (organic, clean light)</title>
+<script src="data.js"></script>
+<style>
+  :root {
+    --ink: #1d1d1f; --ink-2: #515154; --ink-3: #6e6e73;
+    --line: #e5e5ea; --surface: #ffffff; --bg: #f5f5f7;
+    --orange: #ff6529; --orange-d: #dd3d01; --orange-text: #b33000; --orange-tint: #fff4ee; --orange-soft: #ffb08f;
+    --font: -apple-system, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font); }
+  .page { width: 1440px; padding: 56px 64px 64px; }
+  .eyebrow { color: var(--orange-text); font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+  h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.02em; max-width: 22ch; line-height: 1.08; }
+  .lede { margin-top: 14px; color: var(--ink-2); font-size: 18px; max-width: 58ch; line-height: 1.5; }
+
+  .stage { margin-top: 44px; position: relative; height: 620px; }
+  .blob { position: absolute; border-radius: 50% 44% 48% 52% / 52% 48% 50% 46%; background: var(--orange-tint); opacity: .6; }
+  .blob.b1 { width: 420px; height: 380px; top: 10px; left: 480px; }
+  .blob.b2 { width: 260px; height: 300px; top: 280px; left: 60px; background: #f1ece7; opacity: .8; }
+  .blob.b3 { width: 300px; height: 260px; top: 320px; left: 1060px; background: #f1ece7; opacity: .8; }
+
+  .node { position: absolute; width: 230px; background: var(--surface); border-radius: 22px; padding: 18px 20px; box-shadow: 0 20px 40px -24px rgba(0,0,0,.2); cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; z-index: 2; }
+  .node:hover { transform: translateY(-3px); }
+  .node.active { box-shadow: 0 0 0 2px var(--orange), 0 24px 48px -20px rgba(0,0,0,.3); }
+  .node .disc { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--orange-text); }
+  .node h3 { font-size: 14.5px; font-weight: 650; margin-top: 4px; line-height: 1.25; letter-spacing: -0.005em; }
+
+  svg.wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+  .legend { margin-top: 10px; display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--ink-3); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .sw { width: 10px; height: 10px; border-radius: 3px; }
+
+  .detail { margin-top: 32px; max-width: 640px; background: var(--surface); border-radius: 28px; padding: 26px 30px; box-shadow: 0 30px 60px -36px rgba(0,0,0,.18); }
+  .detail .tag { font-size: 13px; font-weight: 700; color: var(--orange-text); }
+  .detail h2 { font-size: 24px; margin-top: 6px; letter-spacing: -0.02em; }
+  .link-row { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .link-row .k { font-size: 13px; font-weight: 700; color: var(--orange-text); }
+  .link-row p { font-size: 14px; color: var(--ink-2); margin-top: 4px; line-height: 1.45; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="eyebrow">Where EPM, TBM, EA and LPM meet</div>
+  <h1>A living map of the steering flow</h1>
+  <p class="lede">Capabilities float by discipline. Hover or select one to see what it reaches across planning, funding, delivery and value realisation.</p>
+
+  <div class="stage" id="stage">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <svg class="wires" id="wires"></svg>
+  </div>
+
+  <div class="legend">
+    <span><span class="sw" style="background:#ff6529"></span> Sets guardrail for</span>
+    <span><span class="sw" style="background:#ffb08f"></span> Funds</span>
+    <span><span class="sw" style="background:#c9c0b8"></span> Informs</span>
+    <span><span class="sw" style="background:#515154"></span> Delivers to</span>
+    <span><span class="sw" style="background:#dd3d01"></span> Feeds back to</span>
+  </div>
+
+  <div class="detail" id="detail"></div>
+</div>
+<script>
+const B = window.BRIDGE
+// hand-placed organic layout per discipline cluster (approximate positions within 1440x620 stage)
+const pos = {
+  'enterprise-objectives': [160, 40], 'portfolio-budgets': [160, 150], 'cross-portfolio-sequencing': [160, 260], 'reallocate-between-portfolios': [160, 370],
+  'technology-towers': [620, 20], 'cost-transparency': [620, 130],
+  'technology-roadmap': [980, 20], 'architecture-guardrails': [980, 130],
+  'portfolio-strategy': [1060, 260], 'fund-value-streams': [1060, 360], 'portfolio-kanban': [1060, 460], 'plan-team-capacity': [700, 500], 'measure-outcomes': [340, 500],
+}
+let active = B.nodes[0].id
+function render() {
+  const stage = document.getElementById('stage')
+  stage.querySelectorAll('.node').forEach(n => n.remove())
+  B.nodes.forEach(n => {
+    const [x, y] = pos[n.id] || [40, 40]
+    const el = document.createElement('div')
+    el.className = 'node' + (n.id === active ? ' active' : '')
+    el.style.left = x + 'px'; el.style.top = y + 'px'
+    el.dataset.id = n.id
+    el.innerHTML = `<div class="disc">${n.disciplineId}</div><h3>${n.label}</h3>`
+    el.addEventListener('click', () => { active = n.id; render() })
+    stage.appendChild(el)
+  })
+  drawWires()
+  const node = B.nodes.find(n => n.id === active)
+  const out = B.links.filter(l => l.from === active)
+  const inc = B.links.filter(l => l.to === active)
+  const byId = id => B.nodes.find(n => n.id === id)?.label
+  document.getElementById('detail').innerHTML = `<div class="tag">${node.disciplineId.toUpperCase()}</div><h2>${node.label}</h2>` +
+    out.map(l => `<div class="link-row"><div class="k">${l.type.replace(/-/g,' ')} → ${byId(l.to)}</div><p>${l.label}</p></div>`).join('') +
+    inc.map(l => `<div class="link-row"><div class="k">${byId(l.from)} ${l.type.replace(/-/g,' ')} this</div><p>${l.label}</p></div>`).join('')
+}
+function center(id) { const [x, y] = pos[id] || [0,0]; return [x + 115, y + 36] }
+function drawWires() {
+  const svg = document.getElementById('wires')
+  const related = B.links.filter(l => l.from === active || l.to === active)
+  svg.innerHTML = related.map(l => {
+    const [x1, y1] = center(l.from), [x2, y2] = center(l.to)
+    const out = l.from === active
+    const stroke = l.type === 'sets-guardrail-for' ? '#ff6529' : l.type === 'funds' ? '#ffb08f' : l.type === 'informs' ? '#c9c0b8' : l.type === 'delivers-to' ? '#515154' : '#dd3d01'
+    return `<path d="M${x1},${y1} Q${(x1+x2)/2},${(y1+y2)/2 - 30} ${x2},${y2}" stroke="${stroke}" stroke-width="${out?2.4:1.6}" fill="none" stroke-dasharray="${out?'none':'3 6'}"/>`
+  }).join('')
+}
+render()
+</script>
+</body>
+</html>

@@ -177,7 +177,7 @@ test.describe.skip('Viewports (AC-009-4)', () => {
 })
 
 test.describe('Other routes (AC-009-7 smoke)', () => {
-  for (const path of ['/', '/glossary/', '/capabilities/', '/capabilities/c2/']) {
+  for (const path of ['/', '/why/', '/glossary/', '/capabilities/', '/capabilities/c2/']) {
     test(`no serious or critical axe violations on ${path}`, async ({ page }) => {
       await open(page, path)
       expect(serious(await axe(page))).toEqual([])
@@ -303,10 +303,11 @@ test.describe('Capability bridge (entry page)', () => {
   test.beforeEach(async ({ page }) => open(page, '/big-picture/'))
   const node = (page: Page, id: string) => page.locator(`[data-node="${id}"]`)
 
-  test('shows four discipline columns with their capabilities', async ({ page }) => {
-    for (const col of ['EPM', 'TBM', 'EA', 'LPM']) await expect(page.getByRole('heading', { name: col, level: 3 })).toBeVisible()
-    await expect(node(page, 'portfolio-budgets')).toBeVisible()
-    await expect(node(page, 'technology-roadmap')).toBeVisible()
+  test('shows capabilities from all four disciplines along the spine', async ({ page }) => {
+    await expect(node(page, 'portfolio-budgets')).toContainText('EPM')
+    await expect(node(page, 'technology-towers')).toContainText('TBM')
+    await expect(node(page, 'technology-roadmap')).toContainText('EA')
+    await expect(node(page, 'fund-value-streams')).toContainText('LPM')
   })
 
   test('clicking a card selects it and shows its connections in the side panel', async ({ page }) => {
